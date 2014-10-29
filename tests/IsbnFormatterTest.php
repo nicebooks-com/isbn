@@ -1,6 +1,7 @@
 <?php
 
 namespace Nicebooks\Isbn\Tests;
+use Nicebooks\Isbn\IsbnConfiguration;
 use Nicebooks\Isbn\IsbnFormatter;
 
 /**
@@ -16,7 +17,10 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormat($isbn, $expectedOutput)
     {
-        $formatter = new IsbnFormatter();
+        $configuration = new IsbnConfiguration();
+        $configuration->validateCheckDigit(false);
+
+        $formatter = new IsbnFormatter($configuration);
         $this->assertSame($expectedOutput, $formatter->format($isbn));
     }
 

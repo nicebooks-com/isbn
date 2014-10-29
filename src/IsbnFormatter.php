@@ -1,6 +1,7 @@
 <?php
 
 namespace Nicebooks\Isbn;
+use Nicebooks\Isbn\Exception\InvalidIsbnException;
 
 /**
  * Formats ISBN numbers.
@@ -12,6 +13,21 @@ namespace Nicebooks\Isbn;
  */
 class IsbnFormatter
 {
+    /**
+     * @var IsbnConfiguration
+     */
+    private $configuration;
+
+    /**
+     * Class constructor.
+     *
+     * @param IsbnConfiguration|null $configuration
+     */
+    public function __construct(IsbnConfiguration $configuration = null)
+    {
+        $this->configuration = $configuration ? clone $configuration : new IsbnConfiguration();
+    }
+
     /**
      * Formats an ISBN number.
      *
@@ -29,13 +45,29 @@ class IsbnFormatter
             throw Exception\InvalidIsbnException::forIsbn($isbn);
         }
 
-        $isbn = strtoupper(preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn));
+        if ($this->configuration->cleanupBeforeValidate()) {
+            $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
+        }
+
+        $isbn = strtoupper($isbn);
 
         if (preg_match(Internal\Regexp::ISBN10, $isbn) === 1) {
+            if ($this->configuration->validateCheckDigit()) {
+                if (! Internal\CheckDigit::validateCheckDigit10($isbn)) {
+                    throw InvalidIsbnException::forIsbn($isbn);
+                }
+            }
+
             return Internal\Formatter::format10($isbn);
         }
 
         if (preg_match(Internal\Regexp::ISBN13, $isbn) === 1) {
+            if ($this->configuration->validateCheckDigit()) {
+                if (! Internal\CheckDigit::validateCheckDigit13($isbn)) {
+                    throw InvalidIsbnException::forIsbn($isbn);
+                }
+            }
+
             return Internal\Formatter::format13($isbn);
         }
 
