@@ -26,9 +26,9 @@ foreach ($groups as $group) {
 
     foreach ($rules as $rule) {
         $range = $xpath->query('./Range', $rule)->item(0)->textContent;
-        $length = $xpath->query('./Length', $rule)->item(0)->textContent;
+        $length = (int) $xpath->query('./Length', $rule)->item(0)->textContent;
 
-        if ($length == '0') {
+        if ($length === 0) {
             // zero indicates range not defined for use.
             continue;
         }
