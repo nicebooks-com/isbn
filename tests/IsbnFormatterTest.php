@@ -61,7 +61,7 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider providerFormatInvalidIsbnThrowsException
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Nicebooks\Isbn\Exception\InvalidIsbnException
      *
      * @param string $isbn The invalid ISBN.
      */
