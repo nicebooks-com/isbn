@@ -49,6 +49,16 @@ class IsbnFormatter
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
         }
 
+        if (preg_match(Internal\Regexp::ISBN13, $isbn) === 1) {
+            if ($this->configuration->validateCheckDigit()) {
+                if (! Internal\CheckDigit::validateCheckDigit13($isbn)) {
+                    throw InvalidIsbnException::forIsbn($isbn);
+                }
+            }
+
+            return Internal\Formatter::format13($isbn);
+        }
+
         $isbn = strtoupper($isbn);
 
         if (preg_match(Internal\Regexp::ISBN10, $isbn) === 1) {
@@ -59,16 +69,6 @@ class IsbnFormatter
             }
 
             return Internal\Formatter::format10($isbn);
-        }
-
-        if (preg_match(Internal\Regexp::ISBN13, $isbn) === 1) {
-            if ($this->configuration->validateCheckDigit()) {
-                if (! Internal\CheckDigit::validateCheckDigit13($isbn)) {
-                    throw InvalidIsbnException::forIsbn($isbn);
-                }
-            }
-
-            return Internal\Formatter::format13($isbn);
         }
 
         throw Exception\InvalidIsbnException::forIsbn($isbn);

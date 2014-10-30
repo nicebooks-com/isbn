@@ -87,8 +87,6 @@ class IsbnValidator
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
         }
 
-        $isbn = strtoupper($isbn);
-
         if (preg_match(Internal\Regexp::ISBN13, $isbn) === 0) {
             return false;
         }
