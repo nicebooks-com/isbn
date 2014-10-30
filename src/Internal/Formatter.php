@@ -19,7 +19,7 @@ class Formatter
     private static $ranges;
 
     /**
-     * @param string $isbn The ISBN-10, validated as a string of 9 digits + (1 digit or 'X').
+     * @param string $isbn The ISBN-10, unformatted, regexp-validated.
      *
      * @return string
      */
@@ -29,7 +29,7 @@ class Formatter
     }
 
     /**
-     * @param string $isbn The ISBN-13, validated as a string of 13 digits.
+     * @param string $isbn The ISBN-13, unformatted, regexp-validated.
      *
      * @return string
      */
