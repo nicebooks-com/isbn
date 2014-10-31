@@ -3,6 +3,9 @@
 This library provides the functionality to validate, format and convert ISBN numbers, that powers the [nicebooks.com](http://nicebooks.com) website.
 It is released under a permissive MIT open-source license for anyone to use.
 
+[![Build Status](https://travis-ci.org/nicebooks-com/isbn.svg?branch=master)](https://travis-ci.org/nicebooks-com/isbn)
+[![Coverage Status](https://img.shields.io/coveralls/nicebooks-com/isbn.svg)](https://coveralls.io/r/nicebooks-com/isbn?branch=master)
+
 ## The `IsbnTools` class
 
 This class contains all the tools to work with ISBN numbers as plain strings.
