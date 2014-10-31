@@ -1,11 +1,11 @@
 <?php
 
 namespace Nicebooks\Isbn\Tests;
-use Nicebooks\Isbn\IsbnConfiguration;
-use Nicebooks\Isbn\IsbnFormatter;
+
+use Nicebooks\Isbn\IsbnTools;
 
 /**
- * Unit tests for class IsbnFormatter.
+ * Unit tests for class IsbnTools formatting.
  */
 class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,11 +17,8 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormat($isbn, $expectedOutput)
     {
-        $configuration = new IsbnConfiguration();
-        $configuration->validateCheckDigit(false);
-
-        $formatter = new IsbnFormatter($configuration);
-        $this->assertSame($expectedOutput, $formatter->format($isbn));
+        $tools = new IsbnTools(true, false);
+        $this->assertSame($expectedOutput, $tools->format($isbn));
     }
 
     /**
@@ -71,8 +68,8 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatInvalidIsbnThrowsException($isbn)
     {
-        $formatter = new IsbnFormatter();
-        $formatter->format($isbn);
+        $tools = new IsbnTools();
+        $tools->format($isbn);
     }
 
     /**

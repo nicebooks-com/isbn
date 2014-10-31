@@ -2,24 +2,23 @@
 
 namespace Nicebooks\Isbn\Tests;
 
-use Nicebooks\Isbn\IsbnConfiguration;
-use Nicebooks\Isbn\IsbnValidator;
+use Nicebooks\Isbn\IsbnTools;
 
 /**
- * Unit tests for class IsbnValidator.
+ * Unit tests for IsbnTools validation.
  */
 class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerIsValidIsbn
      *
-     * @param string   $isbn   The ISBN to validate.
+     * @param string  $isbn    The ISBN to validate.
      * @param boolean $isValid The expected result.
      */
     public function testIsValidIsbn($isbn, $isValid)
     {
-        $validator = new IsbnValidator();
-        $this->assertSame($isValid, $validator->isValidIsbn($isbn));
+        $tools = new IsbnTools();
+        $this->assertSame($isValid, $tools->isValidIsbn($isbn));
     }
 
     /**
@@ -113,14 +112,10 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsValidIsbn10($isbn, $cleanupBeforeValidate, $validateCheckDigit, $isValid)
     {
-        $configuration = new IsbnConfiguration();
-        $configuration->cleanupBeforeValidate($cleanupBeforeValidate);
-        $configuration->validateCheckDigit($validateCheckDigit);
+        $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
-        $validator = new IsbnValidator($configuration);
-
-        $this->assertSame($isValid, $validator->isValidIsbn($isbn));
-        $this->assertSame($isValid, $validator->isValidIsbn10($isbn));
+        $this->assertSame($isValid, $tools->isValidIsbn($isbn));
+        $this->assertSame($isValid, $tools->isValidIsbn10($isbn));
     }
 
     /**
@@ -165,14 +160,10 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsValidIsbn13($isbn, $cleanupBeforeValidate, $validateCheckDigit, $isValid)
     {
-        $configuration = new IsbnConfiguration();
-        $configuration->cleanupBeforeValidate($cleanupBeforeValidate);
-        $configuration->validateCheckDigit($validateCheckDigit);
+        $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
-        $validator = new IsbnValidator($configuration);
-
-        $this->assertSame($isValid, $validator->isValidIsbn($isbn));
-        $this->assertSame($isValid, $validator->isValidIsbn13($isbn));
+        $this->assertSame($isValid, $tools->isValidIsbn($isbn));
+        $this->assertSame($isValid, $tools->isValidIsbn13($isbn));
     }
 
     /**

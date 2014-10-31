@@ -2,10 +2,10 @@
 
 namespace Nicebooks\Isbn\Tests;
 
-use Nicebooks\Isbn\IsbnConverter;
+use Nicebooks\Isbn\IsbnTools;
 
 /**
- * Unit tests for class IsbnConverter.
+ * Unit tests for class IsbnTools conversion.
  */
 class IsbnConverterTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,8 +17,8 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConvertIsbn10to13($isbn10, $isbn13)
     {
-        $converter = new IsbnConverter();
-        $this->assertSame($isbn13, $converter->convertIsbn10to13($isbn10));
+        $tools = new IsbnTools();
+        $this->assertSame($isbn13, $tools->convertIsbn10to13($isbn10));
     }
 
     /**
@@ -48,8 +48,8 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConvertIsbn13to10($isbn13, $isbn10)
     {
-        $converter = new IsbnConverter();
-        $this->assertSame($isbn10, $converter->convertIsbn13to10($isbn13));
+        $tools = new IsbnTools();
+        $this->assertSame($isbn10, $tools->convertIsbn13to10($isbn13));
     }
 
     /**
@@ -79,8 +79,8 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      */
     public function testNotConvertibleThrowsException($isbn13)
     {
-        $converter = new IsbnConverter();
-        $converter->convertIsbn13to10($isbn13);
+        $tools = new IsbnTools();
+        $tools->convertIsbn13to10($isbn13);
     }
 
     /**
