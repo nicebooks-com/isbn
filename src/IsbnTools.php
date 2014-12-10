@@ -47,11 +47,11 @@ class IsbnTools
     {
         $isbn = (string) $isbn;
 
-        if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
-            return false;
-        }
-
         if ($this->cleanupBeforeValidate) {
+            if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
+                return false;
+            }
+
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
         }
 
@@ -81,11 +81,11 @@ class IsbnTools
     {
         $isbn = (string) $isbn;
 
-        if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
-            return false;
-        }
-
         if ($this->cleanupBeforeValidate) {
+            if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
+                return false;
+            }
+
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
         }
 
@@ -115,11 +115,11 @@ class IsbnTools
     {
         $isbn = (string) $isbn;
 
-        if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
-            throw Exception\InvalidIsbnException::forIsbn($isbn);
-        }
-
         if ($this->cleanupBeforeValidate) {
+            if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
+                throw Exception\InvalidIsbnException::forIsbn($isbn);
+            }
+
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
         }
 
@@ -155,11 +155,11 @@ class IsbnTools
     {
         $isbn = (string) $isbn;
 
-        if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
-            throw Exception\InvalidIsbnException::forIsbn($isbn);
-        }
-
         if ($this->cleanupBeforeValidate) {
+            if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
+                throw Exception\InvalidIsbnException::forIsbn($isbn);
+            }
+
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
         }
 
@@ -189,11 +189,11 @@ class IsbnTools
     {
         $isbn = (string) $isbn;
 
-        if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
-            throw Exception\InvalidIsbnException::forIsbn($isbn);
-        }
-
         if ($this->cleanupBeforeValidate) {
+            if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
+                throw Exception\InvalidIsbnException::forIsbn($isbn);
+            }
+
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
         }
 
