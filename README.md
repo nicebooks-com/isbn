@@ -83,7 +83,7 @@ Method summary:
 
 The `Isbn` class is an immutable class representing a valid ISBN-10 or ISBN-13.
 It is an alternate way to access the functionality provided by `IsbnTools`, and offers a convenient way to pass an ISBN number around,
-guaranteing both its validity and its integrity.
+guaranteeing both its validity and its integrity.
 
 An `Isbn` instance is obtained with the `get()` factory method:
 
