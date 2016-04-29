@@ -12,21 +12,28 @@ $document->loadXML(file_get_contents('RangeMessage.xml'));
 
 $xpath = new DOMXPath($document);
 
-$groups = $xpath->query('/ISBNRangeMessage/RegistrationGroups/Group');
+$groupNodeList = $xpath->query('/ISBNRangeMessage/RegistrationGroups/Group');
 
-$data = array();
+$ranges = array();
+$groups = array();
 
-foreach ($groups as $group) {
-    $prefix = $xpath->query('./Prefix', $group)->item(0)->textContent;
-    $agency = $xpath->query('./Agency', $group)->item(0)->textContent;
+$rangeCount = 0;
+$groupCount = 0;
+
+foreach ($groupNodeList as $groupNode) {
+    $prefix = $xpath->query('./Prefix', $groupNode)->item(0)->textContent;
+    $agency = $xpath->query('./Agency', $groupNode)->item(0)->textContent;
 
     list ($prefix, $registrationGroup) = explode('-', $prefix);
 
-    $rules = $xpath->query('./Rules/Rule', $group);
+    $groups[$prefix][$registrationGroup] = $agency;
+    $groupCount++;
 
-    foreach ($rules as $rule) {
-        $range = $xpath->query('./Range', $rule)->item(0)->textContent;
-        $length = (int) $xpath->query('./Length', $rule)->item(0)->textContent;
+    $ruleNodeList = $xpath->query('./Rules/Rule', $groupNode);
+
+    foreach ($ruleNodeList as $ruleNode) {
+        $range = $xpath->query('./Range', $ruleNode)->item(0)->textContent;
+        $length = (int) $xpath->query('./Length', $ruleNode)->item(0)->textContent;
 
         if ($length === 0) {
             // zero indicates range not defined for use.
@@ -38,8 +45,12 @@ foreach ($groups as $group) {
         $start = substr($start, 0, $length);
         $end = substr($end, 0, $length);
 
-        $data[$prefix][$registrationGroup][] = array($length, $start, $end);
+        $ranges[$prefix][$registrationGroup][] = array($length, $start, $end);
+        $rangeCount++;
     }
 }
 
-file_put_contents('data/ranges.php', '<?php return ' . var_export($data, true). ';');
+file_put_contents('data/ranges.php', '<?php return ' . var_export($ranges, true) . ';');
+file_put_contents('data/groups.php', '<?php return ' . var_export($groups, true) . ';');
+
+printf('Successfully converted %d groups and %d ranges.' . PHP_EOL, $groupCount, $rangeCount);

@@ -201,20 +201,37 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider providerFormat
+     * @dataProvider providerGetPartsAndFormat
      *
      * @param string $isbn     The ISBN to format.
      * @param string $expected The expected formatted output.
      */
-    public function testFormat($isbn, $expected)
+    public function testGetPartsAndFormat($isbn, $expected)
     {
+        $isbn = Isbn::get($isbn);
+        $expectedParts = explode('-', $expected);
+
         $this->assertSame($expected, Isbn::get($isbn)->format());
+        $this->assertSame($expectedParts, $isbn->getParts());
+
+        if ($isbn->is13()) {
+            $this->assertSame($expectedParts[0], $isbn->getPrefix());
+            $this->assertSame($expectedParts[1], $isbn->getGroupIdentifier());
+            $this->assertSame($expectedParts[2], $isbn->getPublisherIdentifier());
+            $this->assertSame($expectedParts[3], $isbn->getTitleIdentifier());
+            $this->assertSame($expectedParts[4], $isbn->getCheckDigit());
+        } else {
+            $this->assertSame($expectedParts[0], $isbn->getGroupIdentifier());
+            $this->assertSame($expectedParts[1], $isbn->getPublisherIdentifier());
+            $this->assertSame($expectedParts[2], $isbn->getTitleIdentifier());
+            $this->assertSame($expectedParts[3], $isbn->getCheckDigit());
+        }
     }
 
     /**
      * @return array
      */
-    public function providerFormat()
+    public function providerGetPartsAndFormat()
     {
         return array(
             array('0001234560', '0-00-123456-0'),
