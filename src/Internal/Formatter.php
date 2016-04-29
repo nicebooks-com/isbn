@@ -2,6 +2,8 @@
 
 namespace Nicebooks\Isbn\Internal;
 
+use Nicebooks\Isbn\IsbnGroup;
+
 /**
  * Internal utility class for ISBN formatting.
  *
@@ -19,6 +21,40 @@ class Formatter
     private static $ranges;
 
     /**
+     * @return array
+     */
+    private static function getRanges()
+    {
+        if (self::$ranges === null) {
+            self::$ranges = require __DIR__ . '/../../data/ranges.php';
+        }
+
+        return self::$ranges;
+    }
+
+    /**
+     * @param bool $is13
+     *
+     * @return IsbnGroup[]
+     */
+    public static function getGroups($is13)
+    {
+        $groups = array();
+
+        foreach (self::getRanges() as $rangeData) {
+            list ($rangePrefix, $groupIdentifier, $groupName) = $rangeData;
+
+            if ($is13) {
+                $groups[] = new IsbnGroup($rangePrefix . '-' . $groupIdentifier, $groupName);
+            } elseif ($rangePrefix === '978') {
+                $groups[] = new IsbnGroup($groupIdentifier, $groupName);
+            }
+        }
+
+        return $groups;
+    }
+
+    /**
      * Splits an ISBN into parts.
      *
      * @param string $isbn The ISBN-10 or ISBN-13, regexp-validated.
@@ -27,15 +63,11 @@ class Formatter
      */
     public static function getRangeInfo($isbn)
     {
-        if (self::$ranges === null) {
-            self::$ranges = require __DIR__ . '/../../data/ranges.php';
-        }
-
         $length = strlen($isbn);
         $prefix = ($length === 10) ? '978' : substr($isbn, 0, 3);
         $digits = ($length === 10) ? $isbn : substr($isbn, 3);
 
-        foreach (self::$ranges as $rangeData) {
+        foreach (self::getRanges() as $rangeData) {
             list ($rangePrefix, $groupIdentifier, $groupName, $ranges) = $rangeData;
 
             if ($prefix !== $rangePrefix) {

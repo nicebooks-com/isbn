@@ -1,6 +1,7 @@
 <?php
 
 namespace Nicebooks\Isbn\Tests;
+
 use Nicebooks\Isbn\Isbn;
 
 /**
