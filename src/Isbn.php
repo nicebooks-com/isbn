@@ -4,6 +4,7 @@ namespace Nicebooks\Isbn;
 
 use Nicebooks\Isbn\Exception\IsbnException;
 use Nicebooks\Isbn\Internal\Formatter;
+use Nicebooks\Isbn\Internal\IsbnRangeInfo;
 
 /**
  * Represents a valid ISBN number. This class is immutable.
@@ -21,24 +22,20 @@ class Isbn
     private $is13;
 
     /**
-     * The 4 or 5 parts of this ISBN number (depending on whether it's an ISBN-10 or ISBN-13).
-     *
-     * If this ISBN number is not in a recognized range, this property will be null.
-     *
-     * @var array|null
+     * @var IsbnRangeInfo|null
      */
-    private $parts;
+    private $rangeInfo;
 
     /**
-     * @param string     $isbn  The unformatted ISBN number, validated.
-     * @param boolean    $is13  Whether this is an ISBN-13.
-     * @param array|null $parts The parts of this ISBN number, or null if it's not in a recognized range.
+     * @param string $isbn The unformatted ISBN number, validated.
+     * @param bool   $is13 Whether this is an ISBN-13.
      */
-    private function __construct($isbn, $is13, array $parts = null)
+    private function __construct($isbn, $is13)
     {
-        $this->isbn  = $isbn;
-        $this->is13  = $is13;
-        $this->parts = $parts;
+        $this->isbn = $isbn;
+        $this->is13 = $is13;
+
+        $this->rangeInfo = Formatter::getRangeInfo($isbn);
     }
 
     /**
@@ -63,7 +60,7 @@ class Isbn
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
             }
 
-            return new Isbn($isbn, true, Formatter::getParts($isbn));
+            return new Isbn($isbn, true);
         }
 
         $isbn = strtoupper($isbn);
@@ -73,7 +70,7 @@ class Isbn
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
             }
 
-            return new Isbn($isbn, false, Formatter::getParts($isbn));
+            return new Isbn($isbn, false);
         }
 
         throw Exception\InvalidIsbnException::forIsbn($isbn);
@@ -101,7 +98,7 @@ class Isbn
     public function isConvertibleTo10()
     {
         if ($this->is13) {
-            return $this->parts[0] === '978';
+            return substr($this->isbn, 0, 3) === '978';
         }
 
         return true;
@@ -151,7 +148,7 @@ class Isbn
      */
     public function isValidRange()
     {
-        return $this->parts !== null;
+        return $this->rangeInfo !== null;
     }
 
     /**
@@ -161,11 +158,11 @@ class Isbn
      */
     public function getParts()
     {
-        if ($this->parts === null) {
+        if ($this->rangeInfo === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->parts;
+        return $this->rangeInfo->parts;
     }
 
     /**
@@ -183,11 +180,11 @@ class Isbn
             throw new IsbnException('Cannot get the GS1 prefix of an ISBN-10.');
         }
 
-        if ($this->parts === null) {
+        if ($this->rangeInfo === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->parts[0];
+        return $this->rangeInfo->parts[0];
     }
 
     /**
@@ -201,11 +198,27 @@ class Isbn
      */
     public function getGroupIdentifier()
     {
-        if ($this->parts === null) {
+        if ($this->rangeInfo === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->parts[$this->is13 ? 1 : 0];
+        return $this->rangeInfo->parts[$this->is13 ? 1 : 0];
+    }
+
+    /**
+     * Returns the group name.
+     *
+     * @return string
+     *
+     * @throws IsbnException If this ISBN is not in a recognized range.
+     */
+    public function getGroupName()
+    {
+        if ($this->rangeInfo === null) {
+            throw IsbnException::unknownRange($this->isbn);
+        }
+
+        return $this->rangeInfo->groupName;
     }
 
     /**
@@ -219,11 +232,11 @@ class Isbn
      */
     public function getPublisherIdentifier()
     {
-        if ($this->parts === null) {
+        if ($this->rangeInfo === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->parts[$this->is13 ? 2 : 1];
+        return $this->rangeInfo->parts[$this->is13 ? 2 : 1];
     }
 
     /**
@@ -237,11 +250,11 @@ class Isbn
      */
     public function getTitleIdentifier()
     {
-        if ($this->parts === null) {
+        if ($this->rangeInfo === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->parts[$this->is13 ? 3 : 2];
+        return $this->rangeInfo->parts[$this->is13 ? 3 : 2];
     }
 
     /**
@@ -255,11 +268,11 @@ class Isbn
      */
     public function getCheckDigit()
     {
-        if ($this->parts === null) {
+        if ($this->rangeInfo === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->parts[$this->is13 ? 4 : 3];
+        return $this->rangeInfo->parts[$this->is13 ? 4 : 3];
     }
 
     /**
@@ -271,11 +284,11 @@ class Isbn
      */
     public function format()
     {
-        if ($this->parts === null) {
+        if ($this->rangeInfo === null) {
             return $this->isbn;
         }
 
-        return implode('-', $this->parts);
+        return implode('-', $this->rangeInfo->parts);
     }
 
     /**

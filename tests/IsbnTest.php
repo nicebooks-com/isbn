@@ -201,17 +201,18 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider providerGetPartsAndFormat
+     * @dataProvider providerInfoAndFormat
      *
-     * @param string $isbn     The ISBN to format.
-     * @param string $expected The expected formatted output.
+     * @param string $isbn           The ISBN to test.
+     * @param string $expectedFormat The expected formatted output.
+     * @param string $expectedGroup  The expected group name.
      */
-    public function testGetPartsAndFormat($isbn, $expected)
+    public function testInfoAndFormat($isbn, $expectedFormat, $expectedGroup)
     {
         $isbn = Isbn::get($isbn);
-        $expectedParts = explode('-', $expected);
+        $expectedParts = explode('-', $expectedFormat);
 
-        $this->assertSame($expected, Isbn::get($isbn)->format());
+        $this->assertSame($expectedFormat, Isbn::get($isbn)->format());
         $this->assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {
@@ -226,38 +227,40 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($expectedParts[2], $isbn->getTitleIdentifier());
             $this->assertSame($expectedParts[3], $isbn->getCheckDigit());
         }
+
+        $this->assertSame($expectedGroup, $isbn->getGroupName());
     }
 
     /**
      * @return array
      */
-    public function providerGetPartsAndFormat()
+    public function providerInfoAndFormat()
     {
         return array(
-            array('0001234560', '0-00-123456-0'),
-            array('0321234561', '0-321-23456-1'),
-            array('0765432102', '0-7654-3210-2'),
-            array('0876543212', '0-87654-321-2'),
-            array('0912345675', '0-912345-67-5'),
-            array('0987654322', '0-9876543-2-2'),
-            array('9995501236', '99955-0-123-6'),
-            array('9995523450', '99955-23-45-0'),
-            array('999556789X', '99955-678-9-X'),
+            array('0001234560', '0-00-123456-0', 'English language'),
+            array('0321234561', '0-321-23456-1', 'English language'),
+            array('0765432102', '0-7654-3210-2', 'English language'),
+            array('0876543212', '0-87654-321-2', 'English language'),
+            array('0912345675', '0-912345-67-5', 'English language'),
+            array('0987654322', '0-9876543-2-2', 'English language'),
+            array('9995501236', '99955-0-123-6', 'Srpska, Republic of'),
+            array('9995523450', '99955-23-45-0', 'Srpska, Republic of'),
+            array('999556789X', '99955-678-9-X', 'Srpska, Republic of'),
 
-            array('9780001234567', '978-0-00-123456-7'),
-            array('9780321234568', '978-0-321-23456-8'),
-            array('9780765432100', '978-0-7654-3210-0'),
-            array('9780876543214', '978-0-87654-321-4'),
-            array('9780912345673', '978-0-912345-67-3'),
-            array('9780987654328', '978-0-9876543-2-8'),
-            array('9789995501235', '978-99955-0-123-5'),
-            array('9789995523459', '978-99955-23-45-9'),
-            array('9789995567897', '978-99955-678-9-7'),
-            array('9791001234563', '979-10-01-23456-3'),
-            array('9791023456783', '979-10-234-5678-3'),
-            array('9791078901238', '979-10-7890-123-8'),
-            array('9791090123458', '979-10-90123-45-8'),
-            array('9791098765438', '979-10-987654-3-8'),
+            array('9780001234567', '978-0-00-123456-7', 'English language'),
+            array('9780321234568', '978-0-321-23456-8', 'English language'),
+            array('9780765432100', '978-0-7654-3210-0', 'English language'),
+            array('9780876543214', '978-0-87654-321-4', 'English language'),
+            array('9780912345673', '978-0-912345-67-3', 'English language'),
+            array('9780987654328', '978-0-9876543-2-8', 'English language'),
+            array('9789995501235', '978-99955-0-123-5', 'Srpska, Republic of'),
+            array('9789995523459', '978-99955-23-45-9', 'Srpska, Republic of'),
+            array('9789995567897', '978-99955-678-9-7', 'Srpska, Republic of'),
+            array('9791001234563', '979-10-01-23456-3', 'France'),
+            array('9791023456783', '979-10-234-5678-3', 'France'),
+            array('9791078901238', '979-10-7890-123-8', 'France'),
+            array('9791090123458', '979-10-90123-45-8', 'France'),
+            array('9791098765438', '979-10-987654-3-8', 'France'),
         );
     }
 }
