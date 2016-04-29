@@ -171,6 +171,8 @@ class Isbn
      * This prefix can be either 978 or 979.
      *
      * @return string
+     *
+     * @throws IsbnException If this is an ISBN-10.
      */
     public function getPrefix()
     {
