@@ -204,7 +204,7 @@ class IsbnTools
                 }
             }
 
-            return Internal\Formatter::format13($isbn);
+            return Internal\Formatter::format($isbn);
         }
 
         $isbn = strtoupper($isbn);
@@ -216,7 +216,7 @@ class IsbnTools
                 }
             }
 
-            return Internal\Formatter::format10($isbn);
+            return Internal\Formatter::format($isbn);
         }
 
         throw Exception\InvalidIsbnException::forIsbn($isbn);

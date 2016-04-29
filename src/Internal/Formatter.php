@@ -19,26 +19,6 @@ class Formatter
     private static $ranges;
 
     /**
-     * @param string $isbn The ISBN-10, unformatted, regexp-validated.
-     *
-     * @return string
-     */
-    public static function format10($isbn)
-    {
-        return self::format('978', $isbn, false);
-    }
-
-    /**
-     * @param string $isbn The ISBN-13, unformatted, regexp-validated.
-     *
-     * @return string
-     */
-    public static function format13($isbn)
-    {
-        return self::format(substr($isbn, 0, 3), substr($isbn, 3), true);
-    }
-
-    /**
      * Splits an ISBN into parts.
      *
      * @param string $isbn The ISBN-10 or ISBN-13, regexp-validated.
@@ -95,17 +75,12 @@ class Formatter
     }
 
     /**
-     * @deprecated Use getRangeInfo() instead.
-     *
-     * @param string  $prefix The ISBN prefix, 978 or 979. Always 978 for ISBN-10.
-     * @param string  $digits The 10 relevant digits after the prefix (or full ISBN for ISBN-10).
-     * @param bool    $is13   Whether we're dealing with an ISBN-13 (true) or ISBN-10 (false).
+     * @param string $isbn
      *
      * @return string
      */
-    private static function format($prefix, $digits, $is13)
+    public static function format($isbn)
     {
-        $isbn = $is13 ? $prefix . $digits : $digits;
         $rangeInfo = self::getRangeInfo($isbn);
 
         if ($rangeInfo) {
