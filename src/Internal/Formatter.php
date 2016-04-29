@@ -64,7 +64,7 @@ class Formatter
                     $lastDigits = substr($digits, $groupLength + $rangeLength, -1);
                     $checkDigit = substr($digits, -1);
 
-                    if ($rangeValue >= $rangeStart && $rangeValue <= $rangeEnd) {
+                    if (strcmp($rangeValue, $rangeStart) >= 0 && strcmp($rangeValue, $rangeEnd) <= 0) {
                         if ($is13) {
                             return sprintf('%s-%s-%s-%s-%s', $prefix, $isbnGroup, $rangeValue, $lastDigits, $checkDigit);
                         } else {
