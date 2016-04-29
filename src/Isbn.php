@@ -171,8 +171,6 @@ class Isbn
      * This prefix can be either 978 or 979.
      *
      * @return string
-     *
-     * @throws IsbnException If this ISBN is not in a recognized range, or if it's an ISBN-10.
      */
     public function getPrefix()
     {
@@ -180,11 +178,7 @@ class Isbn
             throw new IsbnException('Cannot get the GS1 prefix of an ISBN-10.');
         }
 
-        if ($this->rangeInfo === null) {
-            throw IsbnException::unknownRange($this->isbn);
-        }
-
-        return $this->rangeInfo->parts[0];
+        return substr($this->isbn, 0, 3);
     }
 
     /**
@@ -263,16 +257,10 @@ class Isbn
      * The check digit is the single digit at the end of the ISBN which validates the ISBN.
      *
      * @return string
-     *
-     * @throws IsbnException If this ISBN is not in a recognized range.
      */
     public function getCheckDigit()
     {
-        if ($this->rangeInfo === null) {
-            throw IsbnException::unknownRange($this->isbn);
-        }
-
-        return $this->rangeInfo->parts[$this->is13 ? 4 : 3];
+        return substr($this->isbn, -1);
     }
 
     /**
