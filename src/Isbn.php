@@ -3,7 +3,7 @@
 namespace Nicebooks\Isbn;
 
 use Nicebooks\Isbn\Exception\IsbnException;
-use Nicebooks\Isbn\Internal\Formatter;
+use Nicebooks\Isbn\Internal\RangeService;
 use Nicebooks\Isbn\Internal\IsbnRangeInfo;
 
 /**
@@ -35,7 +35,7 @@ class Isbn
         $this->isbn = $isbn;
         $this->is13 = $is13;
 
-        $this->rangeInfo = Formatter::getRangeInfo($isbn);
+        $this->rangeInfo = RangeService::getRangeInfo($isbn);
     }
 
     /**

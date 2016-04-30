@@ -204,7 +204,7 @@ class IsbnTools
                 }
             }
 
-            return Internal\Formatter::format($isbn);
+            return Internal\RangeService::format($isbn);
         }
 
         $isbn = strtoupper($isbn);
@@ -216,7 +216,7 @@ class IsbnTools
                 }
             }
 
-            return Internal\Formatter::format($isbn);
+            return Internal\RangeService::format($isbn);
         }
 
         throw Exception\InvalidIsbnException::forIsbn($isbn);

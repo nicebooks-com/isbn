@@ -13,7 +13,7 @@ use Nicebooks\Isbn\IsbnGroup;
  *
  * @internal
  */
-class Formatter
+class RangeService
 {
     /**
      * @var array|null

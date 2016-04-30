@@ -2,7 +2,7 @@
 
 namespace Nicebooks\Isbn;
 
-use Nicebooks\Isbn\Internal\Formatter;
+use Nicebooks\Isbn\Internal\RangeService;
 
 class IsbnGroup
 {
@@ -31,7 +31,7 @@ class IsbnGroup
      */
     public static function getIsbn10Groups()
     {
-        return Formatter::getGroups(false);
+        return RangeService::getGroups(false);
     }
 
     /**
@@ -39,7 +39,7 @@ class IsbnGroup
      */
     public static function getIsbn13Groups()
     {
-        return Formatter::getGroups(true);
+        return RangeService::getGroups(true);
     }
 
     /**
