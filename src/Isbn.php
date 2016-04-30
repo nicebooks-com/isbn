@@ -310,7 +310,7 @@ class Isbn
      */
     public function format()
     {
-        if ($this->rangeInfo === null) {
+        if ($this->rangeInfo === null || $this->rangeInfo->parts === null) {
             return $this->isbn;
         }
 

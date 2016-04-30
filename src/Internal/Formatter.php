@@ -117,7 +117,7 @@ class Formatter
     {
         $rangeInfo = self::getRangeInfo($isbn);
 
-        if ($rangeInfo) {
+        if ($rangeInfo !== null && $rangeInfo->parts !== null) {
             return implode('-', $rangeInfo->parts);
         }
 
