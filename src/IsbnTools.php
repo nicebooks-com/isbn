@@ -2,6 +2,9 @@
 
 namespace Nicebooks\Isbn;
 
+/**
+ * Tools to work with ISBN numbers as plain strings.
+ */
 class IsbnTools
 {
     /**
