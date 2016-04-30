@@ -81,6 +81,10 @@ class Formatter
                 continue;
             }
 
+            $rangeInfo = new IsbnRangeInfo;
+            $rangeInfo->groupIdentifier = $groupIdentifier;
+            $rangeInfo->groupName = $groupName;
+
             foreach ($ranges as $range) {
                 list ($rangeLength, $rangeStart, $rangeEnd) = $range;
                 $rangeValue = substr($digits, $groupLength, $rangeLength);
@@ -89,18 +93,16 @@ class Formatter
 
                 if (strcmp($rangeValue, $rangeStart) >= 0 && strcmp($rangeValue, $rangeEnd) <= 0) {
                     if ($length === 13) {
-                        $parts = array($prefix, $isbnGroup, $rangeValue, $lastDigits, $checkDigit);
+                        $rangeInfo->parts = array($prefix, $isbnGroup, $rangeValue, $lastDigits, $checkDigit);
                     } else {
-                        $parts = array($isbnGroup, $rangeValue, $lastDigits, $checkDigit);
+                        $rangeInfo->parts = array($isbnGroup, $rangeValue, $lastDigits, $checkDigit);
                     }
 
-                    $rangeInfo = new IsbnRangeInfo;
-                    $rangeInfo->parts = $parts;
-                    $rangeInfo->groupName = $groupName;
-
-                    return $rangeInfo;
+                    break;
                 }
             }
+
+            return $rangeInfo;
         }
 
         return null;

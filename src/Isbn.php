@@ -135,6 +135,21 @@ class Isbn
     }
 
     /**
+     * Returns whether this ISBN is in a recognized group.
+     *
+     * If this method returns true, the following methods will not throw an exception:
+     *
+     * - getGroupIdentifier()
+     * - getGroupName()
+     *
+     * @return bool
+     */
+    public function isValidGroup()
+    {
+        return $this->rangeInfo !== null;
+    }
+
+    /**
      * Returns whether this ISBN is in a recognized range.
      *
      * If this method returns false, we are unable to split the ISBN into parts, and format it with hyphens.
@@ -144,25 +159,20 @@ class Isbn
      * Note that this method returns true only means that the ISBN number is *potentially* valid,
      * but it is by no means a way to check if the ISBN number has been *assigned* yet.
      *
+     * If this method returns true, format() will return a hyphenated result,
+     * and the following methods will not throw an exception:
+     *
+     * - getGroupIdentifier()
+     * - getGroupName()
+     * - getPublisherIdentifier()
+     * - getTitleIdentifier()
+     * - getParts()
+     *
      * @return bool
      */
     public function isValidRange()
     {
-        return $this->rangeInfo !== null;
-    }
-
-    /**
-     * @return array
-     *
-     * @throws IsbnException If this ISBN is not in a recognized range.
-     */
-    public function getParts()
-    {
-        if ($this->rangeInfo === null) {
-            throw IsbnException::unknownRange($this->isbn);
-        }
-
-        return $this->rangeInfo->parts;
+        return $this->rangeInfo !== null && $this->rangeInfo->parts !== null;
     }
 
     /**
@@ -190,15 +200,15 @@ class Isbn
      *
      * @return string
      *
-     * @throws IsbnException If this ISBN is not in a recognized range.
+     * @throws IsbnException If this ISBN is not in a recognized group.
      */
     public function getGroupIdentifier()
     {
         if ($this->rangeInfo === null) {
-            throw IsbnException::unknownRange($this->isbn);
+            throw IsbnException::unknownGroup($this->isbn);
         }
 
-        return $this->rangeInfo->parts[$this->is13 ? 1 : 0];
+        return $this->rangeInfo->groupIdentifier;
     }
 
     /**
@@ -206,12 +216,12 @@ class Isbn
      *
      * @return string
      *
-     * @throws IsbnException If this ISBN is not in a recognized range.
+     * @throws IsbnException If this ISBN is not in a recognized group.
      */
     public function getGroupName()
     {
         if ($this->rangeInfo === null) {
-            throw IsbnException::unknownRange($this->isbn);
+            throw IsbnException::unknownGroup($this->isbn);
         }
 
         return $this->rangeInfo->groupName;
@@ -224,11 +234,15 @@ class Isbn
      *
      * @return string
      *
-     * @throws IsbnException If this ISBN is not in a recognized range.
+     * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
     public function getPublisherIdentifier()
     {
         if ($this->rangeInfo === null) {
+            throw IsbnException::unknownGroup($this->isbn);
+        }
+
+        if ($this->rangeInfo->parts === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
@@ -242,11 +256,15 @@ class Isbn
      *
      * @return string
      *
-     * @throws IsbnException If this ISBN is not in a recognized range.
+     * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
     public function getTitleIdentifier()
     {
         if ($this->rangeInfo === null) {
+            throw IsbnException::unknownGroup($this->isbn);
+        }
+
+        if ($this->rangeInfo->parts === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
@@ -263,6 +281,24 @@ class Isbn
     public function getCheckDigit()
     {
         return substr($this->isbn, -1);
+    }
+
+    /**
+     * @return array
+     *
+     * @throws IsbnException If this ISBN is not in a recognized group or range.
+     */
+    public function getParts()
+    {
+        if ($this->rangeInfo === null) {
+            throw IsbnException::unknownGroup($this->isbn);
+        }
+
+        if ($this->rangeInfo->parts === null) {
+            throw IsbnException::unknownRange($this->isbn);
+        }
+
+        return $this->rangeInfo->parts;
     }
 
     /**

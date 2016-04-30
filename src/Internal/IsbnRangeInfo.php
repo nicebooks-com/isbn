@@ -13,13 +13,9 @@ namespace Nicebooks\Isbn\Internal;
 class IsbnRangeInfo
 {
     /**
-     * The parts of the ISBN number.
-     *
-     * ISBN-10 have 4 parts, ISBN-13 have 5 parts.
-     *
-     * @var array
+     * @var string
      */
-    public $parts;
+    public $groupIdentifier;
 
     /**
      * The group name.
@@ -27,4 +23,16 @@ class IsbnRangeInfo
      * @var string
      */
     public $groupName;
+
+    /**
+     * The parts of the ISBN number.
+     *
+     * ISBN-10 have 4 parts, ISBN-13 have 5 parts.
+     *
+     * If the ISBN number belongs to a known group, but does not fall within a valid range,
+     * this property will be null.
+     *
+     * @var array|null
+     */
+    public $parts;
 }
