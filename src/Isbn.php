@@ -176,27 +176,12 @@ class Isbn
     }
 
     /**
-     * Returns the GS1 (EAN) prefix of an ISBN-13.
-     *
-     * This prefix can be either 978 or 979.
-     *
-     * @return string
-     *
-     * @throws IsbnException If this is an ISBN-10.
-     */
-    public function getPrefix()
-    {
-        if (! $this->is13) {
-            throw new IsbnException('Cannot get the GS1 prefix of an ISBN-10.');
-        }
-
-        return substr($this->isbn, 0, 3);
-    }
-
-    /**
      * Returns the group identifier.
      *
      * The group or country identifier identifies a national or geographic grouping of publishers.
+     *
+     * For ISBN-13, the identifier includes the GS1 (EAN) prefix, for example "978-2".
+     * For the equivalent ISBN-10, the identifier would be "2".
      *
      * @return string
      *

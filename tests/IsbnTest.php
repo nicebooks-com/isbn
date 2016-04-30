@@ -217,17 +217,21 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {
-            $this->assertSame($expectedParts[0], $isbn->getPrefix());
-            $this->assertSame($expectedParts[1], $isbn->getGroupIdentifier());
-            $this->assertSame($expectedParts[2], $isbn->getPublisherIdentifier());
-            $this->assertSame($expectedParts[3], $isbn->getTitleIdentifier());
-            $this->assertSame($expectedParts[4], $isbn->getCheckDigit());
+            $groupIdentifier     = $expectedParts[0] . '-' . $expectedParts[1];
+            $publisherIdentifier = $expectedParts[2];
+            $titleIdentifier     = $expectedParts[3];
+            $checkDigit          = $expectedParts[4];
         } else {
-            $this->assertSame($expectedParts[0], $isbn->getGroupIdentifier());
-            $this->assertSame($expectedParts[1], $isbn->getPublisherIdentifier());
-            $this->assertSame($expectedParts[2], $isbn->getTitleIdentifier());
-            $this->assertSame($expectedParts[3], $isbn->getCheckDigit());
+            $groupIdentifier     = $expectedParts[0];
+            $publisherIdentifier = $expectedParts[1];
+            $titleIdentifier     = $expectedParts[2];
+            $checkDigit          = $expectedParts[3];
         }
+
+        $this->assertSame($groupIdentifier, $isbn->getGroupIdentifier());
+        $this->assertSame($publisherIdentifier, $isbn->getPublisherIdentifier());
+        $this->assertSame($titleIdentifier, $isbn->getTitleIdentifier());
+        $this->assertSame($checkDigit, $isbn->getCheckDigit());
 
         $this->assertSame($expectedGroup, $isbn->getGroupName());
     }

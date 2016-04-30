@@ -82,7 +82,7 @@ class Formatter
             }
 
             $rangeInfo = new IsbnRangeInfo;
-            $rangeInfo->groupIdentifier = $groupIdentifier;
+            $rangeInfo->groupIdentifier = ($length === 10 ? $groupIdentifier : $prefix . '-' . $groupIdentifier);
             $rangeInfo->groupName = $groupName;
 
             foreach ($ranges as $range) {
