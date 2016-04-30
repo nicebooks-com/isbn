@@ -8,7 +8,7 @@
  */
 
 $document = new DOMDocument();
-$document->loadXML(file_get_contents('RangeMessage.xml'));
+$document->load('RangeMessage.xml');
 
 $xpath = new DOMXPath($document);
 
