@@ -10,7 +10,7 @@ namespace Nicebooks\Isbn\Internal;
  *
  * @internal
  */
-class IsbnRangeInfo
+class RangeInfo
 {
     /**
      * @var string

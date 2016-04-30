@@ -59,7 +59,7 @@ class RangeService
      *
      * @param string $isbn The ISBN-10 or ISBN-13, regexp-validated.
      *
-     * @return IsbnRangeInfo|null
+     * @return RangeInfo|null
      */
     public static function getRangeInfo($isbn)
     {
@@ -81,7 +81,7 @@ class RangeService
                 continue;
             }
 
-            $rangeInfo = new IsbnRangeInfo;
+            $rangeInfo = new RangeInfo;
             $rangeInfo->groupIdentifier = ($length === 10 ? $groupIdentifier : $eanPrefix . '-' . $groupIdentifier);
             $rangeInfo->groupName = $groupName;
 

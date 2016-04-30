@@ -4,7 +4,7 @@ namespace Nicebooks\Isbn;
 
 use Nicebooks\Isbn\Exception\IsbnException;
 use Nicebooks\Isbn\Internal\RangeService;
-use Nicebooks\Isbn\Internal\IsbnRangeInfo;
+use Nicebooks\Isbn\Internal\RangeInfo;
 
 /**
  * Represents a valid ISBN number. This class is immutable.
@@ -22,7 +22,7 @@ class Isbn
     private $is13;
 
     /**
-     * @var IsbnRangeInfo|null
+     * @var RangeInfo|null
      */
     private $rangeInfo;
 
