@@ -14,20 +14,18 @@ $xpath = new DOMXPath($document);
 
 $groupNodeList = $xpath->query('/ISBNRangeMessage/RegistrationGroups/Group');
 
-$rangesByPrefix = array();
-$groupsByPrefix = array();
-
 $rangeCount = 0;
 $groupCount = 0;
+
+$rangeData = array();
 
 foreach ($groupNodeList as $groupNode) {
     $prefix = $xpath->query('./Prefix', $groupNode)->item(0)->textContent;
     $agency = $xpath->query('./Agency', $groupNode)->item(0)->textContent;
 
-    $groupsByPrefix[$prefix] = $agency;
-    $groupCount++;
-
     $ruleNodeList = $xpath->query('./Rules/Rule', $groupNode);
+
+    $ranges = array();
 
     foreach ($ruleNodeList as $ruleNode) {
         $range = $xpath->query('./Range', $ruleNode)->item(0)->textContent;
@@ -43,19 +41,15 @@ foreach ($groupNodeList as $groupNode) {
         $start = substr($start, 0, $length);
         $end = substr($end, 0, $length);
 
-        $rangesByPrefix[$prefix][] = array($length, $start, $end);
+        $ranges[] = array($length, $start, $end);
         $rangeCount++;
     }
+
+    $prefix = explode('-', $prefix);
+
+    $rangeData[] = array($prefix[0], $prefix[1], $agency, $ranges);
+    $groupCount++;
 }
 
-$ranges = array();
-$groups = array();
-
-foreach ($rangesByPrefix as $prefix => $rangeList) {
-    list ($ean, $group) = explode('-', $prefix);
-
-    $ranges[] = array($ean, $group, $groupsByPrefix[$prefix], $rangeList);
-}
-
-file_put_contents('data/ranges.php', '<?php return ' . var_export($ranges,  true) . ';');
+file_put_contents('data/ranges.php', '<?php return ' . var_export($rangeData,  true) . ';');
 printf('Successfully converted %d groups and %d ranges.' . PHP_EOL, $groupCount, $rangeCount);
