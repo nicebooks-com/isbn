@@ -30,7 +30,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet($isbn, $string, $is13)
     {
-        $this->assertIsbnEquals(Isbn::get($isbn), $string, $is13);
+        $this->assertIsbnEquals(Isbn::of($isbn), $string, $is13);
     }
 
     /**
@@ -52,7 +52,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetInvalidIsbnThrowsException($invalidIsbn)
     {
-        Isbn::get($invalidIsbn);
+        Isbn::of($invalidIsbn);
     }
 
     /**
@@ -79,7 +79,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      */
     public function testTo10($isbn13, $isbn10)
     {
-        $inputIsbn = Isbn::get($isbn13);
+        $inputIsbn = Isbn::of($isbn13);
         $outputIsbn = $inputIsbn->to10();
 
         // Test the input object as well to ensure it's unaffected.
@@ -108,7 +108,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
 
     public function test10to10ReturnsThis()
     {
-        $isbn = Isbn::get('123456789X');
+        $isbn = Isbn::of('123456789X');
         $this->assertSame($isbn, $isbn->to10());
     }
 
@@ -120,7 +120,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsConvertibleTo10($isbn, $isConvertible)
     {
-        $this->assertSame($isConvertible, Isbn::get($isbn)->isConvertibleTo10());
+        $this->assertSame($isConvertible, Isbn::of($isbn)->isConvertibleTo10());
     }
 
     /**
@@ -146,7 +146,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      */
     public function testNotConvertibleTo10ThrowsException($isbn13)
     {
-        Isbn::get($isbn13)->to10();
+        Isbn::of($isbn13)->to10();
     }
 
     /**
@@ -168,7 +168,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      */
     public function testTo13($isbn10, $isbn13)
     {
-        $inputIsbn = Isbn::get($isbn10);
+        $inputIsbn = Isbn::of($isbn10);
         $outputIsbn = $inputIsbn->to13();
 
         // Test the input object as well to ensure it's unaffected.
@@ -197,7 +197,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
 
     public function test13to13ReturnsThis()
     {
-        $isbn = Isbn::get('9784567890120');
+        $isbn = Isbn::of('9784567890120');
         $this->assertSame($isbn, $isbn->to13());
     }
 
@@ -210,10 +210,10 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      */
     public function testInfoAndFormat($isbn, $expectedFormat, $expectedGroup)
     {
-        $isbn = Isbn::get($isbn);
+        $isbn = Isbn::of($isbn);
         $expectedParts = explode('-', $expectedFormat);
 
-        $this->assertSame($expectedFormat, Isbn::get($isbn)->format());
+        $this->assertSame($expectedFormat, Isbn::of($isbn)->format());
         $this->assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {

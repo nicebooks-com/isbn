@@ -85,10 +85,10 @@ The `Isbn` class is an immutable class representing a valid ISBN-10 or ISBN-13.
 It is an alternate way to access the functionality provided by `IsbnTools`, and offers a convenient way to pass an ISBN number around,
 guaranteeing both its validity and its integrity.
 
-An `Isbn` instance is obtained with the `get()` factory method:
+An `Isbn` instance is obtained with the `of()` factory method:
 
     use Nicebooks\Isbn\Isbn;
-    $isbn = Isbn::get('123456789X');
+    $isbn = Isbn::of('123456789X');
 
 Method summary:
 

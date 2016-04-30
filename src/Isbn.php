@@ -45,7 +45,7 @@ class Isbn
      *
      * @throws Exception\InvalidIsbnException
      */
-    public static function get($isbn)
+    public static function of($isbn)
     {
         $isbn = (string) $isbn;
 
