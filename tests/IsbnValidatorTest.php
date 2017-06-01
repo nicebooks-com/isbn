@@ -12,8 +12,8 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerIsValidIsbn
      *
-     * @param string  $isbn    The ISBN to validate.
-     * @param boolean $isValid The expected result.
+     * @param string $isbn    The ISBN to validate.
+     * @param bool   $isValid The expected result.
      */
     public function testIsValidIsbn($isbn, $isValid)
     {
@@ -105,10 +105,10 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerIsValidIsbn10
      *
-     * @param string  $isbn                  The ISBN to validate.
-     * @param boolean $cleanupBeforeValidate Whether to clean up the ISBN before validation.
-     * @param boolean $validateCheckDigit    Whether to validate the check digit.
-     * @param boolean $isValid               The expected result.
+     * @param string $isbn                  The ISBN to validate.
+     * @param bool   $cleanupBeforeValidate Whether to clean up the ISBN before validation.
+     * @param bool   $validateCheckDigit    Whether to validate the check digit.
+     * @param bool   $isValid               The expected result.
      */
     public function testIsValidIsbn10($isbn, $cleanupBeforeValidate, $validateCheckDigit, $isValid)
     {
@@ -153,10 +153,10 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerIsValidIsbn13
      *
-     * @param string  $isbn                  The ISBN to validate.
-     * @param boolean $cleanupBeforeValidate Whether to clean up the ISBN before validation.
-     * @param boolean $validateCheckDigit    Whether to validate the check digit.
-     * @param boolean $isValid               The expected result.
+     * @param string $isbn                  The ISBN to validate.
+     * @param bool   $cleanupBeforeValidate Whether to clean up the ISBN before validation.
+     * @param bool   $validateCheckDigit    Whether to validate the check digit.
+     * @param bool   $isValid               The expected result.
      */
     public function testIsValidIsbn13($isbn, $cleanupBeforeValidate, $validateCheckDigit, $isValid)
     {

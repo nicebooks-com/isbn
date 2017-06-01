@@ -46,7 +46,7 @@ class CheckDigit
     /**
      * @param string $isbn The ISBN-10, unformatted, uppercase.
      *
-     * @return boolean
+     * @return bool
      */
     public static function validateCheckDigit10($isbn)
     {
@@ -56,7 +56,7 @@ class CheckDigit
     /**
      * @param string $isbn The ISBN-13, unformatted.
      *
-     * @return boolean
+     * @return bool
      */
     public static function validateCheckDigit13($isbn)
     {

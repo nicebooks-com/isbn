@@ -17,7 +17,7 @@ class Isbn
     private $isbn;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $is13;
 
@@ -77,7 +77,7 @@ class Isbn
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function is10()
     {
@@ -85,7 +85,7 @@ class Isbn
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function is13()
     {
@@ -93,7 +93,7 @@ class Isbn
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isConvertibleTo10()
     {

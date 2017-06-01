@@ -8,12 +8,12 @@ namespace Nicebooks\Isbn;
 class IsbnTools
 {
     /**
-     * @var boolean
+     * @var bool
      */
     private $cleanupBeforeValidate;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $validateCheckDigit;
 
@@ -32,7 +32,7 @@ class IsbnTools
      *
      * @param string $isbn The unformatted ISBN.
      *
-     * @return boolean
+     * @return bool
      */
     public function isValidIsbn($isbn)
     {
@@ -44,7 +44,7 @@ class IsbnTools
      *
      * @param string $isbn The unformatted ISBN.
      *
-     * @return boolean
+     * @return bool
      */
     public function isValidIsbn10($isbn)
     {
@@ -78,7 +78,7 @@ class IsbnTools
      *
      * @param string $isbn The unformatted ISBN.
      *
-     * @return boolean
+     * @return bool
      */
     public function isValidIsbn13($isbn)
     {

@@ -10,9 +10,9 @@ use Nicebooks\Isbn\Isbn;
 class IsbnTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param Isbn    $isbn   The Isbn instance to test.
-     * @param string  $string The expected string value of the ISBN.
-     * @param boolean $is13   Whether the ISBN is expected to be an ISBN-13.
+     * @param Isbn   $isbn   The Isbn instance to test.
+     * @param string $string The expected string value of the ISBN.
+     * @param bool   $is13   Whether the ISBN is expected to be an ISBN-13.
      */
     private function assertIsbnEquals(Isbn $isbn, $string, $is13)
     {
@@ -24,9 +24,9 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerGet
      *
-     * @param string  $isbn   The input ISBN.
-     * @param string  $string The expected string value of the resulting Isbn object.
-     * @param boolean $is13   Whether the ISBN is expected to be an ISBN-13.
+     * @param string $isbn   The input ISBN.
+     * @param string $string The expected string value of the resulting Isbn object.
+     * @param bool   $is13   Whether the ISBN is expected to be an ISBN-13.
      */
     public function testGet($isbn, $string, $is13)
     {
@@ -116,8 +116,8 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerIsConvertibleTo10
      *
-     * @param string  $isbn          The ISBN to test.
-     * @param boolean $isConvertible Whether the ISBN is convertible to an ISBN-10.
+     * @param string $isbn          The ISBN to test.
+     * @param bool   $isConvertible Whether the ISBN is convertible to an ISBN-10.
      */
     public function testIsConvertibleTo10($isbn, $isConvertible)
     {
