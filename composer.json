@@ -8,11 +8,11 @@
     "ISBN-13",
     "Book",
     "Books",
-    "Nicebooks"
+    "NiceBooks"
   ],
   "license": "MIT",
   "require": {
-    "php": ">=5.3"
+    "php": ">=5.4"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*",

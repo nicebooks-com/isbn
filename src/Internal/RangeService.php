@@ -39,7 +39,7 @@ class RangeService
      */
     public static function getGroups($is13)
     {
-        $groups = array();
+        $groups = [];
 
         foreach (self::getRanges() as $rangeData) {
             list ($rangePrefix, $groupIdentifier, $groupName) = $rangeData;
@@ -93,9 +93,9 @@ class RangeService
 
                 if (strcmp($rangeValue, $rangeStart) >= 0 && strcmp($rangeValue, $rangeEnd) <= 0) {
                     if ($length === 13) {
-                        $rangeInfo->parts = array($isbnPrefix, $isbnGroup, $rangeValue, $lastDigits, $checkDigit);
+                        $rangeInfo->parts = [$isbnPrefix, $isbnGroup, $rangeValue, $lastDigits, $checkDigit];
                     } else {
-                        $rangeInfo->parts = array($isbnGroup, $rangeValue, $lastDigits, $checkDigit);
+                        $rangeInfo->parts = [$isbnGroup, $rangeValue, $lastDigits, $checkDigit];
                     }
 
                     break;

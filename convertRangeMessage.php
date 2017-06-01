@@ -17,7 +17,7 @@ $groupNodeList = $xpath->query('/ISBNRangeMessage/RegistrationGroups/Group');
 $rangeCount = 0;
 $groupCount = 0;
 
-$rangeData = array();
+$rangeData = [];
 
 foreach ($groupNodeList as $groupNode) {
     $prefix = $xpath->query('./Prefix', $groupNode)->item(0)->textContent;
@@ -25,7 +25,7 @@ foreach ($groupNodeList as $groupNode) {
 
     $ruleNodeList = $xpath->query('./Rules/Rule', $groupNode);
 
-    $ranges = array();
+    $ranges = [];
 
     foreach ($ruleNodeList as $ruleNode) {
         $range = $xpath->query('./Range', $ruleNode)->item(0)->textContent;
@@ -41,13 +41,13 @@ foreach ($groupNodeList as $groupNode) {
         $start = substr($start, 0, $length);
         $end = substr($end, 0, $length);
 
-        $ranges[] = array($length, $start, $end);
+        $ranges[] = [$length, $start, $end];
         $rangeCount++;
     }
 
     $prefix = explode('-', $prefix);
 
-    $rangeData[] = array($prefix[0], $prefix[1], $agency, $ranges);
+    $rangeData[] = [$prefix[0], $prefix[1], $agency, $ranges];
     $groupCount++;
 }
 
