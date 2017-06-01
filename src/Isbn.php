@@ -153,11 +153,11 @@ class Isbn
      * Returns whether this ISBN is in a recognized range.
      *
      * If this method returns false, we are unable to split the ISBN into parts, and format it with hyphens.
-     * It would mean that either the ISBN number is wrong, or this version of the library is compiled against
+     * This would mean that either the ISBN number is wrong, or this version of the library is compiled against
      * an outdated data file from ISBN International.
      *
-     * Note that this method returns true only means that the ISBN number is *potentially* valid,
-     * but it is by no means a way to check if the ISBN number has been *assigned* yet.
+     * Note that this method returning true only means that the ISBN number is *potentially* valid,
+     * but does not indicate in any way whether the ISBN number has been *assigned* to a book yet.
      *
      * If this method returns true, format() will return a hyphenated result,
      * and the following methods will not throw an exception:
