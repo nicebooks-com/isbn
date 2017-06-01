@@ -62,27 +62,27 @@ class IsbnGroupTest extends \PHPUnit_Framework_TestCase
      */
     public function providerIsbnGroupContents()
     {
-        return array(
-            array(false, '0', 'English language'),
-            array(false, '1', 'English language'),
-            array(false, '2', 'French language'),
-            array(false, '3', 'German language'),
-            array(false, '4', 'Japan'),
-            array(false, '611', 'Thailand'),
-            array(false, '85', 'Brazil'),
-            array(false, '88', 'Italy'),
-            array(false, '99970', 'Haiti'),
+        return [
+            [false, '0', 'English language'],
+            [false, '1', 'English language'],
+            [false, '2', 'French language'],
+            [false, '3', 'German language'],
+            [false, '4', 'Japan'],
+            [false, '611', 'Thailand'],
+            [false, '85', 'Brazil'],
+            [false, '88', 'Italy'],
+            [false, '99970', 'Haiti'],
 
-            array(true, '978-0', 'English language'),
-            array(true, '978-1', 'English language'),
-            array(true, '978-2', 'French language'),
-            array(true, '978-3', 'German language'),
-            array(true, '978-4', 'Japan'),
-            array(true, '978-611', 'Thailand'),
-            array(true, '978-85', 'Brazil'),
-            array(true, '978-88', 'Italy'),
-            array(true, '978-99970', 'Haiti'),
-            array(true, '979-12', 'Italy'),
-        );
+            [true, '978-0', 'English language'],
+            [true, '978-1', 'English language'],
+            [true, '978-2', 'French language'],
+            [true, '978-3', 'German language'],
+            [true, '978-4', 'Japan'],
+            [true, '978-611', 'Thailand'],
+            [true, '978-85', 'Brazil'],
+            [true, '978-88', 'Italy'],
+            [true, '978-99970', 'Haiti'],
+            [true, '979-12', 'Italy'],
+        ];
     }
 }
