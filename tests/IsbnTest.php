@@ -2,6 +2,7 @@
 
 namespace Nicebooks\Isbn\Tests;
 
+use Nicebooks\Isbn\Exception\IsbnException;
 use Nicebooks\Isbn\Isbn;
 
 /**
@@ -268,5 +269,85 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
             ['9791090123458', '979-10-90123-45-8', 'France'],
             ['9791098765438', '979-10-987654-3-8', 'France'],
         ];
+    }
+
+    /**
+     * @dataProvider providerIsValidGroupAndRange
+     *
+     * @param string $isbnString
+     * @param bool   $isValidGroup
+     * @param bool   $isValidRange
+     */
+    public function testIsValidGroupAndRange($isbnString, $isValidGroup, $isValidRange)
+    {
+        $isbn = Isbn::of($isbnString);
+
+        $this->assertSame($isValidGroup, $isbn->isValidGroup());
+        $this->assertSame($isValidRange, $isbn->isValidRange());
+
+        if (! $isValidGroup) {
+            $this->assertException('Nicebooks\Isbn\Exception\IsbnException', function() use ($isbn) {
+                $isbn->getGroupIdentifier();
+            });
+            $this->assertException('Nicebooks\Isbn\Exception\IsbnException', function() use ($isbn) {
+                $isbn->getGroupName();
+            });
+
+            // ISBN with invalid group/range cannot be formatted
+            $this->assertSame($isbnString, $isbn->format());
+        }
+
+        if (! $isValidRange) {
+
+            $this->assertException('Nicebooks\Isbn\Exception\IsbnException', function() use ($isbn) {
+                $isbn->getPublisherIdentifier();
+            });
+            $this->assertException('Nicebooks\Isbn\Exception\IsbnException', function() use ($isbn) {
+                $isbn->getTitleIdentifier();
+            });
+            $this->assertException('Nicebooks\Isbn\Exception\IsbnException', function() use ($isbn) {
+                $isbn->getParts();
+            });
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function providerIsValidGroupAndRange()
+    {
+        return [
+            ['0001234560', true, true],
+            ['9983000008', true, false],
+            ['9999999999', false, false],
+            ['9780001234567', true, true],
+            ['9789983000009', true, false],
+            ['9789999999991', false, false],
+        ];
+    }
+
+    /**
+     * Asserts that an exception is thrown when calling the given function.
+     *
+     * @param string   $expectedException
+     * @param callable $function
+     *
+     * @throws \Exception
+     */
+    private function assertException($expectedException, $function)
+    {
+        $this->addToAssertionCount(1);
+
+        try {
+            $function();
+        } catch (\Exception $e) {
+            if ($e instanceof $expectedException) {
+                return;
+            }
+
+            throw $e;
+        }
+
+        $this->fail('Failed asserting that exception of type ' . $expectedException . ' is thrown.');
     }
 }

@@ -41,6 +41,30 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider providerConvertInvalidIsbn10to13
+     * @expectedException \Nicebooks\Isbn\Exception\InvalidIsbnException
+     *
+     * @param string $isbn
+     */
+    public function testConvertInvalidIsbn10to13($isbn)
+    {
+        $tools = new IsbnTools();
+        $tools->convertIsbn10to13($isbn);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerConvertInvalidIsbn10to13()
+    {
+        return [
+            ["0123456789\x80"],
+            ['X123456789'],
+            ['0123456788'],
+        ];
+    }
+
+    /**
      * @dataProvider providerConvertIsbn13to10
      *
      * @param string $isbn13 The input ISBN-13.
@@ -72,21 +96,45 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider providerNotConvertibleThrowsException
-     * @expectedException \Nicebooks\Isbn\Exception\IsbnNotConvertibleException
+     * @dataProvider providerConvertInvalidIsbn13to10
+     * @expectedException \Nicebooks\Isbn\Exception\InvalidIsbnException
      *
-     * @param string $isbn13 An ISBN-13 not convertible to ISBN-10.
+     * @param string $isbn
      */
-    public function testNotConvertibleThrowsException($isbn13)
+    public function testConvertInvalidIsbn13to10($isbn)
     {
         $tools = new IsbnTools();
-        $tools->convertIsbn13to10($isbn13);
+        $tools->convertIsbn13to10($isbn);
     }
 
     /**
      * @return array
      */
-    public function providerNotConvertibleThrowsException()
+    public function providerConvertInvalidIsbn13to10()
+    {
+        return [
+            ["9780123456786\x80"],
+            ['9770123456786'],
+            ['9780123456789'],
+        ];
+    }
+
+    /**
+     * @dataProvider providerIsbnNotConvertibleThrowsException
+     * @expectedException \Nicebooks\Isbn\Exception\IsbnNotConvertibleException
+     *
+     * @param string $isbn An ISBN-13 not convertible to ISBN-10.
+     */
+    public function testIsbnNotConvertibleThrowsException($isbn)
+    {
+        $tools = new IsbnTools();
+        $tools->convertIsbn13to10($isbn);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerIsbnNotConvertibleThrowsException()
     {
         return [
             ['9790123456785'],

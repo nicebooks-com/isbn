@@ -148,8 +148,14 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
             [' 1-23456,789 0 ', false, true, false],
             [' 1-23456,789 0 ', true, false, true],
             [' 1-23456,789 0 ', true, true, false],
+
+            ["123456789X\x80", false, false, false],
+            ["123456789X\x80", false, true, false],
+            ["123456789X\x80", true, false, false],
+            ["123456789X\x80", true, true, false],
         ];
     }
+
     /**
      * @dataProvider providerIsValidIsbn13
      *
@@ -191,6 +197,11 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
             [' 978-1234 567#890 ', false, true, false],
             [' 978-1234 567#890 ', true, false, true],
             [' 978-1234 567#890 ', true, true, false],
+
+            [" 978-1234 567\x80", false, false, false],
+            [" 978-1234 567\x80", false, true, false],
+            [" 978-1234 567\x80", true, false, false],
+            [" 978-1234 567\x80", true, true, false],
         ];
     }
 }
