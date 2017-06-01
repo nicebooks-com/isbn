@@ -41,20 +41,20 @@ Its constructor offers two configurable parameters:
 
 Method summary:
 
-- `isValidIsbn(string $isbn) : boolean` checks that the given ISBN is valid.
+- `isValidIsbn(string $isbn) : bool` checks that the given ISBN is valid.
 
     ```
     var_export($tools->isValidIsbn('123456789X')); // true
     var_export($tools->isValidIsbn('9781234567897')); // true
     ```
 
-- `isValidIsbn10(string $isbn) : boolean` checks that the given ISBN is a valid ISBN-10.
+- `isValidIsbn10(string $isbn) : bool` checks that the given ISBN is a valid ISBN-10.
 
     ```
     var_export($tools->isValidIsbn10('123456789X')); // true
     ```
 
-- `isValidIsbn13(string $isbn) : boolean` checks that the given ISBN is a valid ISBN-13.
+- `isValidIsbn13(string $isbn) : bool` checks that the given ISBN is a valid ISBN-13.
 
     ```
     var_export($tools->isValidIsbn13('9781234567897')); // true
@@ -92,9 +92,9 @@ An `Isbn` instance is obtained with the `of()` factory method:
 
 Method summary:
 
-- `is10() : boolean` Returns `true` for an ISBN-10, or `false` for an ISBN-13.
-- `is13() : boolean` Returns `true` for an ISBN-13, or `false` for an ISBN-10.
-- `isConvertibleTo10() : boolean` Returns `true` if the ISBN can be converted to an ISBN-10, `false` otherwise.
+- `is10() : bool` Returns `true` for an ISBN-10, or `false` for an ISBN-13.
+- `is13() : bool` Returns `true` for an ISBN-13, or `false` for an ISBN-10.
+- `isConvertibleTo10() : bool` Returns `true` if the ISBN can be converted to an ISBN-10, `false` otherwise.
 - `to10() : Isbn` Returns an `Isbn` instance representing the ISBN converted to an ISBN-10.
 - `to13() : Isbn` Returns an `Isbn` instance representing the ISBN converted to an ISBN-13.
 - `format() : string` Returns the formatted representation of the ISBN.
