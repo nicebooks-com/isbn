@@ -56,6 +56,10 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
             [' #!1-2,3.456 789x ', '1-234-56789-X'],
             ['9781234567890', '978-1-234-56789-0'],
             [' 978 1&2.3#4~5!6;7$8-90 ', '978-1-234-56789-0'],
+
+            // unknown ranges should return the unformatted ISBN number
+            ['9999999999', '9999999999'],
+            ['9789999999991', '9789999999991']
         ];
     }
 
