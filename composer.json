@@ -20,7 +20,11 @@
   },
   "autoload": {
     "psr-4": {
-      "Nicebooks\\Isbn\\": "src/",
+      "Nicebooks\\Isbn\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "Nicebooks\\Isbn\\Tests\\": "tests/"
     }
   }
