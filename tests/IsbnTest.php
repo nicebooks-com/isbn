@@ -6,11 +6,12 @@ namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\Exception\IsbnException;
 use Nicebooks\Isbn\Isbn;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for class Isbn.
  */
-class IsbnTest extends \PHPUnit_Framework_TestCase
+class IsbnTest extends TestCase
 {
     /**
      * @param Isbn   $isbn   The Isbn instance to test.

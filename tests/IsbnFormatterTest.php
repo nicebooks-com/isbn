@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnTools;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for class IsbnTools formatting.
  */
-class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
+class IsbnFormatterTest extends TestCase
 {
     /**
      * @dataProvider providerFormat

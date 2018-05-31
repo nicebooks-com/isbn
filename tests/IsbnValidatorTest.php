@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnTools;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for IsbnTools validation.
  */
-class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
+class IsbnValidatorTest extends TestCase
 {
     /**
      * @dataProvider providerIsValidIsbn

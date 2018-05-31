@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnGroup;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for class IsbnGroup.
  */
-class IsbnGroupTest extends \PHPUnit_Framework_TestCase
+class IsbnGroupTest extends TestCase
 {
     public function testReturnTypesAndCounts() : void
     {

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnTools;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for class IsbnTools conversion.
  */
-class IsbnConverterTest extends \PHPUnit_Framework_TestCase
+class IsbnConverterTest extends TestCase
 {
     /**
      * @dataProvider providerConvertIsbn10to13
