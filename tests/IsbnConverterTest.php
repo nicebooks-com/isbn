@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnTools;
@@ -15,7 +17,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      * @param string $isbn10 The input ISBN-10.
      * @param string $isbn13 The expected output ISBN-13.
      */
-    public function testConvertIsbn10to13($isbn10, $isbn13)
+    public function testConvertIsbn10to13(string $isbn10, string $isbn13) : void
     {
         $tools = new IsbnTools();
         $this->assertSame($isbn13, $tools->convertIsbn10to13($isbn10));
@@ -24,7 +26,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerConvertIsbn10to13()
+    public function providerConvertIsbn10to13() : array
     {
         return [
             ['0123456789', '9780123456786'],
@@ -46,7 +48,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $isbn
      */
-    public function testConvertInvalidIsbn10to13($isbn)
+    public function testConvertInvalidIsbn10to13(string $isbn) : void
     {
         $tools = new IsbnTools();
         $tools->convertIsbn10to13($isbn);
@@ -55,7 +57,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerConvertInvalidIsbn10to13()
+    public function providerConvertInvalidIsbn10to13() : array
     {
         return [
             ["0123456789\x80"],
@@ -70,7 +72,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      * @param string $isbn13 The input ISBN-13.
      * @param string $isbn10 The expected output ISBN-10.
      */
-    public function testConvertIsbn13to10($isbn13, $isbn10)
+    public function testConvertIsbn13to10(string $isbn13, string $isbn10) : void
     {
         $tools = new IsbnTools();
         $this->assertSame($isbn10, $tools->convertIsbn13to10($isbn13));
@@ -79,7 +81,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerConvertIsbn13to10()
+    public function providerConvertIsbn13to10() : array
     {
         return [
             ['9780123456786', '0123456789'],
@@ -101,7 +103,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $isbn
      */
-    public function testConvertInvalidIsbn13to10($isbn)
+    public function testConvertInvalidIsbn13to10(string $isbn) : void
     {
         $tools = new IsbnTools();
         $tools->convertIsbn13to10($isbn);
@@ -125,7 +127,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $isbn An ISBN-13 not convertible to ISBN-10.
      */
-    public function testIsbnNotConvertibleThrowsException($isbn)
+    public function testIsbnNotConvertibleThrowsException(string $isbn) : void
     {
         $tools = new IsbnTools();
         $tools->convertIsbn13to10($isbn);
@@ -134,7 +136,7 @@ class IsbnConverterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsbnNotConvertibleThrowsException()
+    public function providerIsbnNotConvertibleThrowsException() : array
     {
         return [
             ['9790123456785'],

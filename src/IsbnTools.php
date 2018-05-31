@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn;
 
 /**
@@ -21,7 +23,7 @@ class IsbnTools
      * @param bool $cleanupBeforeValidate
      * @param bool $validateCheckDigit
      */
-    public function __construct($cleanupBeforeValidate = true, $validateCheckDigit = true)
+    public function __construct(bool $cleanupBeforeValidate = true, bool $validateCheckDigit = true)
     {
         $this->cleanupBeforeValidate = $cleanupBeforeValidate;
         $this->validateCheckDigit    = $validateCheckDigit;
@@ -34,7 +36,7 @@ class IsbnTools
      *
      * @return bool
      */
-    public function isValidIsbn($isbn)
+    public function isValidIsbn(string $isbn) : bool
     {
         return $this->isValidIsbn10($isbn) || $this->isValidIsbn13($isbn);
     }
@@ -46,10 +48,8 @@ class IsbnTools
      *
      * @return bool
      */
-    public function isValidIsbn10($isbn)
+    public function isValidIsbn10(string $isbn) : bool
     {
-        $isbn = (string) $isbn;
-
         if ($this->cleanupBeforeValidate) {
             if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
                 return false;
@@ -80,10 +80,8 @@ class IsbnTools
      *
      * @return bool
      */
-    public function isValidIsbn13($isbn)
+    public function isValidIsbn13(string $isbn) : bool
     {
-        $isbn = (string) $isbn;
-
         if ($this->cleanupBeforeValidate) {
             if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
                 return false;
@@ -114,10 +112,8 @@ class IsbnTools
      *
      * @throws Exception\InvalidIsbnException If the ISBN is not a valid ISBN-10.
      */
-    public function convertIsbn10to13($isbn)
+    public function convertIsbn10to13(string $isbn) : string
     {
-        $isbn = (string) $isbn;
-
         if ($this->cleanupBeforeValidate) {
             if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
@@ -154,10 +150,8 @@ class IsbnTools
      * @throws Exception\InvalidIsbnException        If the ISBN is not a valid ISBN-13.
      * @throws Exception\IsbnNotConvertibleException If the ISBN cannot be converted.
      */
-    public function convertIsbn13to10($isbn)
+    public function convertIsbn13to10(string $isbn) : string
     {
-        $isbn = (string) $isbn;
-
         if ($this->cleanupBeforeValidate) {
             if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
@@ -188,10 +182,8 @@ class IsbnTools
      *
      * @throws Exception\InvalidIsbnException If the ISBN is not valid.
      */
-    public function format($isbn)
+    public function format(string $isbn) : string
     {
-        $isbn = (string) $isbn;
-
         if ($this->cleanupBeforeValidate) {
             if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
                 throw Exception\InvalidIsbnException::forIsbn($isbn);

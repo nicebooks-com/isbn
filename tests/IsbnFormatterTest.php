@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnTools;
@@ -15,7 +17,7 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
      * @param string $isbn           The input ISBN.
      * @param string $expectedOutput The expected formatted output.
      */
-    public function testFormat($isbn, $expectedOutput)
+    public function testFormat(string $isbn, string $expectedOutput) : void
     {
         $tools = new IsbnTools(true, false);
         $this->assertSame($expectedOutput, $tools->format($isbn));
@@ -24,7 +26,7 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerFormat()
+    public function providerFormat() : array
     {
         return [
             ['0001234567', '0-00-123456-7'],
@@ -69,7 +71,7 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $isbn The invalid ISBN.
      */
-    public function testFormatInvalidIsbnThrowsException($isbn)
+    public function testFormatInvalidIsbnThrowsException(string $isbn) : void
     {
         $tools = new IsbnTools();
         $tools->format($isbn);
@@ -78,7 +80,7 @@ class IsbnFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerFormatInvalidIsbnThrowsException()
+    public function providerFormatInvalidIsbnThrowsException() : array
     {
         return [
             ['123456789'],

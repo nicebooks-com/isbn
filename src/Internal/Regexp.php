@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Internal;
 
 /**
@@ -15,20 +17,20 @@ class Regexp
     /**
      * Matches an uppercase, unformatted ISBN-10.
      */
-    const ISBN10 = '/^[0-9]{9}[0-9X]$/';
+    public const ISBN10 = '/^[0-9]{9}[0-9X]$/';
 
     /**
      * Matches an unformatted ISBN-13.
      */
-    const ISBN13 = '/^97[89][0-9]{10}$/';
+    public const ISBN13 = '/^97[89][0-9]{10}$/';
 
     /**
      * Matches a 7-bit ASCII string.
      */
-    const ASCII = '/^[\x00-\x7f]+$/';
+    public const ASCII = '/^[\x00-\x7f]+$/';
 
     /**
      * Matches any non-alphanumeric char.
      */
-    const NON_ALNUM = '/[^0-9a-zA-Z]/';
+    public const NON_ALNUM = '/[^0-9a-zA-Z]/';
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn;
 
 use Nicebooks\Isbn\Internal\RangeService;
@@ -31,7 +33,7 @@ class IsbnGroup
      * @param string $prefix
      * @param string $name
      */
-    public function __construct($prefix, $name)
+    public function __construct(string $prefix, string $name)
     {
         $this->prefix = $prefix;
         $this->name   = $name;
@@ -40,7 +42,7 @@ class IsbnGroup
     /**
      * @return IsbnGroup[]
      */
-    public static function getIsbn10Groups()
+    public static function getIsbn10Groups() : array
     {
         return RangeService::getGroups(false);
     }
@@ -48,7 +50,7 @@ class IsbnGroup
     /**
      * @return IsbnGroup[]
      */
-    public static function getIsbn13Groups()
+    public static function getIsbn13Groups() : array
     {
         return RangeService::getGroups(true);
     }
@@ -56,7 +58,7 @@ class IsbnGroup
     /**
      * @return string
      */
-    public function getPrefix()
+    public function getPrefix() : string
     {
         return $this->prefix;
     }
@@ -64,7 +66,7 @@ class IsbnGroup
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }

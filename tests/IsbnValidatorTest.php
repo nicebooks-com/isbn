@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnTools;
@@ -15,7 +17,7 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
      * @param string $isbn    The ISBN to validate.
      * @param bool   $isValid The expected result.
      */
-    public function testIsValidIsbn($isbn, $isValid)
+    public function testIsValidIsbn(string $isbn, bool $isValid) : void
     {
         $tools = new IsbnTools();
         $this->assertSame($isValid, $tools->isValidIsbn($isbn));
@@ -24,7 +26,7 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsValidIsbn()
+    public function providerIsValidIsbn() : array
     {
         return [
             ['0123456789', true],
@@ -110,7 +112,7 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
      * @param bool   $validateCheckDigit    Whether to validate the check digit.
      * @param bool   $isValid               The expected result.
      */
-    public function testIsValidIsbn10($isbn, $cleanupBeforeValidate, $validateCheckDigit, $isValid)
+    public function testIsValidIsbn10(string $isbn, bool $cleanupBeforeValidate, bool $validateCheckDigit, bool $isValid) : void
     {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
@@ -121,7 +123,7 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsValidIsbn10()
+    public function providerIsValidIsbn10() : array
     {
         return [
             ['123456789X', false, false, true],
@@ -164,7 +166,7 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
      * @param bool   $validateCheckDigit    Whether to validate the check digit.
      * @param bool   $isValid               The expected result.
      */
-    public function testIsValidIsbn13($isbn, $cleanupBeforeValidate, $validateCheckDigit, $isValid)
+    public function testIsValidIsbn13(string $isbn, bool $cleanupBeforeValidate, bool $validateCheckDigit, bool $isValid) : void
     {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
@@ -175,7 +177,7 @@ class IsbnValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsValidIsbn13()
+    public function providerIsValidIsbn13() : array
     {
         return [
             ['9781234567897', false, false, true],

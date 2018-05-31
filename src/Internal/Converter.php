@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Internal;
 
 use Nicebooks\Isbn\Exception\IsbnNotConvertibleException;
@@ -20,7 +22,7 @@ class Converter
      *
      * @return string
      */
-    public static function convertIsbn10to13($isbn)
+    public static function convertIsbn10to13(string $isbn) : string
     {
         $isbn = '978' . substr($isbn, 0, 9);
 
@@ -34,7 +36,7 @@ class Converter
      *
      * @throws \Nicebooks\Isbn\Exception\IsbnNotConvertibleException
      */
-    public static function convertIsbn13to10($isbn)
+    public static function convertIsbn13to10(string $isbn) : string
     {
         if (substr($isbn, 0, 3) !== '978') {
             throw IsbnNotConvertibleException::forIsbn($isbn);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Internal;
 
 use Nicebooks\Isbn\IsbnGroup;
@@ -23,7 +25,7 @@ class RangeService
     /**
      * @return array
      */
-    private static function getRanges()
+    private static function getRanges() : array
     {
         if (self::$ranges === null) {
             self::$ranges = require __DIR__ . '/../../data/ranges.php';
@@ -37,7 +39,7 @@ class RangeService
      *
      * @return IsbnGroup[]
      */
-    public static function getGroups($is13)
+    public static function getGroups(bool $is13) : array
     {
         $groups = [];
 
@@ -61,7 +63,7 @@ class RangeService
      *
      * @return RangeInfo|null
      */
-    public static function getRangeInfo($isbn)
+    public static function getRangeInfo(string $isbn) : ?RangeInfo
     {
         $length = strlen($isbn);
         $isbnPrefix = ($length === 10) ? '978' : substr($isbn, 0, 3);
@@ -113,7 +115,7 @@ class RangeService
      *
      * @return string
      */
-    public static function format($isbn)
+    public static function format(string $isbn) : string
     {
         $rangeInfo = self::getRangeInfo($isbn);
 

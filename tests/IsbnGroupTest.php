@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnGroup;
@@ -9,7 +11,7 @@ use Nicebooks\Isbn\IsbnGroup;
  */
 class IsbnGroupTest extends \PHPUnit_Framework_TestCase
 {
-    public function testReturnTypesAndCounts()
+    public function testReturnTypesAndCounts() : void
     {
         $isbn10Groups = IsbnGroup::getIsbn10Groups();
         $isbn13Groups = IsbnGroup::getIsbn13Groups();
@@ -38,7 +40,7 @@ class IsbnGroupTest extends \PHPUnit_Framework_TestCase
      * @param string $prefix
      * @param string $name
      */
-    public function testIsbnGroupContents($is13, $prefix, $name)
+    public function testIsbnGroupContents(bool $is13, string $prefix, string $name) : void
     {
         $isbnGroups = $is13
             ? IsbnGroup::getIsbn13Groups()
@@ -60,7 +62,7 @@ class IsbnGroupTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsbnGroupContents()
+    public function providerIsbnGroupContents() : array
     {
         return [
             [false, '0', 'English language'],

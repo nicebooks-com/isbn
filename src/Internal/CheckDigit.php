@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Internal;
 
 /**
@@ -18,7 +20,7 @@ class CheckDigit
      *
      * @return string The check digit, can be 'X'.
      */
-    public static function calculateCheckDigit10($isbn)
+    public static function calculateCheckDigit10(string $isbn) : string
     {
         for ($sum = 0, $i = 0; $i < 9; $i++) {
             $sum += $isbn[$i] * (1 + $i);
@@ -34,7 +36,7 @@ class CheckDigit
      *
      * @return string The check digit.
      */
-    public static function calculateCheckDigit13($isbn)
+    public static function calculateCheckDigit13(string $isbn) : string
     {
         for ($sum = 0, $i = 0; $i < 12; $i++) {
             $sum += $isbn[$i] * (1 + 2 * ($i % 2));
@@ -48,7 +50,7 @@ class CheckDigit
      *
      * @return bool
      */
-    public static function validateCheckDigit10($isbn)
+    public static function validateCheckDigit10(string $isbn) : bool
     {
         return $isbn[9] === self::calculateCheckDigit10($isbn);
     }
@@ -58,7 +60,7 @@ class CheckDigit
      *
      * @return bool
      */
-    public static function validateCheckDigit13($isbn)
+    public static function validateCheckDigit13(string $isbn) : bool
     {
         return $isbn[12] === self::calculateCheckDigit13($isbn);
     }

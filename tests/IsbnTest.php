@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\Exception\IsbnException;
@@ -15,7 +17,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      * @param string $string The expected string value of the ISBN.
      * @param bool   $is13   Whether the ISBN is expected to be an ISBN-13.
      */
-    private function assertIsbnEquals(Isbn $isbn, $string, $is13)
+    private function assertIsbnEquals(Isbn $isbn, string $string, bool $is13) : void
     {
         $this->assertSame($string, (string) $isbn);
         $this->assertSame($is13, $isbn->is13());
@@ -29,7 +31,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      * @param string $string The expected string value of the resulting Isbn object.
      * @param bool   $is13   Whether the ISBN is expected to be an ISBN-13.
      */
-    public function testGet($isbn, $string, $is13)
+    public function testGet(string $isbn, string $string, bool $is13) : void
     {
         $this->assertIsbnEquals(Isbn::of($isbn), $string, $is13);
     }
@@ -37,7 +39,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerGet()
+    public function providerGet() : array
     {
         return [
             [' 1-234-56789-x ', '123456789X', false],
@@ -51,7 +53,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $invalidIsbn The invalid ISBN.
      */
-    public function testGetInvalidIsbnThrowsException($invalidIsbn)
+    public function testGetInvalidIsbnThrowsException(string $invalidIsbn) : void
     {
         Isbn::of($invalidIsbn);
     }
@@ -59,7 +61,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerGetInvalidIsbnThrowsException()
+    public function providerGetInvalidIsbnThrowsException() : array
     {
         return [
             ['123456789'],
@@ -79,7 +81,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      * @param string $isbn13 The input ISBN-13.
      * @param string $isbn10 The expected ISBN-10 output.
      */
-    public function testTo10($isbn13, $isbn10)
+    public function testTo10(string $isbn13, string $isbn10) : void
     {
         $inputIsbn = Isbn::of($isbn13);
         $outputIsbn = $inputIsbn->to10();
@@ -92,7 +94,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerTo10()
+    public function providerTo10() : array
     {
         return [
             ['9780123456786', '0123456789'],
@@ -108,7 +110,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function test10to10ReturnsThis()
+    public function test10to10ReturnsThis() : void
     {
         $isbn = Isbn::of('123456789X');
         $this->assertSame($isbn, $isbn->to10());
@@ -120,7 +122,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      * @param string $isbn          The ISBN to test.
      * @param bool   $isConvertible Whether the ISBN is convertible to an ISBN-10.
      */
-    public function testIsConvertibleTo10($isbn, $isConvertible)
+    public function testIsConvertibleTo10(string $isbn, bool $isConvertible) : void
     {
         $this->assertSame($isConvertible, Isbn::of($isbn)->isConvertibleTo10());
     }
@@ -128,7 +130,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsConvertibleTo10()
+    public function providerIsConvertibleTo10() : array
     {
         return [
             ['0123456789', true],
@@ -146,7 +148,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $isbn13 The non-convertible ISBN-13.
      */
-    public function testNotConvertibleTo10ThrowsException($isbn13)
+    public function testNotConvertibleTo10ThrowsException(string $isbn13) : void
     {
         Isbn::of($isbn13)->to10();
     }
@@ -154,7 +156,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerNotConvertibleTo10()
+    public function providerNotConvertibleTo10() : array
     {
         return [
             ['9790000000001'],
@@ -168,7 +170,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      * @param string $isbn10 The input ISBN-10.
      * @param string $isbn13 The expected ISBN-13 output.
      */
-    public function testTo13($isbn10, $isbn13)
+    public function testTo13(string $isbn10, string $isbn13) : void
     {
         $inputIsbn = Isbn::of($isbn10);
         $outputIsbn = $inputIsbn->to13();
@@ -181,7 +183,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerTo13()
+    public function providerTo13() : array
     {
         return [
             ['0123456789', '9780123456786'],
@@ -197,7 +199,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function test13to13ReturnsThis()
+    public function test13to13ReturnsThis() : void
     {
         $isbn = Isbn::of('9784567890120');
         $this->assertSame($isbn, $isbn->to13());
@@ -210,12 +212,12 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      * @param string $expectedFormat The expected formatted output.
      * @param string $expectedGroup  The expected group name.
      */
-    public function testInfoAndFormat($isbn, $expectedFormat, $expectedGroup)
+    public function testInfoAndFormat(string $isbn, string $expectedFormat, string $expectedGroup) : void
     {
         $isbn = Isbn::of($isbn);
         $expectedParts = explode('-', $expectedFormat);
 
-        $this->assertSame($expectedFormat, Isbn::of($isbn)->format());
+        $this->assertSame($expectedFormat, $isbn->format());
         $this->assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {
@@ -241,7 +243,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerInfoAndFormat()
+    public function providerInfoAndFormat() : array
     {
         return [
             ['0001234560', '0-00-123456-0', 'English language'],
@@ -278,7 +280,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      * @param bool   $isValidGroup
      * @param bool   $isValidRange
      */
-    public function testIsValidGroupAndRange($isbnString, $isValidGroup, $isValidRange)
+    public function testIsValidGroupAndRange(string $isbnString, bool $isValidGroup, bool $isValidRange) : void
     {
         $isbn = Isbn::of($isbnString);
 
@@ -314,7 +316,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerIsValidGroupAndRange()
+    public function providerIsValidGroupAndRange() : array
     {
         return [
             ['0001234560', true, true],
@@ -334,7 +336,7 @@ class IsbnTest extends \PHPUnit_Framework_TestCase
      *
      * @throws \Exception
      */
-    private function assertException($expectedException, $function)
+    private function assertException(string $expectedException, callable $function) : void
     {
         $this->addToAssertionCount(1);
 

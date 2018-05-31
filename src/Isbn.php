@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nicebooks\Isbn;
 
 use Nicebooks\Isbn\Exception\IsbnException;
@@ -30,7 +32,7 @@ class Isbn
      * @param string $isbn The unformatted ISBN number, validated.
      * @param bool   $is13 Whether this is an ISBN-13.
      */
-    private function __construct($isbn, $is13)
+    private function __construct(string $isbn, bool $is13)
     {
         $this->isbn = $isbn;
         $this->is13 = $is13;
@@ -45,10 +47,8 @@ class Isbn
      *
      * @throws Exception\InvalidIsbnException
      */
-    public static function of($isbn)
+    public static function of(string $isbn) : Isbn
     {
-        $isbn = (string) $isbn;
-
         if (preg_match(Internal\Regexp::ASCII, $isbn) === 0) {
             throw Exception\InvalidIsbnException::forIsbn($isbn);
         }
@@ -79,7 +79,7 @@ class Isbn
     /**
      * @return bool
      */
-    public function is10()
+    public function is10() : bool
     {
         return ! $this->is13;
     }
@@ -87,7 +87,7 @@ class Isbn
     /**
      * @return bool
      */
-    public function is13()
+    public function is13() : bool
     {
         return $this->is13;
     }
@@ -95,7 +95,7 @@ class Isbn
     /**
      * @return bool
      */
-    public function isConvertibleTo10()
+    public function isConvertibleTo10() : bool
     {
         if ($this->is13) {
             return substr($this->isbn, 0, 3) === '978';
@@ -111,7 +111,7 @@ class Isbn
      *
      * @throws Exception\IsbnNotConvertibleException If this is an ISBN-13 not starting with 978.
      */
-    public function to10()
+    public function to10() : Isbn
     {
         if (! $this->is13) {
             return $this;
@@ -125,7 +125,7 @@ class Isbn
      *
      * @return Isbn The ISBN-13.
      */
-    public function to13()
+    public function to13() : Isbn
     {
         if ($this->is13) {
             return $this;
@@ -144,7 +144,7 @@ class Isbn
      *
      * @return bool
      */
-    public function isValidGroup()
+    public function isValidGroup() : bool
     {
         return $this->rangeInfo !== null;
     }
@@ -170,7 +170,7 @@ class Isbn
      *
      * @return bool
      */
-    public function isValidRange()
+    public function isValidRange() : bool
     {
         return $this->rangeInfo !== null && $this->rangeInfo->parts !== null;
     }
@@ -187,7 +187,7 @@ class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
      */
-    public function getGroupIdentifier()
+    public function getGroupIdentifier() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -203,7 +203,7 @@ class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
      */
-    public function getGroupName()
+    public function getGroupName() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -221,7 +221,7 @@ class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
-    public function getPublisherIdentifier()
+    public function getPublisherIdentifier() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -243,7 +243,7 @@ class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
-    public function getTitleIdentifier()
+    public function getTitleIdentifier() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -263,7 +263,7 @@ class Isbn
      *
      * @return string
      */
-    public function getCheckDigit()
+    public function getCheckDigit() : string
     {
         return substr($this->isbn, -1);
     }
@@ -273,7 +273,7 @@ class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
-    public function getParts()
+    public function getParts() : array
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -293,7 +293,7 @@ class Isbn
      *
      * @return string
      */
-    public function format()
+    public function format() : string
     {
         if ($this->rangeInfo === null || $this->rangeInfo->parts === null) {
             return $this->isbn;
@@ -307,7 +307,7 @@ class Isbn
      *
      * @return string
      */
-    public function __toString()
+    public function __toString() : string
     {
         return $this->isbn;
     }
