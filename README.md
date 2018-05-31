@@ -1,12 +1,14 @@
 # Nicebooks ISBN library
 
-This library provides the functionality to validate, format and convert ISBN numbers, that powers the [nicebooks.com](http://nicebooks.com) website.
+This library provides the functionality to validate, format and convert ISBN numbers, that powers the [nicebooks.com](https://nicebooks.com) website.
 It is released under a permissive MIT open-source license for anyone to use.
 
 ISBN formatting follows the rules defined by the [ISBN range file](https://www.isbn-international.org/range_file_generation) published by ISBN International.
 
 [![Build Status](https://travis-ci.org/nicebooks-com/isbn.svg?branch=master)](https://travis-ci.org/nicebooks-com/isbn)
 [![Coverage Status](https://img.shields.io/coveralls/nicebooks-com/isbn.svg)](https://coveralls.io/r/nicebooks-com/isbn?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/nicebooks/isbn/v/stable)](https://packagist.org/packages/nicebooks/isbn)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 ## Installation
 
@@ -15,13 +17,28 @@ Just define the following requirement in your `composer.json` file:
 
     {
         "require": {
-            "nicebooks/isbn": "dev-master"
+            "nicebooks/isbn": "0.1.*"
         }
     }
 
 ## Requirements
 
 This library requires PHP 5.4 or higher. [HHVM](http://hhvm.com/) is officially supported.
+
+## Project status & release process
+
+While this library is still under development, it is well tested and should be stable enough to use in production
+environments. It is currently in use in production on [nicebooks.com](https://nicebooks.com/).
+
+The current releases are numbered `0.x.y`. When a non-breaking change is introduced (adding new methods, optimizing
+existing code, etc.), `y` is incremented.
+
+**When a breaking change is introduced, a new `0.x` version cycle is always started.**
+
+It is therefore safe to lock your project to a given release cycle, such as `0.1.*`.
+
+If you need to upgrade to a newer release cycle, check the [release history](https://github.com/nicebooks-com/isbn/releases)
+for a list of changes introduced by each further `0.x.0` version.
 
 ## Overview
 
