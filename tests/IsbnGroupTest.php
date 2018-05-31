@@ -26,10 +26,10 @@ class IsbnGroupTest extends TestCase
         $this->assertGreaterThan(count($isbn10Groups), count($isbn13Groups));
 
         foreach ($isbn10Groups as $isbnGroup) {
-            $this->assertInstanceOf('Nicebooks\Isbn\IsbnGroup', $isbnGroup);
+            $this->assertInstanceOf(IsbnGroup::class, $isbnGroup);
         }
         foreach ($isbn13Groups as $isbnGroup) {
-            $this->assertInstanceOf('Nicebooks\Isbn\IsbnGroup', $isbnGroup);
+            $this->assertInstanceOf(IsbnGroup::class, $isbnGroup);
         }
     }
 
