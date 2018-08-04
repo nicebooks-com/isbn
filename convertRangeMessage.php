@@ -51,5 +51,72 @@ foreach ($groupNodeList as $groupNode) {
     $groupCount++;
 }
 
-file_put_contents('data/ranges.php', '<?php return ' . var_export($rangeData,  true) . ';');
+/**
+ * Compact & pretty alternative to var_export().
+ *
+ * @param mixed $variable
+ * @param int   $indent
+ *
+ * @return string
+ */
+function export($variable, int $indent = 0)
+{
+    if (! is_array($variable)) {
+        return var_export($variable, true);
+    }
+
+    $isNumeric = (array_values($variable) === $variable);
+
+    $hasArray = false;
+
+    foreach ($variable as $value) {
+        if (is_array($value)) {
+            $hasArray = true;
+            break;
+        }
+    }
+
+    $spaces = str_repeat("\t", $indent + 1);
+
+    $result = '[';
+
+    if ($hasArray) {
+        $result .= "\n";
+    }
+
+    $count = count($variable);
+    $current = 0;
+
+    foreach ($variable as $key => $value) {
+        if ($hasArray) {
+            $result .= $spaces;
+        }
+
+        if (! $isNumeric) {
+            $result .= export($key) . ' => ';
+        }
+
+        $result .= export($value, $indent + 1);
+
+        if (++$current !== $count) {
+            $result .= ',';
+        }
+
+        if ($hasArray) {
+            $result .= "\n";
+        } elseif ($current !== $count) {
+            $result .= ' ';
+        }
+    }
+
+    if ($hasArray) {
+        $result .= str_repeat("\t", $indent);
+    }
+
+    $result .= ']';
+
+    return $result;
+}
+
+file_put_contents('data/ranges.php', '<?php return ' . export($rangeData) . ";\n");
 printf('Successfully converted %d groups and %d ranges.' . PHP_EOL, $groupCount, $rangeCount);
