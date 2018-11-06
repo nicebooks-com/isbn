@@ -15,6 +15,7 @@
     "php": ">=7.1"
   },
   "require-dev": {
+    "ext-dom": "*",
     "phpunit/phpunit": "7.*",
     "php-coveralls/php-coveralls": "2.*"
   },
