@@ -1,16 +1,22 @@
 <?php
 
 /*
- * This script converts a RangeMessage.xml file into a PHP data file.
+ * This script downloads and converts the ISBN range file from isbn-international.org.
  *
- * The RangeMessage.xml file can be downloaded from:
- * https://www.isbn-international.org/range_file_generation
+ * @see https://www.isbn-international.org/range_file_generation
  */
+
+$rangeMessageXML = file_get_contents('https://www.isbn-international.org/export_rangemessage.xml');
+
+if ($rangeMessageXML === false) {
+    echo "Could not download range file.\n";
+    exit;
+}
 
 $rangeFile = __DIR__ . '/data/ranges.php';
 
 $document = new DOMDocument();
-$document->load('RangeMessage.xml');
+$document->loadXML($rangeMessageXML);
 
 $xpath = new DOMXPath($document);
 
@@ -20,6 +26,8 @@ $rangeCount = 0;
 $groupCount = 0;
 
 $rangeData = [];
+
+$messageSerialNumber = $xpath->query('/ISBNRangeMessage/MessageSerialNumber')->item(0)->textContent;
 
 $messageDate = $xpath->query('/ISBNRangeMessage/MessageDate')->item(0)->textContent;
 $messageTime = strtotime($messageDate);
@@ -142,4 +150,7 @@ function export($variable, int $indent = 0)
 }
 
 file_put_contents($rangeFile, '<?php return /* ' . $messageDate . ' */ ' . export($rangeData) . ";\n");
-printf('Successfully converted %d groups and %d ranges.' . PHP_EOL, $groupCount, $rangeCount);
+
+echo "Successfully converted $groupCount groups and $rangeCount ranges.\n";
+echo "Serial number: $messageSerialNumber\n";
+echo "Date: $messageDate\n";
