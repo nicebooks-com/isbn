@@ -1,4 +1,4 @@
-<?php return [
+<?php return /* Thu, 1 Nov 2018 14:33:41 CET */ [
 	[
 		'978',
 		'0',

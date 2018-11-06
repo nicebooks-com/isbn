@@ -7,6 +7,8 @@
  * https://www.isbn-international.org/range_file_generation
  */
 
+$rangeFile = __DIR__ . '/data/ranges.php';
+
 $document = new DOMDocument();
 $document->load('RangeMessage.xml');
 
@@ -18,6 +20,27 @@ $rangeCount = 0;
 $groupCount = 0;
 
 $rangeData = [];
+
+$messageDate = $xpath->query('/ISBNRangeMessage/MessageDate')->item(0)->textContent;
+$messageTime = strtotime($messageDate);
+
+if (file_exists($rangeFile)) {
+    $firstLine = fgets(fopen($rangeFile, 'r'));
+    $startPos = strpos($firstLine, '/* ') + 3;
+    $endPos = strpos($firstLine, ' */');
+    $currentMessageDate = substr($firstLine, $startPos, $endPos - $startPos);
+    $currentMessageTime = strtotime($currentMessageDate);
+
+    if ($messageTime === $currentMessageTime) {
+        echo "Range file is current.\n";
+        exit;
+    }
+
+    if ($messageTime < $currentMessageTime)  {
+        echo "Range file is older than the current file.\n";
+        exit;
+    }
+}
 
 foreach ($groupNodeList as $groupNode) {
     $prefix = $xpath->query('./Prefix', $groupNode)->item(0)->textContent;
@@ -118,5 +141,5 @@ function export($variable, int $indent = 0)
     return $result;
 }
 
-file_put_contents('data/ranges.php', '<?php return ' . export($rangeData) . ";\n");
+file_put_contents($rangeFile, '<?php return /* ' . $messageDate . ' */ ' . export($rangeData) . ";\n");
 printf('Successfully converted %d groups and %d ranges.' . PHP_EOL, $groupCount, $rangeCount);
