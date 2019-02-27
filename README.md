@@ -12,14 +12,11 @@ ISBN formatting follows the rules defined by the [ISBN range file](https://www.i
 
 ## Installation
 
-This library is installable via [Composer](https://getcomposer.org/).
-Just define the following requirement in your `composer.json` file:
+This library is installable via [Composer](https://getcomposer.org/):
 
-    {
-        "require": {
-            "nicebooks/isbn": "0.2.*"
-        }
-    }
+```bash
+composer require nicebooks/isbn
+```
 
 ## Requirements
 
@@ -51,7 +48,7 @@ This class contains all the tools to work with ISBN numbers as plain strings.
 
 Its constructor offers two configurable parameters:
 
-    public function __construct($cleanupBeforeValidate = true, $validateCheckDigit = true)
+    public function __construct(bool $cleanupBeforeValidate = true, bool $validateCheckDigit = true)
 
 - `$cleanupBeforeValidate` removes any non-alphanumeric ASCII character from the string before validating it.
 - `$validateCheckDigit` computes the checksum of the ISBN number before any operation.
