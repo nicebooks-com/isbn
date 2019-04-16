@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+use Brick\VarExporter\VarExporter;
+
+require __DIR__ . '/vendor/autoload.php';
+
 /*
  * This script downloads and converts the ISBN range file from isbn-international.org.
  *
@@ -82,74 +88,11 @@ foreach ($groupNodeList as $groupNode) {
     $groupCount++;
 }
 
-/**
- * Compact & pretty alternative to var_export().
- *
- * @param mixed $variable
- * @param int   $indent
- *
- * @return string
- */
-function export($variable, int $indent = 0)
-{
-    if (! is_array($variable)) {
-        return var_export($variable, true);
-    }
-
-    $isNumeric = (array_values($variable) === $variable);
-
-    $hasArray = false;
-
-    foreach ($variable as $value) {
-        if (is_array($value)) {
-            $hasArray = true;
-            break;
-        }
-    }
-
-    $spaces = str_repeat("\t", $indent + 1);
-
-    $result = '[';
-
-    if ($hasArray) {
-        $result .= "\n";
-    }
-
-    $count = count($variable);
-    $current = 0;
-
-    foreach ($variable as $key => $value) {
-        if ($hasArray) {
-            $result .= $spaces;
-        }
-
-        if (! $isNumeric) {
-            $result .= export($key) . ' => ';
-        }
-
-        $result .= export($value, $indent + 1);
-
-        if (++$current !== $count) {
-            $result .= ',';
-        }
-
-        if ($hasArray) {
-            $result .= "\n";
-        } elseif ($current !== $count) {
-            $result .= ' ';
-        }
-    }
-
-    if ($hasArray) {
-        $result .= str_repeat("\t", $indent);
-    }
-
-    $result .= ']';
-
-    return $result;
-}
-
-file_put_contents($rangeFile, '<?php return /* ' . $messageDate . ' */ ' . export($rangeData) . ";\n");
+file_put_contents($rangeFile, sprintf(
+    "<?php return /* %s */ %s;\n",
+    $messageDate,
+    VarExporter::export($rangeData, VarExporter::INLINE_NUMERIC_SCALAR_ARRAY)
+));
 
 echo "Successfully converted $groupCount groups and $rangeCount ranges.\n";
 echo "Serial number: $messageSerialNumber\n";
