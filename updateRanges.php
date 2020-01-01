@@ -95,5 +95,21 @@ file_put_contents($rangeFile, sprintf(
 ));
 
 echo "Successfully converted $groupCount groups and $rangeCount ranges.\n";
+echo "\n";
+echo "Commit message:\n";
+echo "===============\n";
+echo "\n";
+echo "Update ISBN ranges\n";
+echo "\n";
 echo "Serial number: $messageSerialNumber\n";
 echo "Date: $messageDate\n";
+echo "\n";
+echo "Release notes:\n";
+echo "==============\n";
+echo "\n";
+echo "ISBN range update.\n";
+echo "\n";
+echo "| Serial number | Date |\n";
+echo "| ------------- | ---- |\n";
+echo "| $messageSerialNumber | $messageDate |\n";
+echo "\n";
