@@ -73,7 +73,7 @@ foreach ($groupNodeList as $groupNode) {
             continue;
         }
 
-        list ($start, $end) = explode('-', $range);
+        [$start, $end] = explode('-', $range);
 
         $start = substr($start, 0, $length);
         $end = substr($end, 0, $length);
