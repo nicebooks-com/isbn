@@ -84,7 +84,7 @@ foreach ($groupNodeList as $groupNode) {
 
     $prefix = explode('-', $prefix);
 
-    $rangeData[] = [$prefix[0], $prefix[1], $agency, $ranges];
+    $rangeData[] = [$prefix[0], $prefix[1], trim($agency), $ranges];
     $groupCount++;
 }
 
