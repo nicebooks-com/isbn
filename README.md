@@ -6,7 +6,7 @@ It is released under a permissive MIT open-source license for anyone to use.
 ISBN formatting follows the rules defined by the [ISBN range file](https://www.isbn-international.org/range_file_generation) published by ISBN International.
 
 [![Build Status](https://travis-ci.org/nicebooks-com/isbn.svg?branch=master)](https://travis-ci.org/nicebooks-com/isbn)
-[![Coverage Status](https://img.shields.io/coveralls/nicebooks-com/isbn.svg)](https://coveralls.io/r/nicebooks-com/isbn?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/nicebooks-com/isbn/badge.svg?branch=master)](https://coveralls.io/github/nicebooks-com/isbn?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/nicebooks/isbn/v/stable)](https://packagist.org/packages/nicebooks/isbn)
 [![Total Downloads](https://poser.pugx.org/nicebooks/isbn/downloads)](https://packagist.org/packages/nicebooks/isbn)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
