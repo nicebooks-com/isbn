@@ -88,11 +88,38 @@ foreach ($groupNodeList as $groupNode) {
     $groupCount++;
 }
 
+$oldRangeData = require $rangeFile;
+
 file_put_contents($rangeFile, sprintf(
     "<?php return /* %s */ %s;\n",
     $messageDate,
     VarExporter::export($rangeData, VarExporter::INLINE_NUMERIC_SCALAR_ARRAY)
 ));
+
+$agenciesUpdated = [];
+
+foreach ($rangeData as [$prefix, $id, $agency, $ranges]) {
+    $found = false;
+    $identical = false;
+
+    foreach ($oldRangeData as [$oldPrefix, $oldId, $oldAgency, $oldRanges]) {
+        if ($oldPrefix === $prefix && $oldId === $id) {
+            $found = true;
+
+            if ($oldAgency === $agency && $oldRanges === $ranges) {
+                $identical = true;
+            }
+
+            break;
+        }
+    }
+
+    if ((! $found) || ($found && ! $identical)) {
+        $agenciesUpdated[] = $agency;
+    }
+}
+
+$agenciesUpdated = array_unique($agenciesUpdated);
 
 echo "Successfully converted $groupCount groups and $rangeCount ranges.\n";
 echo "\n";
@@ -103,6 +130,12 @@ echo "Update ISBN ranges\n";
 echo "\n";
 echo "Serial number: $messageSerialNumber\n";
 echo "Date: $messageDate\n";
+
+if ($agenciesUpdated) {
+    echo "\n";
+    echo "Agencies updated: " . implode(', ', $agenciesUpdated) . "\n";
+}
+
 echo "\n";
 echo "Release notes:\n";
 echo "==============\n";
@@ -113,3 +146,13 @@ echo "| Serial number | Date |\n";
 echo "| ------------- | ---- |\n";
 echo "| $messageSerialNumber | $messageDate |\n";
 echo "\n";
+
+if ($agenciesUpdated) {
+    echo "\n";
+    echo "Agencies updated:\n";
+    echo "\n";
+
+    foreach ($agenciesUpdated as $agencyUpdated) {
+        echo "- $agencyUpdated\n";
+    }
+}
