@@ -153,7 +153,7 @@ class Isbn
      * Returns whether this ISBN is in a recognized range.
      *
      * If this method returns false, we are unable to split the ISBN into parts, and format it with hyphens.
-     * This would mean that either the ISBN number is wrong, or this version of the library is compiled against
+     * This would mean that either the ISBN number is invalid, or this version of the library is compiled against
      * an outdated data file from ISBN International.
      *
      * Note that this method returning true only means that the ISBN number is *potentially* valid,
