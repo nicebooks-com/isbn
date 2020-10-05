@@ -265,7 +265,7 @@ class Isbn
      */
     public function getCheckDigit() : string
     {
-        return substr($this->isbn, -1);
+        return $this->isbn[-1];
     }
 
     /**
