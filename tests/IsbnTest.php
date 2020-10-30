@@ -353,4 +353,34 @@ class IsbnTest extends TestCase
 
         $this->fail('Failed asserting that exception of type ' . $expectedException . ' is thrown.');
     }
+
+    /**
+     * @dataProvider providerEquations
+     *
+     * @param string $isbn Any ISBN.
+     * @param string $anotherIsbn The ISBN-10 that is expected to equate $isbn.
+     */
+    public function testIsbnEquations(string $isbn, string $anotherIsbn) : void
+    {
+        $this->assertTrue(Isbn::of($isbn)->equatesTo($anotherIsbn));
+    }
+    /**
+     * @return array
+     */
+
+    public function providerEquations() : array
+    {
+        return [
+            ['9780123456786', '0123456789'],
+            ['9781234567897', '123456789X'],
+            ['9782345678908', '2345678909'],
+            ['9783456789019', '3456789017'],
+            ['9784567890120', '4567890124'],
+            ['5678901230', '9785678901231'],
+            ['6789012346', '9786789012342'],
+            ['7890123450', '9787890123453'],
+            ['8901234564', '9788901234564'],
+            ['9012345677', '9789012345675'],
+        ];
+    }
 }
