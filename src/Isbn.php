@@ -310,8 +310,8 @@ class Isbn
      */
     public function equatesTo($otherIsbn) : bool
     {
-        if (!$otherIsbn instanceof Isbn) {
-            $otherIsbn = Isbn::of($otherIsbn);
+        if (!$otherIsbn instanceof self) {
+            $otherIsbn = self::of($otherIsbn);
         }
 
         return $this->to13() == $otherIsbn->to13();
