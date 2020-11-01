@@ -308,12 +308,8 @@ class Isbn
      * Isbn::of('978-0-399-16534-4')->isEqualTo("0-399-16534-7") returns true.
      * 
      */
-    public function isEqualTo($otherIsbn) : bool
+    public function isEqualTo(self $otherIsbn) : bool
     {
-        if (!$otherIsbn instanceof self) {
-            $otherIsbn = self::of($otherIsbn);
-        }
-
         return $this->to13()->isbn === $otherIsbn->to13()->isbn;
     }
 
