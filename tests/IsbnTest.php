@@ -362,7 +362,7 @@ class IsbnTest extends TestCase
      */
     public function testIsbnIsEqualTo(string $isbn, string $anotherIsbn, bool $isEqual) : void
     {
-        $this->assertTrue(Isbn::of($isbn)->isEqualTo($anotherIsbn) === $isEqual);
+        $this->assertTrue(Isbn::of($isbn)->isEqualTo(Isbn::of($anotherIsbn)) === $isEqual);
     }
 
     /**
