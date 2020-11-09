@@ -357,12 +357,12 @@ class IsbnTest extends TestCase
     /**
      * @dataProvider providerIsEqualTo
      *
-     * @param string $isbn Any ISBN.
+     * @param string $isbn        Any ISBN.
      * @param string $anotherIsbn The ISBN-10 that is expected to be equal to $isbn.
      */
-    public function testIsbnIsEqualTo(string $isbn, string $anotherIsbn, bool $isEqual) : void
+    public function testIsEqualTo(string $isbn, string $anotherIsbn, bool $isEqual) : void
     {
-        $this->assertTrue(Isbn::of($isbn)->isEqualTo(Isbn::of($anotherIsbn)) === $isEqual);
+        $this->assertSame($isEqual, Isbn::of($isbn)->isEqualTo(Isbn::of($anotherIsbn)));
     }
 
     /**

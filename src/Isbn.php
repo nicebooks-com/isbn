@@ -303,12 +303,12 @@ class Isbn
     }
 
     /**
-     * Check if $this is equal to another ISBN. As both ISBN are converted to ISBN-13,
-     * an ISBN-10 is considered equal to its corresponsing ISBN-13. In conclusion,
-     * Isbn::of('978-0-399-16534-4')->isEqualTo("0-399-16534-7") returns true.
-     * 
+     * Checks if this ISBN is equal to another ISBN.
+     *
+     * An ISBN-10 is considered equal to its corresponding ISBN-13.
+     * For example, `Isbn::of('978-0-399-16534-4')->isEqualTo("0-399-16534-7")` returns true.
      */
-    public function isEqualTo(self $otherIsbn) : bool
+    public function isEqualTo(Isbn $otherIsbn) : bool
     {
         return $this->to13()->isbn === $otherIsbn->to13()->isbn;
     }
