@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 use Brick\VarExporter\VarExporter;
 
-require __DIR__ . '/vendor/autoload.php';
+chdir(__DIR__);
+
+require 'vendor/autoload.php';
 
 /*
  * This script downloads and converts the ISBN range file from isbn-international.org.
@@ -19,7 +21,7 @@ if ($rangeMessageXML === false) {
     exit;
 }
 
-$rangeFile = __DIR__ . '/data/ranges.php';
+$rangeFile = 'data/ranges.php';
 
 $document = new DOMDocument();
 $document->loadXML($rangeMessageXML);
@@ -121,20 +123,22 @@ foreach ($rangeData as [$prefix, $id, $agency, $ranges]) {
 
 $agenciesUpdated = array_unique($agenciesUpdated);
 
+$commitMessage  = "Update ISBN ranges\n";
+$commitMessage .= "\n";
+$commitMessage .= "Serial number: $messageSerialNumber\n";
+$commitMessage .= "Date: $messageDate\n";
+
+if ($agenciesUpdated) {
+    $commitMessage .= "\n";
+    $commitMessage .= "Agencies updated: " . implode(', ', $agenciesUpdated) . "\n";
+}
+
 echo "Successfully converted $groupCount groups and $rangeCount ranges.\n";
 echo "\n";
 echo "Commit message:\n";
 echo "===============\n";
 echo "\n";
-echo "Update ISBN ranges\n";
-echo "\n";
-echo "Serial number: $messageSerialNumber\n";
-echo "Date: $messageDate\n";
-
-if ($agenciesUpdated) {
-    echo "\n";
-    echo "Agencies updated: " . implode(', ', $agenciesUpdated) . "\n";
-}
+echo $commitMessage;
 
 echo "\n";
 echo "Release notes:\n";
@@ -156,3 +160,10 @@ if ($agenciesUpdated) {
         echo "- $agencyUpdated\n";
     }
 }
+
+system('vendor/bin/phpunit --colors', $status);
+
+if ($status === 0) {
+    system('git commit -a -m ' . escapeshellarg($commitMessage));
+}
+
