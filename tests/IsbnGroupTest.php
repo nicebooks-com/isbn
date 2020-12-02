@@ -17,8 +17,8 @@ class IsbnGroupTest extends TestCase
         $isbn10Groups = IsbnGroup::getIsbn10Groups();
         $isbn13Groups = IsbnGroup::getIsbn13Groups();
 
-        $this->assertInternalType('array', $isbn10Groups);
-        $this->assertInternalType('array', $isbn13Groups);
+        $this->assertIsArray($isbn10Groups);
+        $this->assertIsArray($isbn13Groups);
 
         $this->assertGreaterThan(0, count($isbn10Groups));
         $this->assertGreaterThan(0, count($isbn13Groups));
