@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Nicebooks\Isbn\Tests;
 
+use Nicebooks\Isbn\Exception\InvalidIsbnException;
 use Nicebooks\Isbn\Exception\IsbnException;
+use Nicebooks\Isbn\Exception\IsbnNotConvertibleException;
 use Nicebooks\Isbn\Isbn;
 use PHPUnit\Framework\TestCase;
 
@@ -50,12 +52,12 @@ class IsbnTest extends TestCase
 
     /**
      * @dataProvider providerGetInvalidIsbnThrowsException
-     * @expectedException \Nicebooks\Isbn\Exception\InvalidIsbnException
      *
      * @param string $invalidIsbn The invalid ISBN.
      */
     public function testGetInvalidIsbnThrowsException(string $invalidIsbn) : void
     {
+        $this->expectException(InvalidIsbnException::class);
         Isbn::of($invalidIsbn);
     }
 
@@ -145,12 +147,12 @@ class IsbnTest extends TestCase
 
     /**
      * @dataProvider providerNotConvertibleTo10
-     * @expectedException \Nicebooks\Isbn\Exception\IsbnNotConvertibleException
      *
      * @param string $isbn13 The non-convertible ISBN-13.
      */
     public function testNotConvertibleTo10ThrowsException(string $isbn13) : void
     {
+        $this->expectException(IsbnNotConvertibleException::class);
         Isbn::of($isbn13)->to10();
     }
 

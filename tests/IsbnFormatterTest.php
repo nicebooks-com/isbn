@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nicebooks\Isbn\Tests;
 
+use Nicebooks\Isbn\Exception\InvalidIsbnException;
 use Nicebooks\Isbn\IsbnTools;
 use PHPUnit\Framework\TestCase;
 
@@ -68,13 +69,14 @@ class IsbnFormatterTest extends TestCase
 
     /**
      * @dataProvider providerFormatInvalidIsbnThrowsException
-     * @expectedException \Nicebooks\Isbn\Exception\InvalidIsbnException
      *
      * @param string $isbn The invalid ISBN.
      */
     public function testFormatInvalidIsbnThrowsException(string $isbn) : void
     {
         $tools = new IsbnTools();
+
+        $this->expectException(InvalidIsbnException::class);
         $tools->format($isbn);
     }
 

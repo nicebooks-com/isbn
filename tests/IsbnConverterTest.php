@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nicebooks\Isbn\Tests;
 
+use Nicebooks\Isbn\Exception\InvalidIsbnException;
+use Nicebooks\Isbn\Exception\IsbnNotConvertibleException;
 use Nicebooks\Isbn\IsbnTools;
 use PHPUnit\Framework\TestCase;
 
@@ -45,13 +47,14 @@ class IsbnConverterTest extends TestCase
 
     /**
      * @dataProvider providerConvertInvalidIsbn10to13
-     * @expectedException \Nicebooks\Isbn\Exception\InvalidIsbnException
      *
      * @param string $isbn
      */
     public function testConvertInvalidIsbn10to13(string $isbn) : void
     {
         $tools = new IsbnTools();
+
+        $this->expectException(InvalidIsbnException::class);
         $tools->convertIsbn10to13($isbn);
     }
 
@@ -100,13 +103,14 @@ class IsbnConverterTest extends TestCase
 
     /**
      * @dataProvider providerConvertInvalidIsbn13to10
-     * @expectedException \Nicebooks\Isbn\Exception\InvalidIsbnException
      *
      * @param string $isbn
      */
     public function testConvertInvalidIsbn13to10(string $isbn) : void
     {
         $tools = new IsbnTools();
+
+        $this->expectexception(InvalidIsbnException::class);
         $tools->convertIsbn13to10($isbn);
     }
 
@@ -124,13 +128,14 @@ class IsbnConverterTest extends TestCase
 
     /**
      * @dataProvider providerIsbnNotConvertibleThrowsException
-     * @expectedException \Nicebooks\Isbn\Exception\IsbnNotConvertibleException
      *
      * @param string $isbn An ISBN-13 not convertible to ISBN-10.
      */
     public function testIsbnNotConvertibleThrowsException(string $isbn) : void
     {
         $tools = new IsbnTools();
+
+        $this->expectException(IsbnNotConvertibleException::class);
         $tools->convertIsbn13to10($isbn);
     }
 
