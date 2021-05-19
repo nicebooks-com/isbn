@@ -161,6 +161,8 @@ if ($agenciesUpdated) {
     }
 }
 
+echo "\n";
+
 system('vendor/bin/phpunit --colors=always', $status);
 
 if ($status === 0) {
