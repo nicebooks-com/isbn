@@ -19,9 +19,6 @@ class RangeService
 {
     private static ?array $ranges = null;
 
-    /**
-     * @return array
-     */
     private static function getRanges() : array
     {
         if (self::$ranges === null) {
@@ -32,8 +29,6 @@ class RangeService
     }
 
     /**
-     * @param bool $is13
-     *
      * @return IsbnGroup[]
      */
     public static function getGroups(bool $is13) : array
@@ -57,8 +52,6 @@ class RangeService
      * Splits an ISBN into parts.
      *
      * @param string $isbn The ISBN-10 or ISBN-13, regexp-validated.
-     *
-     * @return RangeInfo|null
      */
     public static function getRangeInfo(string $isbn) : ?RangeInfo
     {
@@ -107,11 +100,6 @@ class RangeService
         return null;
     }
 
-    /**
-     * @param string $isbn
-     *
-     * @return string
-     */
     public static function format(string $isbn) : string
     {
         $rangeInfo = self::getRangeInfo($isbn);

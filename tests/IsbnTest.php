@@ -39,9 +39,6 @@ class IsbnTest extends TestCase
         $this->assertIsbnEquals(Isbn::of($isbn), $string, $is13);
     }
 
-    /**
-     * @return array
-     */
     public function providerGet() : array
     {
         return [
@@ -61,9 +58,6 @@ class IsbnTest extends TestCase
         Isbn::of($invalidIsbn);
     }
 
-    /**
-     * @return array
-     */
     public function providerGetInvalidIsbnThrowsException() : array
     {
         return [
@@ -94,9 +88,6 @@ class IsbnTest extends TestCase
         $this->assertIsbnEquals($outputIsbn, $isbn10, false);
     }
 
-    /**
-     * @return array
-     */
     public function providerTo10() : array
     {
         return [
@@ -130,9 +121,6 @@ class IsbnTest extends TestCase
         $this->assertSame($isConvertible, Isbn::of($isbn)->isConvertibleTo10());
     }
 
-    /**
-     * @return array
-     */
     public function providerIsConvertibleTo10() : array
     {
         return [
@@ -156,9 +144,6 @@ class IsbnTest extends TestCase
         Isbn::of($isbn13)->to10();
     }
 
-    /**
-     * @return array
-     */
     public function providerNotConvertibleTo10() : array
     {
         return [
@@ -183,9 +168,6 @@ class IsbnTest extends TestCase
         $this->assertIsbnEquals($outputIsbn, $isbn13, true);
     }
 
-    /**
-     * @return array
-     */
     public function providerTo13() : array
     {
         return [
@@ -243,9 +225,6 @@ class IsbnTest extends TestCase
         $this->assertSame($expectedGroup, $isbn->getGroupName());
     }
 
-    /**
-     * @return array
-     */
     public function providerInfoAndFormat() : array
     {
         return [
@@ -278,10 +257,6 @@ class IsbnTest extends TestCase
 
     /**
      * @dataProvider providerIsValidGroupAndRange
-     *
-     * @param string $isbnString
-     * @param bool   $isValidGroup
-     * @param bool   $isValidRange
      */
     public function testIsValidGroupAndRange(string $isbnString, bool $isValidGroup, bool $isValidRange) : void
     {
@@ -316,9 +291,6 @@ class IsbnTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
     public function providerIsValidGroupAndRange() : array
     {
         return [
@@ -333,9 +305,6 @@ class IsbnTest extends TestCase
 
     /**
      * Asserts that an exception is thrown when calling the given function.
-     *
-     * @param string   $expectedException
-     * @param callable $function
      *
      * @throws \Exception
      */
@@ -367,9 +336,6 @@ class IsbnTest extends TestCase
         $this->assertSame($isEqual, Isbn::of($isbn)->isEqualTo(Isbn::of($anotherIsbn)));
     }
 
-    /**
-     * @return array
-     */
     public function providerIsEqualTo() : array
     {
         return [

@@ -9,11 +9,6 @@ namespace Nicebooks\Isbn\Exception;
  */
 class IsbnException extends \Exception
 {
-    /**
-     * @param string $isbn
-     *
-     * @return IsbnException
-     */
     public static function unknownGroup(string $isbn) : IsbnException
     {
         return new IsbnException(sprintf(
@@ -22,11 +17,6 @@ class IsbnException extends \Exception
         ));
     }
 
-    /**
-     * @param string $isbn
-     *
-     * @return IsbnException
-     */
     public static function unknownRange(string $isbn) : IsbnException
     {
         return new IsbnException(sprintf(

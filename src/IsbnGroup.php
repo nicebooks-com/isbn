@@ -25,10 +25,6 @@ class IsbnGroup
      */
     private string $name;
 
-    /**
-     * @param string $prefix
-     * @param string $name
-     */
     public function __construct(string $prefix, string $name)
     {
         $this->prefix = $prefix;
@@ -51,17 +47,11 @@ class IsbnGroup
         return RangeService::getGroups(true);
     }
 
-    /**
-     * @return string
-     */
     public function getPrefix() : string
     {
         return $this->prefix;
     }
 
-    /**
-     * @return string
-     */
     public function getName() : string
     {
         return $this->name;

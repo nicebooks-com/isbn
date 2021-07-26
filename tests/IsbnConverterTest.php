@@ -26,9 +26,6 @@ class IsbnConverterTest extends TestCase
         $this->assertSame($isbn13, $tools->convertIsbn10to13($isbn10));
     }
 
-    /**
-     * @return array
-     */
     public function providerConvertIsbn10to13() : array
     {
         return [
@@ -47,8 +44,6 @@ class IsbnConverterTest extends TestCase
 
     /**
      * @dataProvider providerConvertInvalidIsbn10to13
-     *
-     * @param string $isbn
      */
     public function testConvertInvalidIsbn10to13(string $isbn) : void
     {
@@ -58,9 +53,6 @@ class IsbnConverterTest extends TestCase
         $tools->convertIsbn10to13($isbn);
     }
 
-    /**
-     * @return array
-     */
     public function providerConvertInvalidIsbn10to13() : array
     {
         return [
@@ -82,9 +74,6 @@ class IsbnConverterTest extends TestCase
         $this->assertSame($isbn10, $tools->convertIsbn13to10($isbn13));
     }
 
-    /**
-     * @return array
-     */
     public function providerConvertIsbn13to10() : array
     {
         return [
@@ -103,8 +92,6 @@ class IsbnConverterTest extends TestCase
 
     /**
      * @dataProvider providerConvertInvalidIsbn13to10
-     *
-     * @param string $isbn
      */
     public function testConvertInvalidIsbn13to10(string $isbn) : void
     {
@@ -114,9 +101,6 @@ class IsbnConverterTest extends TestCase
         $tools->convertIsbn13to10($isbn);
     }
 
-    /**
-     * @return array
-     */
     public function providerConvertInvalidIsbn13to10()
     {
         return [
@@ -139,9 +123,6 @@ class IsbnConverterTest extends TestCase
         $tools->convertIsbn13to10($isbn);
     }
 
-    /**
-     * @return array
-     */
     public function providerIsbnNotConvertibleThrowsException() : array
     {
         return [

@@ -25,9 +25,6 @@ class IsbnFormatterTest extends TestCase
         $this->assertSame($expectedOutput, $tools->format($isbn));
     }
 
-    /**
-     * @return array
-     */
     public function providerFormat() : array
     {
         return [
@@ -80,9 +77,6 @@ class IsbnFormatterTest extends TestCase
         $tools->format($isbn);
     }
 
-    /**
-     * @return array
-     */
     public function providerFormatInvalidIsbnThrowsException() : array
     {
         return [

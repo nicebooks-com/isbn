@@ -36,10 +36,6 @@ class IsbnGroupTest extends TestCase
     /**
      * @depends testReturnTypesAndCounts
      * @dataProvider providerIsbnGroupContents
-     *
-     * @param bool   $is13
-     * @param string $prefix
-     * @param string $name
      */
     public function testIsbnGroupContents(bool $is13, string $prefix, string $name) : void
     {
@@ -60,9 +56,6 @@ class IsbnGroupTest extends TestCase
 
     }
 
-    /**
-     * @return array
-     */
     public function providerIsbnGroupContents() : array
     {
         return [

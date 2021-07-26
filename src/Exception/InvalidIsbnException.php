@@ -9,11 +9,6 @@ namespace Nicebooks\Isbn\Exception;
  */
 class InvalidIsbnException extends IsbnException
 {
-    /**
-     * @param string $isbn
-     *
-     * @return InvalidIsbnException
-     */
     public static function forIsbn(string $isbn) : InvalidIsbnException
     {
         return new self(sprintf('"%s" is not a valid ISBN number.', $isbn));

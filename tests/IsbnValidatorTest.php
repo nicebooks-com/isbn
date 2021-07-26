@@ -24,9 +24,6 @@ class IsbnValidatorTest extends TestCase
         $this->assertSame($isValid, $tools->isValidIsbn($isbn));
     }
 
-    /**
-     * @return array
-     */
     public function providerIsValidIsbn() : array
     {
         return [
@@ -121,9 +118,6 @@ class IsbnValidatorTest extends TestCase
         $this->assertSame($isValid, $tools->isValidIsbn10($isbn));
     }
 
-    /**
-     * @return array
-     */
     public function providerIsValidIsbn10() : array
     {
         return [
@@ -175,9 +169,6 @@ class IsbnValidatorTest extends TestCase
         $this->assertSame($isValid, $tools->isValidIsbn13($isbn));
     }
 
-    /**
-     * @return array
-     */
     public function providerIsValidIsbn13() : array
     {
         return [
