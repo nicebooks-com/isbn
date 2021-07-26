@@ -15,19 +15,15 @@ class IsbnGroup
      * The group prefix.
      *
      * Example: "2" for ISBN-10, "978-2" for ISBN-13.
-     *
-     * @var string
      */
-    private $prefix;
+    private string $prefix;
 
     /**
      * The group name.
      *
      * Example: "French language".
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @param string $prefix

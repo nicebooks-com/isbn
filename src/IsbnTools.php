@@ -9,15 +9,9 @@ namespace Nicebooks\Isbn;
  */
 class IsbnTools
 {
-    /**
-     * @var bool
-     */
-    private $cleanupBeforeValidate;
+    private bool $cleanupBeforeValidate;
 
-    /**
-     * @var bool
-     */
-    private $validateCheckDigit;
+    private bool $validateCheckDigit;
 
     /**
      * @param bool $cleanupBeforeValidate

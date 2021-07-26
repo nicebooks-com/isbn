@@ -17,10 +17,7 @@ use Nicebooks\Isbn\IsbnGroup;
  */
 class RangeService
 {
-    /**
-     * @var array|null
-     */
-    private static $ranges;
+    private static ?array $ranges = null;
 
     /**
      * @return array

@@ -14,17 +14,12 @@ namespace Nicebooks\Isbn\Internal;
  */
 class RangeInfo
 {
-    /**
-     * @var string
-     */
-    public $groupIdentifier;
+    public string $groupIdentifier;
 
     /**
      * The group name.
-     *
-     * @var string
      */
-    public $groupName;
+    public string $groupName;
 
     /**
      * The parts of the ISBN number.
@@ -36,5 +31,5 @@ class RangeInfo
      *
      * @var array|null
      */
-    public $parts;
+    public ?array $parts = null;
 }
