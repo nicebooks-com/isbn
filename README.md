@@ -21,7 +21,7 @@ composer require nicebooks/isbn
 
 ## Requirements
 
-This library requires PHP 7.1 or higher.
+This library requires PHP 7.4 or higher.
 
 ## Project status & release process
 

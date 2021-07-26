@@ -12,12 +12,12 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^7.1 || ^8.0"
+    "php": "^7.4 || ^8.0"
   },
   "require-dev": {
     "ext-dom": "*",
     "brick/varexporter": "~0.2.1",
-    "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+    "phpunit/phpunit": "^9.0",
     "php-coveralls/php-coveralls": "^2.0"
   },
   "autoload": {
