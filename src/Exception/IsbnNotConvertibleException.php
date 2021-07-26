@@ -7,7 +7,7 @@ namespace Nicebooks\Isbn\Exception;
 /**
  * Exception thrown when failing to convert an ISBN-13 to ISBN-10.
  */
-class IsbnNotConvertibleException extends IsbnException
+final class IsbnNotConvertibleException extends IsbnException
 {
     public static function forIsbn(string $isbn) : IsbnNotConvertibleException
     {

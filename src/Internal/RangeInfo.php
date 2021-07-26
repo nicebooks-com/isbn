@@ -12,7 +12,7 @@ namespace Nicebooks\Isbn\Internal;
  *
  * @internal
  */
-class RangeInfo
+final class RangeInfo
 {
     public string $groupIdentifier;
 

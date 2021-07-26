@@ -9,7 +9,7 @@ use Nicebooks\Isbn\Internal\RangeService;
 /**
  * Represents a national or geographic group of publishers.
  */
-class IsbnGroup
+final class IsbnGroup
 {
     /**
      * The group prefix.

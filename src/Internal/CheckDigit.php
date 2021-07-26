@@ -13,7 +13,7 @@ namespace Nicebooks\Isbn\Internal;
  *
  * @internal
  */
-class CheckDigit
+final class CheckDigit
 {
     /**
      * @param string $isbn The partial ISBN-10, validated as a string starting with 9 digits.

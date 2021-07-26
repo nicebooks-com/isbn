@@ -15,7 +15,7 @@ use Nicebooks\Isbn\Exception\IsbnNotConvertibleException;
  *
  * @internal
  */
-class Converter
+final class Converter
 {
     /**
      * @param string $isbn The ISBN-10, unformatted, regexp-validated.

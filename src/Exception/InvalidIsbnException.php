@@ -7,7 +7,7 @@ namespace Nicebooks\Isbn\Exception;
 /**
  * Exception thrown when an invalid ISBN is detected.
  */
-class InvalidIsbnException extends IsbnException
+final class InvalidIsbnException extends IsbnException
 {
     public static function forIsbn(string $isbn) : InvalidIsbnException
     {

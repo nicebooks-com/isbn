@@ -11,7 +11,7 @@ use Nicebooks\Isbn\Internal\RangeInfo;
 /**
  * Represents a valid ISBN number. This class is immutable.
  */
-class Isbn
+final class Isbn
 {
     private string $isbn;
 
