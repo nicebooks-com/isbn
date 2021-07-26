@@ -10,6 +10,8 @@ namespace Nicebooks\Isbn\Internal;
  * This class is not part of the public API and can change at any time.
  * It is not intended to be used in projects consuming this library.
  *
+ * @psalm-immutable
+ *
  * @internal
  */
 final class RangeInfo
