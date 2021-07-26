@@ -29,7 +29,17 @@ final class RangeInfo
      * If the ISBN number belongs to a known group, but does not fall within a valid range,
      * this property will be null.
      *
-     * @var array|null
+     * @var string[]|null
      */
-    public ?array $parts = null;
+    public ?array $parts;
+
+    /**
+     * @param string[]|null $parts
+     */
+    public function __construct(string $groupIdentifier, string $groupName, ?array $parts)
+    {
+        $this->groupIdentifier = $groupIdentifier;
+        $this->groupName       = $groupName;
+        $this->parts           = $parts;
+    }
 }

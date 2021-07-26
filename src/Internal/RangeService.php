@@ -13,12 +13,20 @@ use Nicebooks\Isbn\IsbnGroup;
  * It is not intended to be used in projects consuming this library.
  * All input is expected to be validated.
  *
+ * @psalm-type RangeType = array{string, string, string, list<array{int, string, string}>}
+ *
  * @internal
  */
 final class RangeService
 {
+    /**
+     * @psalm-var list<RangeType>|null
+     */
     private static ?array $ranges = null;
 
+    /**
+     * @psalm-return list<RangeType>
+     */
     private static function getRanges() : array
     {
         if (self::$ranges === null) {
@@ -73,9 +81,9 @@ final class RangeService
                 continue;
             }
 
-            $rangeInfo = new RangeInfo;
-            $rangeInfo->groupIdentifier = ($length === 10 ? $groupIdentifier : $eanPrefix . '-' . $groupIdentifier);
-            $rangeInfo->groupName = $groupName;
+            $groupIdentifier = ($length === 10 ? $groupIdentifier : $eanPrefix . '-' . $groupIdentifier);
+
+            $parts = null;
 
             foreach ($ranges as $range) {
                 [$rangeLength, $rangeStart, $rangeEnd] = $range;
@@ -85,16 +93,16 @@ final class RangeService
 
                 if (strcmp($rangeValue, $rangeStart) >= 0 && strcmp($rangeValue, $rangeEnd) <= 0) {
                     if ($length === 13) {
-                        $rangeInfo->parts = [$isbnPrefix, $isbnGroup, $rangeValue, $lastDigits, $checkDigit];
+                        $parts = [$isbnPrefix, $isbnGroup, $rangeValue, $lastDigits, $checkDigit];
                     } else {
-                        $rangeInfo->parts = [$isbnGroup, $rangeValue, $lastDigits, $checkDigit];
+                        $parts = [$isbnGroup, $rangeValue, $lastDigits, $checkDigit];
                     }
 
                     break;
                 }
             }
 
-            return $rangeInfo;
+            return new RangeInfo($groupIdentifier, $groupName, $parts);
         }
 
         return null;

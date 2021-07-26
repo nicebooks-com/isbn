@@ -23,7 +23,8 @@ final class CheckDigit
     public static function calculateCheckDigit10(string $isbn) : string
     {
         for ($sum = 0, $i = 0; $i < 9; $i++) {
-            $sum += $isbn[$i] * (1 + $i);
+            $digit = (int) $isbn[$i];
+            $sum += $digit * (1 + $i);
         }
 
         $sum %= 11;
@@ -39,7 +40,8 @@ final class CheckDigit
     public static function calculateCheckDigit13(string $isbn) : string
     {
         for ($sum = 0, $i = 0; $i < 12; $i++) {
-            $sum += $isbn[$i] * (1 + 2 * ($i % 2));
+            $digit = (int) $isbn[$i];
+            $sum += $digit * (1 + 2 * ($i % 2));
         }
 
         return (string) ((10 - ($sum % 10)) % 10);
