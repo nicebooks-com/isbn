@@ -28,12 +28,12 @@ This library requires PHP 7.4 or higher.
 While this library is still under development, it is well tested and should be stable enough to use in production
 environments. It is currently in use in production on [nicebooks.com](https://nicebooks.com/).
 
-The current releases are numbered `0.x.y`. When a non-breaking change is introduced (adding new methods, optimizing
-existing code, etc.), `y` is incremented.
+The current releases are numbered `0.x.y`. When a non-breaking change is introduced (updating ISBN ranges,
+adding new methods, optimizing existing code, etc.), `y` is incremented.
 
 **When a breaking change is introduced, a new `0.x` version cycle is always started.**
 
-It is therefore safe to lock your project to a given release cycle, such as `0.1.*`.
+It is therefore safe to lock your project to a given release cycle, such as `0.3.*`.
 
 If you need to upgrade to a newer release cycle, check the [release history](https://github.com/nicebooks-com/isbn/releases)
 for a list of changes introduced by each further `0.x.0` version.
