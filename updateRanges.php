@@ -40,24 +40,6 @@ $messageSerialNumber = $xpath->query('/ISBNRangeMessage/MessageSerialNumber')->i
 $messageDate = $xpath->query('/ISBNRangeMessage/MessageDate')->item(0)->textContent;
 $messageTime = strtotime($messageDate);
 
-if (file_exists($rangeFile)) {
-    $firstLine = fgets(fopen($rangeFile, 'r'));
-    $startPos = strpos($firstLine, '/* ') + 3;
-    $endPos = strpos($firstLine, ' */');
-    $currentMessageDate = substr($firstLine, $startPos, $endPos - $startPos);
-    $currentMessageTime = strtotime($currentMessageDate);
-
-    if ($messageTime === $currentMessageTime) {
-        echo "Range file is current.\n";
-        exit;
-    }
-
-    if ($messageTime < $currentMessageTime)  {
-        echo "Range file is older than the current file.\n";
-        exit;
-    }
-}
-
 foreach ($groupNodeList as $groupNode) {
     $prefix = $xpath->query('./Prefix', $groupNode)->item(0)->textContent;
     $agency = $xpath->query('./Agency', $groupNode)->item(0)->textContent;
@@ -92,9 +74,13 @@ foreach ($groupNodeList as $groupNode) {
 
 $oldRangeData = require $rangeFile;
 
+if ($oldRangeData === $rangeData) {
+    echo "Range file is current.\n";
+    exit;
+}
+
 file_put_contents($rangeFile, sprintf(
-    "<?php return /* %s */ %s;\n",
-    $messageDate,
+    "<?php return %s;\n",
     VarExporter::export($rangeData, VarExporter::INLINE_NUMERIC_SCALAR_ARRAY)
 ));
 

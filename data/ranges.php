@@ -1,4 +1,4 @@
-<?php return /* Sat, 9 Oct 2021 10:49:54 BST */ [
+<?php return [
     [
         '978',
         '0',
