@@ -43,9 +43,7 @@ final class RangeService
     {
         $groups = [];
 
-        foreach (self::getRanges() as $rangeData) {
-            [$rangePrefix, $groupIdentifier, $groupName] = $rangeData;
-
+        foreach (self::getRanges() as [$rangePrefix, $groupIdentifier, $groupName]) {
             if ($is13) {
                 $groups[] = new IsbnGroup($rangePrefix . '-' . $groupIdentifier, $groupName);
             } elseif ($rangePrefix === '978') {
@@ -67,9 +65,7 @@ final class RangeService
         $isbnPrefix = ($length === 10) ? '978' : substr($isbn, 0, 3);
         $isbnDigits = ($length === 10) ? $isbn : substr($isbn, 3);
 
-        foreach (self::getRanges() as $rangeData) {
-            [$eanPrefix, $groupIdentifier, $groupName, $ranges] = $rangeData;
-
+        foreach (self::getRanges() as [$eanPrefix, $groupIdentifier, $groupName, $ranges]) {
             if ($isbnPrefix !== $eanPrefix) {
                 continue;
             }
@@ -85,8 +81,7 @@ final class RangeService
 
             $parts = null;
 
-            foreach ($ranges as $range) {
-                [$rangeLength, $rangeStart, $rangeEnd] = $range;
+            foreach ($ranges as [$rangeLength, $rangeStart, $rangeEnd]) {
                 $rangeValue = substr($isbnDigits, $groupLength, $rangeLength);
                 $lastDigits = substr($isbnDigits, $groupLength + $rangeLength, -1);
                 $checkDigit = substr($isbnDigits, -1);
