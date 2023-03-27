@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+
+name: "Tags"
+
+on:
+  push:
+    tags:
+      - "**"
+
+permissions:
+  contents: "read"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  double_tag:
+    name: "Detect tag without new commit"
+    runs-on: "ubuntu-latest"
+    timeout-minutes: 1
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v3"
+      - name: "List commits with multiple tags"
+        run: |
+          ! git show-ref --tags | cut -d ' ' -f 1 | sort | uniq -d
