@@ -24,4 +24,9 @@ jobs:
         uses: "actions/checkout@v3"
       - name: "List commits with multiple tags"
         run: |
-          ! git show-ref --tags | cut -d ' ' -f 1 | sort | uniq -d
+          DUPLICATES="$(git show-ref --tags --hash=7 | sort | uniq --repeated)"
+          if [ -n "${DUPLICATES}" ]; then
+              echo "::error::Commit with multiple tags"
+              echo "${DUPLICATES}"
+              exit 10
+          fi
