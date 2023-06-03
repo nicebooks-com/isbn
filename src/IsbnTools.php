@@ -9,9 +9,9 @@ namespace Nicebooks\Isbn;
  */
 final class IsbnTools
 {
-    private bool $cleanupBeforeValidate;
+    private readonly bool $cleanupBeforeValidate;
 
-    private bool $validateCheckDigit;
+    private readonly bool $validateCheckDigit;
 
     public function __construct(bool $cleanupBeforeValidate = true, bool $validateCheckDigit = true)
     {

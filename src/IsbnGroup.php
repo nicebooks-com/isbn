@@ -16,14 +16,14 @@ final class IsbnGroup
      *
      * Example: "2" for ISBN-10, "978-2" for ISBN-13.
      */
-    private string $prefix;
+    private readonly string $prefix;
 
     /**
      * The group name.
      *
      * Example: "French language".
      */
-    private string $name;
+    private readonly string $name;
 
     public function __construct(string $prefix, string $name)
     {
