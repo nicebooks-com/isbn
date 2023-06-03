@@ -11,28 +11,40 @@ use Nicebooks\Isbn\Internal\RangeInfo;
 /**
  * Represents a valid ISBN number. This class is immutable.
  */
-final class Isbn
+abstract class Isbn
 {
-    private readonly string $isbn;
-
-    private readonly bool $is13;
+    protected readonly string $isbn;
 
     private readonly ?RangeInfo $rangeInfo;
 
     /**
      * @param string $isbn The unformatted ISBN number, validated.
-     * @param bool   $is13 Whether this is an ISBN-13.
      */
-    private function __construct(string $isbn, bool $is13)
+    private function __construct(string $isbn)
     {
         $this->isbn = $isbn;
-        $this->is13 = $is13;
-
         $this->rangeInfo = RangeService::getRangeInfo($isbn);
     }
 
     /**
-     * @throws Exception\InvalidIsbnException
+     * Proxy method to create Isbn10 instances from within the Isbn13 class.
+     */
+    final protected function newIsbn10(string $isbn): Isbn10
+    {
+        return new Isbn10($isbn);
+    }
+
+    /**
+     * Proxy method to create Isbn13 instances from within the Isbn10 class.
+     */
+    final protected function newIsbn13(string $isbn): Isbn13
+    {
+        return new Isbn13($isbn);
+    }
+
+    /**
+     * @throws Exception\InvalidIsbnException If the ISBN is not valid.
+     * @throws Exception\IsbnNotConvertibleException If called on the Isbn10 class, and an ISBN-13 is passed.
      */
     public static function of(string $isbn) : Isbn
     {
@@ -47,7 +59,7 @@ final class Isbn
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
             }
 
-            return new Isbn($isbn, true);
+            return new Isbn13($isbn);
         }
 
         $isbn = strtoupper($isbn);
@@ -57,60 +69,29 @@ final class Isbn
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
             }
 
-            return new Isbn($isbn, false);
+            return new Isbn10($isbn);
         }
 
         throw Exception\InvalidIsbnException::forIsbn($isbn);
     }
 
-    public function is10() : bool
-    {
-        return ! $this->is13;
-    }
+    abstract public function is10() : bool;
 
-    public function is13() : bool
-    {
-        return $this->is13;
-    }
+    abstract public function is13() : bool;
 
-    public function isConvertibleTo10() : bool
-    {
-        if ($this->is13) {
-            return str_starts_with($this->isbn, '978');
-        }
-
-        return true;
-    }
+    abstract public function isConvertibleTo10() : bool;
 
     /**
      * Returns a copy of this Isbn, converted to ISBN-10.
      *
-     * @return Isbn The ISBN-10.
-     *
      * @throws Exception\IsbnNotConvertibleException If this is an ISBN-13 not starting with 978.
      */
-    public function to10() : Isbn
-    {
-        if (! $this->is13) {
-            return $this;
-        }
-
-        return new Isbn(Internal\Converter::convertIsbn13to10($this->isbn), false);
-    }
+    abstract public function to10() : Isbn10;
 
     /**
      * Returns a copy of this Isbn, converted to ISBN-13.
-     *
-     * @return Isbn The ISBN-13.
      */
-    public function to13() : Isbn
-    {
-        if ($this->is13) {
-            return $this;
-        }
-
-        return new Isbn(Internal\Converter::convertIsbn10to13($this->isbn), true);
-    }
+    abstract public function to13() : Isbn13;
 
     /**
      * Returns whether this ISBN is in a recognized group.
@@ -120,7 +101,7 @@ final class Isbn
      * - getGroupIdentifier()
      * - getGroupName()
      */
-    public function isValidGroup() : bool
+    final public function isValidGroup() : bool
     {
         return $this->rangeInfo !== null;
     }
@@ -144,7 +125,7 @@ final class Isbn
      * - getTitleIdentifier()
      * - getParts()
      */
-    public function isValidRange() : bool
+    final public function isValidRange() : bool
     {
         return $this->rangeInfo !== null && $this->rangeInfo->parts !== null;
     }
@@ -159,7 +140,7 @@ final class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
      */
-    public function getGroupIdentifier() : string
+    final public function getGroupIdentifier() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -173,7 +154,7 @@ final class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
      */
-    public function getGroupName() : string
+    final public function getGroupName() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -189,7 +170,7 @@ final class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
-    public function getPublisherIdentifier() : string
+    final public function getPublisherIdentifier() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -199,7 +180,7 @@ final class Isbn
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->rangeInfo->parts[$this->is13 ? 2 : 1];
+        return $this->rangeInfo->parts[$this->is13() ? 2 : 1];
     }
 
     /**
@@ -209,7 +190,7 @@ final class Isbn
      *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
-    public function getTitleIdentifier() : string
+    final public function getTitleIdentifier() : string
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -219,7 +200,7 @@ final class Isbn
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->rangeInfo->parts[$this->is13 ? 3 : 2];
+        return $this->rangeInfo->parts[$this->is13() ? 3 : 2];
     }
 
     /**
@@ -227,7 +208,7 @@ final class Isbn
      *
      * The check digit is the single digit at the end of the ISBN which validates the ISBN.
      */
-    public function getCheckDigit() : string
+    final public function getCheckDigit() : string
     {
         return $this->isbn[-1];
     }
@@ -235,7 +216,7 @@ final class Isbn
     /**
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
-    public function getParts() : array
+    final public function getParts() : array
     {
         if ($this->rangeInfo === null) {
             throw IsbnException::unknownGroup($this->isbn);
@@ -253,7 +234,7 @@ final class Isbn
      *
      * If the ISBN number is not in a recognized range, it is returned unformatted.
      */
-    public function format() : string
+    final public function format() : string
     {
         if ($this->rangeInfo === null || $this->rangeInfo->parts === null) {
             return $this->isbn;
@@ -268,7 +249,7 @@ final class Isbn
      * An ISBN-10 is considered equal to its corresponding ISBN-13.
      * For example, `Isbn::of('978-0-399-16534-4')->isEqualTo("0-399-16534-7")` returns true.
      */
-    public function isEqualTo(Isbn $otherIsbn) : bool
+    final public function isEqualTo(Isbn $otherIsbn) : bool
     {
         return $this->to13()->isbn === $otherIsbn->to13()->isbn;
     }
@@ -276,7 +257,7 @@ final class Isbn
     /**
      * Returns the unformatted ISBN number.
      */
-    public function __toString() : string
+    final public function __toString() : string
     {
         return $this->isbn;
     }

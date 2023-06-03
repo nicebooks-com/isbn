@@ -100,31 +100,42 @@ Method summary:
     var_export($formatter->format('9781234567897')); // '978-1-234-56789-7'
     ```
 
-### The `Isbn` class
+### The `Isbn` classes
 
-The `Isbn` class is an immutable class representing a valid ISBN-10 or ISBN-13.
+The `Isbn` class is an abstract, immutable class representing a valid ISBN-10 or ISBN-13.
 It is an alternate way to access the functionality provided by `IsbnTools`, and offers a convenient way to pass an ISBN number around,
 guaranteeing both its validity and its integrity.
+
+`Isbn` has 2 subclasses: `Isbn10` and `Isbn13`, allowing for narrower typing if your application expects only ISBN-10 or only ISBN-13 at some point.
 
 An `Isbn` instance is obtained with the `of()` factory method:
 
 ```php
 use Nicebooks\Isbn\Isbn;
-$isbn = Isbn::of('123456789X');
+
+$isbn = Isbn::of('123456789X'); // will return an instance of Isbn10
+$isbn = Isbn::of('9781234567897'); // will return an instance of Isbn13
+```
+
+You can also use the `Isbn10::of()` and `Isbn13::of()` factory methods:
+
+```php
+Isbn10::of('123456789X'); // equivalent to Isbn::of('123456789X')->to10();
+Isbn13::of('9781234567897'); // equivalent to Isbn::of('9781234567897')->to13();
 ```
 
 Method summary:
 
-- `is10() : bool` Returns `true` for an ISBN-10, or `false` for an ISBN-13.
-- `is13() : bool` Returns `true` for an ISBN-13, or `false` for an ISBN-10.
-- `isConvertibleTo10() : bool` Returns `true` if the ISBN can be converted to an ISBN-10, `false` otherwise.
-- `to10() : Isbn` Returns an `Isbn` instance representing the ISBN converted to an ISBN-10.
-- `to13() : Isbn` Returns an `Isbn` instance representing the ISBN converted to an ISBN-13.
-- `format() : string` Returns the formatted representation of the ISBN.
+- `is10(): bool` Returns `true` for an ISBN-10, or `false` for an ISBN-13.
+- `is13(): bool` Returns `true` for an ISBN-13, or `false` for an ISBN-10.
+- `isConvertibleTo10(): bool` Returns `true` if the ISBN can be converted to an ISBN-10, `false` otherwise.
+- `to10(): Isbn10` Converts the ISBN to an ISBN-10, or throws an `IsbnNotConvertibleException`
+- `to13(): Isbn13` Converts the ISBN to an ISBN-13
+- `format(): string` Returns the formatted representation of the ISBN.
 
 ### Exceptions
 
 Exceptions live in the `Nicebooks\Isbn\Exception` namespace.
 
 - `InvalidIsbnException` is thrown when an invalid ISBN is detected
-- `IsbnNotConvertibleException` is thrown when trying to convert an ISBN-13 that does not start with '978' to an ISBN-10.
+- `IsbnNotConvertibleException` is thrown when trying to convert an ISBN-13 that does not start with `978` to an ISBN-10.
