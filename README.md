@@ -21,7 +21,9 @@ composer require nicebooks/isbn
 
 ## Requirements
 
-This library requires PHP 7.4 or higher.
+This current version of this library requires PHP 8.1 or higher.
+
+You may use earlier versions of `nicebooks/isbn` with earlier versions of PHP, but you will only receive ISBN range updates if you use the latest version.
 
 ## Project status & release process
 
