@@ -90,7 +90,7 @@ Method summary:
 - `convertIsbn13to10(string $isbn) : string` converts the given ISBN-13 to an ISBN-10.
 
     ```php
-    var_export($tools->convertIsbn10to13('9781234567897')); // '123456789X'
+    var_export($tools->convertIsbn13to10('9781234567897')); // '123456789X'
     ```
 
 - `format(string $isbn) : string` formats the given ISBN by adding hyphens at the proper places.
