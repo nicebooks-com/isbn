@@ -76,7 +76,7 @@ final class Isbn
     public function isConvertibleTo10() : bool
     {
         if ($this->is13) {
-            return substr($this->isbn, 0, 3) === '978';
+            return str_starts_with($this->isbn, '978');
         }
 
         return true;
