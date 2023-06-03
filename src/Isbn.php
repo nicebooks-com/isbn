@@ -13,11 +13,11 @@ use Nicebooks\Isbn\Internal\RangeInfo;
  */
 final class Isbn
 {
-    private string $isbn;
+    private readonly string $isbn;
 
-    private bool $is13;
+    private readonly bool $is13;
 
-    private ?RangeInfo $rangeInfo;
+    private readonly ?RangeInfo $rangeInfo;
 
     /**
      * @param string $isbn The unformatted ISBN number, validated.
