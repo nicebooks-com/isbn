@@ -11,28 +11,34 @@ use Nicebooks\Isbn\Internal\RangeInfo;
 /**
  * Represents a valid ISBN number. This class is immutable.
  */
-final class Isbn
+abstract class Isbn
 {
-    private readonly string $isbn;
-
-    private readonly bool $is13;
+    protected readonly string $isbn;
 
     private readonly ?RangeInfo $rangeInfo;
 
     /**
      * @param string $isbn The unformatted ISBN number, validated.
-     * @param bool   $is13 Whether this is an ISBN-13.
      */
-    private function __construct(string $isbn, bool $is13)
+    private function __construct(string $isbn)
     {
         $this->isbn = $isbn;
-        $this->is13 = $is13;
-
         $this->rangeInfo = RangeService::getRangeInfo($isbn);
     }
 
+    protected function newIsbn10(string $isbn): Isbn10
+    {
+        return new Isbn10($isbn);
+    }
+
+    protected function newIsbn13(string $isbn): Isbn13
+    {
+        return new Isbn13($isbn);
+    }
+
     /**
-     * @throws Exception\InvalidIsbnException
+     * @throws Exception\InvalidIsbnException If the ISBN is not valid.
+     * @throws Exception\IsbnNotConvertibleException If called on the Isbn10 class, and an ISBN-13 is passed.
      */
     public static function of(string $isbn) : Isbn
     {
@@ -47,7 +53,7 @@ final class Isbn
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
             }
 
-            return new Isbn($isbn, true);
+            return new Isbn13($isbn);
         }
 
         $isbn = strtoupper($isbn);
@@ -57,60 +63,29 @@ final class Isbn
                 throw Exception\InvalidIsbnException::forIsbn($isbn);
             }
 
-            return new Isbn($isbn, false);
+            return new Isbn10($isbn);
         }
 
         throw Exception\InvalidIsbnException::forIsbn($isbn);
     }
 
-    public function is10() : bool
-    {
-        return ! $this->is13;
-    }
+    abstract public function is10() : bool;
 
-    public function is13() : bool
-    {
-        return $this->is13;
-    }
+    abstract public function is13() : bool;
 
-    public function isConvertibleTo10() : bool
-    {
-        if ($this->is13) {
-            return str_starts_with($this->isbn, '978');
-        }
-
-        return true;
-    }
+    abstract public function isConvertibleTo10() : bool;
 
     /**
      * Returns a copy of this Isbn, converted to ISBN-10.
      *
-     * @return Isbn The ISBN-10.
-     *
      * @throws Exception\IsbnNotConvertibleException If this is an ISBN-13 not starting with 978.
      */
-    public function to10() : Isbn
-    {
-        if (! $this->is13) {
-            return $this;
-        }
-
-        return new Isbn(Internal\Converter::convertIsbn13to10($this->isbn), false);
-    }
+    abstract public function to10() : Isbn10;
 
     /**
      * Returns a copy of this Isbn, converted to ISBN-13.
-     *
-     * @return Isbn The ISBN-13.
      */
-    public function to13() : Isbn
-    {
-        if ($this->is13) {
-            return $this;
-        }
-
-        return new Isbn(Internal\Converter::convertIsbn10to13($this->isbn), true);
-    }
+    abstract public function to13() : Isbn13;
 
     /**
      * Returns whether this ISBN is in a recognized group.
@@ -199,7 +174,7 @@ final class Isbn
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->rangeInfo->parts[$this->is13 ? 2 : 1];
+        return $this->rangeInfo->parts[$this->is13() ? 2 : 1];
     }
 
     /**
@@ -219,7 +194,7 @@ final class Isbn
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->rangeInfo->parts[$this->is13 ? 3 : 2];
+        return $this->rangeInfo->parts[$this->is13() ? 3 : 2];
     }
 
     /**

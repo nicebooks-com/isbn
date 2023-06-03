@@ -100,17 +100,20 @@ Method summary:
     var_export($formatter->format('9781234567897')); // '978-1-234-56789-7'
     ```
 
-### The `Isbn` class
+### The `Isbn` classes
 
-The `Isbn` class is an immutable class representing a valid ISBN-10 or ISBN-13.
+The `Isbn` class is an abstract, immutable class representing a valid ISBN-10 or ISBN-13.
 It is an alternate way to access the functionality provided by `IsbnTools`, and offers a convenient way to pass an ISBN number around,
 guaranteeing both its validity and its integrity.
+
+`Isbn` class has 2 subclasses, `Isbn10` and `Isbn13`, allowing for narrower typing if your application expects only ISBN-10 or only ISBN-13 at some point.
 
 An `Isbn` instance is obtained with the `of()` factory method:
 
 ```php
 use Nicebooks\Isbn\Isbn;
-$isbn = Isbn::of('123456789X');
+$isbn = Isbn::of('123456789X'); // will return an instance of Isbn10
+$isbn = Isbn::of('9781234567897'); // will return an instance of Isbn13
 ```
 
 Method summary:
