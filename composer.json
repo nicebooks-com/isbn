@@ -19,7 +19,7 @@
     "brick/varexporter": "~0.3.0",
     "phpunit/phpunit": "^9.0",
     "php-coveralls/php-coveralls": "^2.5.2",
-    "vimeo/psalm": "5.12.0"
+    "vimeo/psalm": "5.15.0"
   },
   "autoload": {
     "psr-4": {
