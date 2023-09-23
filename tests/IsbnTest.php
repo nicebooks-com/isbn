@@ -8,6 +8,7 @@ use Nicebooks\Isbn\Exception\InvalidIsbnException;
 use Nicebooks\Isbn\Exception\IsbnException;
 use Nicebooks\Isbn\Exception\IsbnNotConvertibleException;
 use Nicebooks\Isbn\Isbn;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,18 +29,17 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerGet
-     *
      * @param string $isbn   The input ISBN.
      * @param string $string The expected string value of the resulting Isbn object.
      * @param bool   $is13   Whether the ISBN is expected to be an ISBN-13.
      */
+    #[DataProvider('providerGet')]
     public function testGet(string $isbn, string $string, bool $is13) : void
     {
         $this->assertIsbnEquals(Isbn::of($isbn), $string, $is13);
     }
 
-    public function providerGet() : array
+    public static function providerGet() : array
     {
         return [
             [' 1-234-56789-x ', '123456789X', false],
@@ -48,17 +48,16 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerGetInvalidIsbnThrowsException
-     *
      * @param string $invalidIsbn The invalid ISBN.
      */
+    #[DataProvider('providerGetInvalidIsbnThrowsException')]
     public function testGetInvalidIsbnThrowsException(string $invalidIsbn) : void
     {
         $this->expectException(InvalidIsbnException::class);
         Isbn::of($invalidIsbn);
     }
 
-    public function providerGetInvalidIsbnThrowsException() : array
+    public static function providerGetInvalidIsbnThrowsException() : array
     {
         return [
             ['123456789'],
@@ -73,11 +72,10 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerTo10
-     *
      * @param string $isbn13 The input ISBN-13.
      * @param string $isbn10 The expected ISBN-10 output.
      */
+    #[DataProvider('providerTo10')]
     public function testTo10(string $isbn13, string $isbn10) : void
     {
         $inputIsbn = Isbn::of($isbn13);
@@ -88,7 +86,7 @@ class IsbnTest extends TestCase
         $this->assertIsbnEquals($outputIsbn, $isbn10, false);
     }
 
-    public function providerTo10() : array
+    public static function providerTo10() : array
     {
         return [
             ['9780123456786', '0123456789'],
@@ -111,17 +109,16 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsConvertibleTo10
-     *
      * @param string $isbn          The ISBN to test.
      * @param bool   $isConvertible Whether the ISBN is convertible to an ISBN-10.
      */
+    #[DataProvider('providerIsConvertibleTo10')]
     public function testIsConvertibleTo10(string $isbn, bool $isConvertible) : void
     {
         $this->assertSame($isConvertible, Isbn::of($isbn)->isConvertibleTo10());
     }
 
-    public function providerIsConvertibleTo10() : array
+    public static function providerIsConvertibleTo10() : array
     {
         return [
             ['0123456789', true],
@@ -134,17 +131,16 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerNotConvertibleTo10
-     *
      * @param string $isbn13 The non-convertible ISBN-13.
      */
+    #[DataProvider('providerNotConvertibleTo10')]
     public function testNotConvertibleTo10ThrowsException(string $isbn13) : void
     {
         $this->expectException(IsbnNotConvertibleException::class);
         Isbn::of($isbn13)->to10();
     }
 
-    public function providerNotConvertibleTo10() : array
+    public static function providerNotConvertibleTo10() : array
     {
         return [
             ['9790000000001'],
@@ -153,11 +149,10 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerTo13
-     *
      * @param string $isbn10 The input ISBN-10.
      * @param string $isbn13 The expected ISBN-13 output.
      */
+    #[DataProvider('providerTo13')]
     public function testTo13(string $isbn10, string $isbn13) : void
     {
         $inputIsbn = Isbn::of($isbn10);
@@ -168,7 +163,7 @@ class IsbnTest extends TestCase
         $this->assertIsbnEquals($outputIsbn, $isbn13, true);
     }
 
-    public function providerTo13() : array
+    public static function providerTo13() : array
     {
         return [
             ['0123456789', '9780123456786'],
@@ -191,12 +186,11 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerInfoAndFormat
-     *
      * @param string $isbn           The ISBN to test.
      * @param string $expectedFormat The expected formatted output.
      * @param string $expectedGroup  The expected group name.
      */
+    #[DataProvider('providerInfoAndFormat')]
     public function testInfoAndFormat(string $isbn, string $expectedFormat, string $expectedGroup) : void
     {
         $isbn = Isbn::of($isbn);
@@ -225,7 +219,7 @@ class IsbnTest extends TestCase
         $this->assertSame($expectedGroup, $isbn->getGroupName());
     }
 
-    public function providerInfoAndFormat() : array
+    public static function providerInfoAndFormat() : array
     {
         return [
             ['0001234560', '0-00-123456-0', 'English language'],
@@ -255,9 +249,7 @@ class IsbnTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providerIsValidGroupAndRange
-     */
+    #[DataProvider('providerIsValidGroupAndRange')]
     public function testIsValidGroupAndRange(string $isbnString, bool $isValidGroup, bool $isValidRange) : void
     {
         $isbn = Isbn::of($isbnString);
@@ -291,7 +283,7 @@ class IsbnTest extends TestCase
         }
     }
 
-    public function providerIsValidGroupAndRange() : array
+    public static function providerIsValidGroupAndRange() : array
     {
         return [
             ['0001234560', true, true],
@@ -326,17 +318,16 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsEqualTo
-     *
      * @param string $isbn        Any ISBN.
      * @param string $anotherIsbn The ISBN-10 that is expected to be equal to $isbn.
      */
+    #[DataProvider('providerIsEqualTo')]
     public function testIsEqualTo(string $isbn, string $anotherIsbn, bool $isEqual) : void
     {
         $this->assertSame($isEqual, Isbn::of($isbn)->isEqualTo(Isbn::of($anotherIsbn)));
     }
 
-    public function providerIsEqualTo() : array
+    public static function providerIsEqualTo() : array
     {
         return [
             ['9780123456786', '0123456789', true],

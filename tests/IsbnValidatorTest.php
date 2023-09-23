@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnTools;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,18 +14,17 @@ use PHPUnit\Framework\TestCase;
 class IsbnValidatorTest extends TestCase
 {
     /**
-     * @dataProvider providerIsValidIsbn
-     *
      * @param string $isbn    The ISBN to validate.
      * @param bool   $isValid The expected result.
      */
+    #[DataProvider('providerIsValidIsbn')]
     public function testIsValidIsbn(string $isbn, bool $isValid) : void
     {
         $tools = new IsbnTools();
         $this->assertSame($isValid, $tools->isValidIsbn($isbn));
     }
 
-    public function providerIsValidIsbn() : array
+    public static function providerIsValidIsbn() : array
     {
         return [
             ['0123456789', true],
@@ -103,13 +103,12 @@ class IsbnValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsValidIsbn10
-     *
      * @param string $isbn                  The ISBN to validate.
      * @param bool   $cleanupBeforeValidate Whether to clean up the ISBN before validation.
      * @param bool   $validateCheckDigit    Whether to validate the check digit.
      * @param bool   $isValid               The expected result.
      */
+    #[DataProvider('providerIsValidIsbn10')]
     public function testIsValidIsbn10(string $isbn, bool $cleanupBeforeValidate, bool $validateCheckDigit, bool $isValid) : void
     {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
@@ -118,7 +117,7 @@ class IsbnValidatorTest extends TestCase
         $this->assertSame($isValid, $tools->isValidIsbn10($isbn));
     }
 
-    public function providerIsValidIsbn10() : array
+    public static function providerIsValidIsbn10() : array
     {
         return [
             ['123456789X', false, false, true],
@@ -154,13 +153,12 @@ class IsbnValidatorTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsValidIsbn13
-     *
      * @param string $isbn                  The ISBN to validate.
      * @param bool   $cleanupBeforeValidate Whether to clean up the ISBN before validation.
      * @param bool   $validateCheckDigit    Whether to validate the check digit.
      * @param bool   $isValid               The expected result.
      */
+    #[DataProvider('providerIsValidIsbn13')]
     public function testIsValidIsbn13(string $isbn, bool $cleanupBeforeValidate, bool $validateCheckDigit, bool $isValid) : void
     {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
@@ -169,7 +167,7 @@ class IsbnValidatorTest extends TestCase
         $this->assertSame($isValid, $tools->isValidIsbn13($isbn));
     }
 
-    public function providerIsValidIsbn13() : array
+    public static function providerIsValidIsbn13() : array
     {
         return [
             ['9781234567897', false, false, true],

@@ -6,6 +6,7 @@ namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\Exception\InvalidIsbnException;
 use Nicebooks\Isbn\IsbnTools;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,18 +15,17 @@ use PHPUnit\Framework\TestCase;
 class IsbnFormatterTest extends TestCase
 {
     /**
-     * @dataProvider providerFormat
-     *
      * @param string $isbn           The input ISBN.
      * @param string $expectedOutput The expected formatted output.
      */
+    #[DataProvider('providerFormat')]
     public function testFormat(string $isbn, string $expectedOutput) : void
     {
         $tools = new IsbnTools(true, false);
         $this->assertSame($expectedOutput, $tools->format($isbn));
     }
 
-    public function providerFormat() : array
+    public static function providerFormat() : array
     {
         return [
             ['0001234567', '0-00-123456-7'],
@@ -65,10 +65,9 @@ class IsbnFormatterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerFormatInvalidIsbnThrowsException
-     *
      * @param string $isbn The invalid ISBN.
      */
+    #[DataProvider('providerFormatInvalidIsbnThrowsException')]
     public function testFormatInvalidIsbnThrowsException(string $isbn) : void
     {
         $tools = new IsbnTools();
@@ -77,7 +76,7 @@ class IsbnFormatterTest extends TestCase
         $tools->format($isbn);
     }
 
-    public function providerFormatInvalidIsbnThrowsException() : array
+    public static function providerFormatInvalidIsbnThrowsException() : array
     {
         return [
             ['123456789'],

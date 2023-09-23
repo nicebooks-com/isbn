@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn\Tests;
 
 use Nicebooks\Isbn\IsbnGroup;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -33,10 +35,8 @@ class IsbnGroupTest extends TestCase
         }
     }
 
-    /**
-     * @depends testReturnTypesAndCounts
-     * @dataProvider providerIsbnGroupContents
-     */
+    #[Depends('testReturnTypesAndCounts')]
+    #[DataProvider('providerIsbnGroupContents')]
     public function testIsbnGroupContents(bool $is13, string $prefix, string $name) : void
     {
         $isbnGroups = $is13
@@ -56,7 +56,7 @@ class IsbnGroupTest extends TestCase
 
     }
 
-    public function providerIsbnGroupContents() : array
+    public static function providerIsbnGroupContents() : array
     {
         return [
             [false, '0', 'English language'],
