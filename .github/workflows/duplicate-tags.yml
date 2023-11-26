@@ -3,7 +3,7 @@
 name: "Tags"
 
 env:
-  IGNORE_COMMITS: |
+  IGNORE_COMMITS: |-
     54fc985
     592e646
     8e7230b
