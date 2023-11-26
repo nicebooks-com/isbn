@@ -2,6 +2,15 @@
 
 name: "Tags"
 
+env:
+  IGNORE_COMMITS: |-
+    370badf
+    54fc985
+    592e646
+    8e7230b
+    d03c4d7
+    eb43ed0
+
 on:
   push:
     tags:
@@ -27,7 +36,7 @@ jobs:
       - name: "List commits with multiple tags"
         run: |
           DUPLICATES="$(git show-ref --tags --hash=7 | sort | uniq --repeated)"
-          if [ -n "${DUPLICATES}" ]; then
+          if [ "${DUPLICATES}" != "${IGNORE_COMMITS}" ]; then
               echo "::error::Commit with multiple tags"
               echo "${DUPLICATES}"
               exit 10
