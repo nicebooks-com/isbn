@@ -153,4 +153,5 @@ system('vendor/bin/phpunit --colors=always', $status);
 
 if ($status === 0) {
     system('git commit -a -m ' . escapeshellarg($commitMessage));
+    system('git push');
 }
