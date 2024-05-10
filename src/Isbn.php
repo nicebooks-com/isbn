@@ -247,7 +247,7 @@ abstract class Isbn
      * Checks if this ISBN is equal to another ISBN.
      *
      * An ISBN-10 is considered equal to its corresponding ISBN-13.
-     * For example, `Isbn::of('978-0-399-16534-4')->isEqualTo("0-399-16534-7")` returns true.
+     * For example, `Isbn::of('978-0-399-16534-4')->isEqualTo(Isbn::of("0-399-16534-7"))` returns true.
      */
     final public function isEqualTo(Isbn $otherIsbn) : bool
     {
