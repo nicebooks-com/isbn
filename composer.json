@@ -16,7 +16,7 @@
   },
   "require-dev": {
     "ext-dom": "*",
-    "brick/varexporter": "~0.3.0",
+    "brick/varexporter": "~0.4.0",
     "phpunit/phpunit": "^10.3",
     "php-coveralls/php-coveralls": "^2.5.2",
     "vimeo/psalm": "5.15.0"
