@@ -10,6 +10,7 @@ env:
     8e7230b
     d03c4d7
     eb43ed0
+    ffc713c
 
 on:
   push:
