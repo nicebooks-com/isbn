@@ -81,7 +81,7 @@ if ($oldRangeData === $rangeData) {
 
 file_put_contents($rangeFile, sprintf(
     "<?php return %s;\n",
-    VarExporter::export($rangeData, VarExporter::INLINE_NUMERIC_SCALAR_ARRAY)
+    VarExporter::export($rangeData, VarExporter::INLINE_SCALAR_LIST)
 ));
 
 $agenciesUpdated = [];
