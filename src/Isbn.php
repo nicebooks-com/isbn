@@ -11,11 +11,11 @@ use Nicebooks\Isbn\Internal\RangeInfo;
 /**
  * Represents a valid ISBN number. This class is immutable.
  */
-abstract class Isbn
+abstract readonly class Isbn
 {
-    protected readonly string $isbn;
+    protected string $isbn;
 
-    private readonly ?RangeInfo $rangeInfo;
+    private ?RangeInfo $rangeInfo;
 
     /**
      * @param string $isbn The unformatted ISBN number, validated.

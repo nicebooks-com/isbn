@@ -9,21 +9,21 @@ use Nicebooks\Isbn\Internal\RangeService;
 /**
  * Represents a national or geographic group of publishers.
  */
-final class IsbnGroup
+final readonly class IsbnGroup
 {
     /**
      * The group prefix.
      *
      * Example: "2" for ISBN-10, "978-2" for ISBN-13.
      */
-    private readonly string $prefix;
+    private string $prefix;
 
     /**
      * The group name.
      *
      * Example: "French language".
      */
-    private readonly string $name;
+    private string $name;
 
     public function __construct(string $prefix, string $name)
     {

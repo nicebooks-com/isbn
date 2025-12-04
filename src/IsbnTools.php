@@ -7,11 +7,11 @@ namespace Nicebooks\Isbn;
 /**
  * Tools to work with ISBN numbers as plain strings.
  */
-final class IsbnTools
+final readonly class IsbnTools
 {
-    private readonly bool $cleanupBeforeValidate;
+    private bool $cleanupBeforeValidate;
 
-    private readonly bool $validateCheckDigit;
+    private bool $validateCheckDigit;
 
     public function __construct(bool $cleanupBeforeValidate = true, bool $validateCheckDigit = true)
     {

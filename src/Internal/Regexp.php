@@ -12,7 +12,7 @@ namespace Nicebooks\Isbn\Internal;
  *
  * @internal
  */
-final class Regexp
+final readonly class Regexp
 {
     /**
      * Matches an uppercase, unformatted ISBN-10.

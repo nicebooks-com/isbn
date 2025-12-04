@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nicebooks\Isbn;
 
-final class Isbn10 extends Isbn
+final readonly class Isbn10 extends Isbn
 {
     public static function of(string $isbn) : Isbn10
     {
