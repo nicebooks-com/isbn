@@ -14,6 +14,21 @@ require 'vendor/autoload.php';
  * @see https://www.isbn-international.org/range_file_generation
  */
 
+function countValidIsbns(array $rangeData) : int
+{
+    $validIsbnCount = 0;
+
+    foreach ($rangeData as [$prefix1, $prefix2, $name, $ranges]) {
+        foreach ($ranges as [$rangeLength, $rangeStart, $rangeEnd]) {
+            $totalLength = strlen($prefix1) + strlen($prefix2) + $rangeLength;
+            $rangeCount = ((int) $rangeEnd) - ((int) $rangeStart) + 1;
+            $validIsbnCount += 10 ** (12 - $totalLength) * $rangeCount;
+        }
+    }
+
+    return $validIsbnCount;
+}
+
 $rangeMessageXML = file_get_contents('https://www.isbn-international.org/export_rangemessage.xml');
 
 if ($rangeMessageXML === false) {
@@ -21,7 +36,8 @@ if ($rangeMessageXML === false) {
     exit;
 }
 
-$rangeFile = 'data/ranges.php';
+$rangesFile = 'data/ranges.php';
+$statsFile = 'data/stats.php';
 
 $document = new DOMDocument();
 $document->loadXML($rangeMessageXML);
@@ -72,16 +88,26 @@ foreach ($groupNodeList as $groupNode) {
     $groupCount++;
 }
 
-$oldRangeData = require $rangeFile;
+$oldRangeData = require $rangesFile;
 
 if ($oldRangeData === $rangeData) {
     echo "Range file is current.\n";
     exit;
 }
 
-file_put_contents($rangeFile, sprintf(
+$stats = [
+    'groupCount' => $groupCount,
+    'validIsbnCount' => countValidIsbns($rangeData),
+];
+
+file_put_contents($rangesFile, sprintf(
     "<?php return %s;\n",
-    VarExporter::export($rangeData, VarExporter::INLINE_SCALAR_LIST)
+    VarExporter::export($rangeData, VarExporter::INLINE_SCALAR_LIST),
+));
+
+file_put_contents($statsFile, sprintf(
+    "<?php return %s;\n",
+    VarExporter::export($stats, VarExporter::INLINE_SCALAR_LIST),
 ));
 
 $agenciesUpdated = [];
