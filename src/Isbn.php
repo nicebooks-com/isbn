@@ -116,7 +116,7 @@ abstract readonly class Isbn
      * Note that this method returning true only means that the ISBN number is *potentially* valid,
      * but does not indicate in any way whether the ISBN number has been *assigned* to a book yet.
      *
-     * If this method returns true, format() will return a hyphenated result,
+     * If this method returns true, toFormattedString() will return a hyphenated result,
      * and the following methods will not throw an exception:
      *
      * - getGroupIdentifier()
@@ -233,14 +233,12 @@ abstract readonly class Isbn
      * Returns the formatted (hyphenated) ISBN number.
      *
      * If the ISBN number is not in a recognized range, it is returned unformatted.
+     *
+     * @deprecated Use toFormattedString() instead.
      */
     final public function format() : string
     {
-        if ($this->rangeInfo === null || $this->rangeInfo->parts === null) {
-            return $this->isbn;
-        }
-
-        return implode('-', $this->rangeInfo->parts);
+        return $this->toFormattedString();
     }
 
     /**
@@ -257,6 +255,25 @@ abstract readonly class Isbn
     /**
      * Returns the unformatted ISBN number.
      */
+    final public function toString() : string
+    {
+        return $this->isbn;
+    }
+
+    /**
+     * Returns the formatted (hyphenated) ISBN number.
+     *
+     * If the ISBN number is not in a recognized range, it is returned unformatted.
+     */
+    final public function toFormattedString() : string
+    {
+        if ($this->rangeInfo === null || $this->rangeInfo->parts === null) {
+            return $this->isbn;
+        }
+
+        return implode('-', $this->rangeInfo->parts);
+    }
+
     final public function __toString() : string
     {
         return $this->isbn;

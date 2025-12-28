@@ -197,6 +197,7 @@ class IsbnTest extends TestCase
         $expectedParts = explode('-', $expectedFormat);
 
         $this->assertSame($expectedFormat, $isbn->format());
+        $this->assertSame($expectedFormat, $isbn->toFormattedString());
         $this->assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {
