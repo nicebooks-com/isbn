@@ -7,11 +7,13 @@ namespace Nicebooks\Isbn;
 use Nicebooks\Isbn\Exception\IsbnException;
 use Nicebooks\Isbn\Internal\RangeService;
 use Nicebooks\Isbn\Internal\RangeInfo;
+use Override;
+use Stringable;
 
 /**
  * Represents a valid ISBN number. This class is immutable.
  */
-abstract readonly class Isbn
+abstract readonly class Isbn implements Stringable
 {
     protected string $isbn;
 
@@ -274,6 +276,7 @@ abstract readonly class Isbn
         return implode('-', $this->rangeInfo->parts);
     }
 
+    #[Override]
     final public function __toString() : string
     {
         return $this->isbn;
