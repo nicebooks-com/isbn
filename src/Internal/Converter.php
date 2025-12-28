@@ -34,7 +34,7 @@ final readonly class Converter
      */
     public static function convertIsbn13to10(string $isbn) : string
     {
-        if (substr($isbn, 0, 3) !== '978') {
+        if (!str_starts_with($isbn, '978')) {
             throw IsbnNotConvertibleException::forIsbn($isbn);
         }
 
