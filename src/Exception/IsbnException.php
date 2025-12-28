@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Nicebooks\Isbn\Exception;
 
+use RuntimeException;
+
 /**
  * Base class for all ISBN exceptions.
  */
-class IsbnException extends \Exception
+class IsbnException extends RuntimeException
 {
     public static function unknownGroup(string $isbn) : IsbnException
     {
