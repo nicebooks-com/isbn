@@ -11,7 +11,12 @@ use Override;
 use Stringable;
 
 /**
- * Represents an ISBN number with a valid checksum. This class is immutable.
+ * Represents an immutable ISBN number.
+ *
+ * Instances of this class always have valid digits, length, and check digit. This basic validation does not depend on
+ * the version of the ISBN International data file used by this version of nicebooks/isbn.
+ *
+ * Full validation, which does depend on the data file version, can be performed with `isValid()`.
  */
 abstract readonly class Isbn implements Stringable
 {
@@ -96,9 +101,11 @@ abstract readonly class Isbn implements Stringable
     abstract public function to13() : Isbn13;
 
     /**
-     * Returns whether this ISBN is in a recognized group.
+     * Returns whether this ISBN belongs to a known group.
      *
-     * If this method returns true, the following methods will not throw an exception:
+     * This method only validates the group. For a full group and range validation, use isValid().
+     *
+     * When this method returns true, the following methods do not throw an exception:
      *
      * - getGroupIdentifier()
      * - getGroupName()
@@ -109,17 +116,29 @@ abstract readonly class Isbn implements Stringable
     }
 
     /**
-     * Returns whether this ISBN is in a recognized range.
+     * Returns whether this ISBN is in a recognized group and range.
      *
-     * If this method returns false, we are unable to split the ISBN into parts, and format it with hyphens.
-     * This would mean that either the ISBN number is invalid, or this version of the library is compiled against
-     * an outdated data file from ISBN International.
+     * @deprecated Use isValid() instead.
+     */
+    final public function isValidRange() : bool
+    {
+        return $this->rangeInfo !== null && $this->rangeInfo->parts !== null;
+    }
+
+    /**
+     * Returns whether this ISBN belongs to a known group and range.
      *
-     * Note that this method returning true only means that the ISBN number is *potentially* valid,
-     * but does not indicate in any way whether the ISBN number has been *assigned* to a book yet.
+     * If this method returns true, we are able to split the ISBN into parts and format it with hyphens.
+     * If it returns false, the ISBN number is not formattable; it means that either the ISBN number is invalid, or that
+     * this version of the library is compiled against an outdated data file from ISBN International.
      *
-     * If this method returns true, toFormattedString() will return a hyphenated result,
-     * and the following methods will not throw an exception:
+     * Note that this method returning true only means that the ISBN number is potentially valid, but does not indicate
+     * in any way whether the ISBN number has been assigned to a book yet.
+     *
+     * This is the highest level of validation that can be performed by looking at the ISBN number alone.
+     *
+     * When this method returns true, toFormattedString() returns a hyphenated result, and the following methods do not
+     * throw an exception:
      *
      * - getGroupIdentifier()
      * - getGroupName()
@@ -127,7 +146,7 @@ abstract readonly class Isbn implements Stringable
      * - getTitleIdentifier()
      * - getParts()
      */
-    final public function isValidRange() : bool
+    final public function isValid() : bool
     {
         return $this->rangeInfo !== null && $this->rangeInfo->parts !== null;
     }
