@@ -11,7 +11,7 @@ use Override;
 use Stringable;
 
 /**
- * Represents a valid ISBN number. This class is immutable.
+ * Represents an ISBN number with a valid checksum. This class is immutable.
  */
 abstract readonly class Isbn implements Stringable
 {
@@ -133,12 +133,10 @@ abstract readonly class Isbn implements Stringable
     }
 
     /**
-     * Returns the group identifier.
+     * Returns the group identifier which identifies a country, geographic region, or language area.
      *
-     * The group or country identifier identifies a national or geographic grouping of publishers.
-     *
-     * For ISBN-13, the identifier includes the GS1 (EAN) prefix, for example "978-2".
-     * For the equivalent ISBN-10, the identifier would be "2".
+     * Example for ISBN-10: "1-338-87893-X" => "1"
+     * Example for ISBN-13: "978-1-338-87893-6" => "978-1"
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
      */
@@ -152,7 +150,9 @@ abstract readonly class Isbn implements Stringable
     }
 
     /**
-     * Returns the group name.
+     * Returns the English name of the country, geographic region, or language area that matches the group identifier.
+     *
+     * Examples: "English Language", "French language", "Japan", "Spain".
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
      */
@@ -169,6 +169,9 @@ abstract readonly class Isbn implements Stringable
      * Returns the publisher identifier.
      *
      * The publisher identifier identifies a particular publisher within a group.
+     *
+     * Example for ISBN-10: "1-338-87893-X" => "338"
+     * Example for ISBN-13: "978-1-338-87893-6" => "338"
      *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
@@ -190,6 +193,9 @@ abstract readonly class Isbn implements Stringable
      *
      * The title identifier identifies a particular title or edition of a title.
      *
+     * Example for ISBN-10: "1-338-87893-X" => "87893"
+     * Example for ISBN-13: "978-1-338-87893-6" => "87893"
+     *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
     final public function getTitleIdentifier() : string
@@ -208,6 +214,9 @@ abstract readonly class Isbn implements Stringable
     /**
      * Returns the check digit.
      *
+     * Example for ISBN-10: "1-338-87893-X" => "X"
+     * Example for ISBN-13: "978-1-338-87893-6" => "6"
+     *
      * The check digit is the single digit at the end of the ISBN which validates the ISBN.
      */
     final public function getCheckDigit() : string
@@ -216,6 +225,11 @@ abstract readonly class Isbn implements Stringable
     }
 
     /**
+     * Returns the parts that constitute this ISBN number, as an array of strings.
+     *
+     * Example for ISBN-10: "1-338-87893-X" => ["1", "338", "87893", "X"]
+     * Example for ISBN-13: "978-1-338-87893-6" => ["978", "1", "338", "87893", "6"]
+     *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
     final public function getParts() : array
@@ -266,6 +280,9 @@ abstract readonly class Isbn implements Stringable
      * Returns the formatted (hyphenated) ISBN number.
      *
      * If the ISBN number is not in a recognized range, it is returned unformatted.
+     *
+     * Example for ISBN-10: "1-338-87893-X"
+     * Example for ISBN-13: "978-1-338-87893-6"
      */
     final public function toFormattedString() : string
     {
