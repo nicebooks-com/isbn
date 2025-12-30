@@ -20,12 +20,12 @@ use Nicebooks\Isbn\IsbnGroup;
 final class RangeService
 {
     /**
-     * @psalm-var list<RangeType>|null
+     * @var list<RangeType>|null
      */
     private static ?array $ranges = null;
 
     /**
-     * @psalm-return list<RangeType>
+     * @return list<RangeType>
      */
     private static function getRanges(): array
     {

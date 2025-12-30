@@ -10,12 +10,12 @@ namespace Nicebooks\Isbn;
 final class IsbnStats
 {
     /**
-     * @psalm-var StatsType|null
+     * @var StatsType|null
      */
     private static ?array $stats = null;
 
     /**
-     * @psalm-return StatsType
+     * @return StatsType
      */
     private static function getStats(): array
     {

@@ -3,6 +3,5 @@
 .gitignore       export-ignore
 updateRanges.php export-ignore
 mago.toml        export-ignore
-psalm.xml        export-ignore
 phpunit.xml      export-ignore
 tests/           export-ignore
