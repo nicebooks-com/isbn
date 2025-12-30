@@ -37,6 +37,7 @@ final readonly class IsbnTools
             }
 
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
+            assert($isbn !== null);
         }
 
         $isbn = strtoupper($isbn);
@@ -67,6 +68,7 @@ final readonly class IsbnTools
             }
 
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
+            assert($isbn !== null);
         }
 
         if (preg_match(Internal\Regexp::ISBN13, $isbn) === 0) {
@@ -99,6 +101,7 @@ final readonly class IsbnTools
             }
 
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
+            assert($isbn !== null);
         }
 
         $isbn = strtoupper($isbn);
@@ -137,6 +140,7 @@ final readonly class IsbnTools
             }
 
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
+            assert($isbn !== null);
         }
 
         if (preg_match(Internal\Regexp::ISBN13, $isbn) === 0) {
@@ -169,6 +173,7 @@ final readonly class IsbnTools
             }
 
             $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
+            assert($isbn !== null);
         }
 
         if (preg_match(Internal\Regexp::ISBN13, $isbn) === 1) {

@@ -30,7 +30,10 @@ final class RangeService
     private static function getRanges(): array
     {
         if (self::$ranges === null) {
-            self::$ranges = require __DIR__ . '/../../data/ranges.php';
+            /** @var list<RangeType> $ranges */
+            $ranges = require __DIR__ . '/../../data/ranges.php';
+
+            self::$ranges = $ranges;
         }
 
         return self::$ranges;

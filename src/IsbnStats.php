@@ -20,7 +20,10 @@ final class IsbnStats
     private static function getStats(): array
     {
         if (self::$stats === null) {
-            self::$stats = require __DIR__ . '/../data/stats.php';
+            /** @var StatsType $stats */
+            $stats = require __DIR__ . '/../data/stats.php';
+
+            self::$stats = $stats;
         }
 
         return self::$stats;

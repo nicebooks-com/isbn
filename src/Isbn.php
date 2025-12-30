@@ -60,6 +60,7 @@ abstract readonly class Isbn implements Stringable
         }
 
         $isbn = preg_replace(Internal\Regexp::NON_ALNUM, '', $isbn);
+        assert($isbn !== null);
 
         if (preg_match(Internal\Regexp::ISBN13, $isbn) === 1) {
             if (!Internal\CheckDigit::validateCheckDigit13($isbn)) {
