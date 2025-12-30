@@ -21,7 +21,7 @@ class IsbnValidatorTest extends TestCase
     public function testIsValidIsbn(string $isbn, bool $isValid): void
     {
         $tools = new IsbnTools();
-        $this->assertSame($isValid, $tools->isValidIsbn($isbn));
+        self::assertSame($isValid, $tools->isValidIsbn($isbn));
     }
 
     public static function providerIsValidIsbn(): array
@@ -117,8 +117,8 @@ class IsbnValidatorTest extends TestCase
     ): void {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
-        $this->assertSame($isValid, $tools->isValidIsbn($isbn));
-        $this->assertSame($isValid, $tools->isValidIsbn10($isbn));
+        self::assertSame($isValid, $tools->isValidIsbn($isbn));
+        self::assertSame($isValid, $tools->isValidIsbn10($isbn));
     }
 
     public static function providerIsValidIsbn10(): array
@@ -171,8 +171,8 @@ class IsbnValidatorTest extends TestCase
     ): void {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
-        $this->assertSame($isValid, $tools->isValidIsbn($isbn));
-        $this->assertSame($isValid, $tools->isValidIsbn13($isbn));
+        self::assertSame($isValid, $tools->isValidIsbn($isbn));
+        self::assertSame($isValid, $tools->isValidIsbn13($isbn));
     }
 
     public static function providerIsValidIsbn13(): array

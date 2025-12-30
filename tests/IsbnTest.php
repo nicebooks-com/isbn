@@ -23,9 +23,9 @@ class IsbnTest extends TestCase
      */
     private function assertIsbnEquals(Isbn $isbn, string $string, bool $is13): void
     {
-        $this->assertSame($string, (string) $isbn);
-        $this->assertSame($is13, $isbn->is13());
-        $this->assertSame(!$is13, $isbn->is10());
+        self::assertSame($string, (string) $isbn);
+        self::assertSame($is13, $isbn->is13());
+        self::assertSame(!$is13, $isbn->is10());
     }
 
     /**
@@ -36,7 +36,7 @@ class IsbnTest extends TestCase
     #[DataProvider('providerGet')]
     public function testGet(string $isbn, string $string, bool $is13): void
     {
-        $this->assertIsbnEquals(Isbn::of($isbn), $string, $is13);
+        self::assertIsbnEquals(Isbn::of($isbn), $string, $is13);
     }
 
     public static function providerGet(): array
@@ -82,8 +82,8 @@ class IsbnTest extends TestCase
         $outputIsbn = $inputIsbn->to10();
 
         // Test the input object as well to ensure it's unaffected.
-        $this->assertIsbnEquals($inputIsbn, $isbn13, true);
-        $this->assertIsbnEquals($outputIsbn, $isbn10, false);
+        self::assertIsbnEquals($inputIsbn, $isbn13, true);
+        self::assertIsbnEquals($outputIsbn, $isbn10, false);
     }
 
     public static function providerTo10(): array
@@ -105,7 +105,7 @@ class IsbnTest extends TestCase
     public function test10to10ReturnsThis(): void
     {
         $isbn = Isbn::of('123456789X');
-        $this->assertSame($isbn, $isbn->to10());
+        self::assertSame($isbn, $isbn->to10());
     }
 
     /**
@@ -115,7 +115,7 @@ class IsbnTest extends TestCase
     #[DataProvider('providerIsConvertibleTo10')]
     public function testIsConvertibleTo10(string $isbn, bool $isConvertible): void
     {
-        $this->assertSame($isConvertible, Isbn::of($isbn)->isConvertibleTo10());
+        self::assertSame($isConvertible, Isbn::of($isbn)->isConvertibleTo10());
     }
 
     public static function providerIsConvertibleTo10(): array
@@ -159,8 +159,8 @@ class IsbnTest extends TestCase
         $outputIsbn = $inputIsbn->to13();
 
         // Test the input object as well to ensure it's unaffected.
-        $this->assertIsbnEquals($inputIsbn, $isbn10, false);
-        $this->assertIsbnEquals($outputIsbn, $isbn13, true);
+        self::assertIsbnEquals($inputIsbn, $isbn10, false);
+        self::assertIsbnEquals($outputIsbn, $isbn13, true);
     }
 
     public static function providerTo13(): array
@@ -182,7 +182,7 @@ class IsbnTest extends TestCase
     public function test13to13ReturnsThis(): void
     {
         $isbn = Isbn::of('9784567890120');
-        $this->assertSame($isbn, $isbn->to13());
+        self::assertSame($isbn, $isbn->to13());
     }
 
     /**
@@ -196,9 +196,9 @@ class IsbnTest extends TestCase
         $isbn = Isbn::of($isbn);
         $expectedParts = explode('-', $expectedFormat);
 
-        $this->assertSame($expectedFormat, $isbn->format());
-        $this->assertSame($expectedFormat, $isbn->toFormattedString());
-        $this->assertSame($expectedParts, $isbn->getParts());
+        self::assertSame($expectedFormat, $isbn->format());
+        self::assertSame($expectedFormat, $isbn->toFormattedString());
+        self::assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {
             $groupIdentifier = $expectedParts[0] . '-' . $expectedParts[1];
@@ -212,12 +212,12 @@ class IsbnTest extends TestCase
             $checkDigit = $expectedParts[3];
         }
 
-        $this->assertSame($groupIdentifier, $isbn->getGroupIdentifier());
-        $this->assertSame($publisherIdentifier, $isbn->getPublisherIdentifier());
-        $this->assertSame($titleIdentifier, $isbn->getTitleIdentifier());
-        $this->assertSame($checkDigit, $isbn->getCheckDigit());
+        self::assertSame($groupIdentifier, $isbn->getGroupIdentifier());
+        self::assertSame($publisherIdentifier, $isbn->getPublisherIdentifier());
+        self::assertSame($titleIdentifier, $isbn->getTitleIdentifier());
+        self::assertSame($checkDigit, $isbn->getCheckDigit());
 
-        $this->assertSame($expectedGroup, $isbn->getGroupName());
+        self::assertSame($expectedGroup, $isbn->getGroupName());
     }
 
     public static function providerInfoAndFormat(): array
@@ -255,29 +255,29 @@ class IsbnTest extends TestCase
     {
         $isbn = Isbn::of($isbnString);
 
-        $this->assertSame($isValidGroup, $isbn->isValidGroup());
-        $this->assertSame($isValidRange, $isbn->isValidRange());
+        self::assertSame($isValidGroup, $isbn->isValidGroup());
+        self::assertSame($isValidRange, $isbn->isValidRange());
 
         if (!$isValidGroup) {
-            $this->assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, function () use ($isbn) {
                 $isbn->getGroupIdentifier();
             });
-            $this->assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, function () use ($isbn) {
                 $isbn->getGroupName();
             });
 
             // ISBN with invalid group/range cannot be formatted
-            $this->assertSame($isbnString, $isbn->format());
+            self::assertSame($isbnString, $isbn->format());
         }
 
         if (!$isValidRange) {
-            $this->assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, function () use ($isbn) {
                 $isbn->getPublisherIdentifier();
             });
-            $this->assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, function () use ($isbn) {
                 $isbn->getTitleIdentifier();
             });
-            $this->assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, function () use ($isbn) {
                 $isbn->getParts();
             });
         }
@@ -314,7 +314,7 @@ class IsbnTest extends TestCase
             throw $e;
         }
 
-        $this->fail('Failed asserting that exception of type ' . $expectedException . ' is thrown.');
+        self::fail('Failed asserting that exception of type ' . $expectedException . ' is thrown.');
     }
 
     /**
@@ -324,7 +324,7 @@ class IsbnTest extends TestCase
     #[DataProvider('providerIsEqualTo')]
     public function testIsEqualTo(string $isbn, string $anotherIsbn, bool $isEqual): void
     {
-        $this->assertSame($isEqual, Isbn::of($isbn)->isEqualTo(Isbn::of($anotherIsbn)));
+        self::assertSame($isEqual, Isbn::of($isbn)->isEqualTo(Isbn::of($anotherIsbn)));
     }
 
     public static function providerIsEqualTo(): array

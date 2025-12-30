@@ -19,19 +19,19 @@ class IsbnGroupTest extends TestCase
         $isbn10Groups = IsbnGroup::getIsbn10Groups();
         $isbn13Groups = IsbnGroup::getIsbn13Groups();
 
-        $this->assertIsArray($isbn10Groups);
-        $this->assertIsArray($isbn13Groups);
+        self::assertIsArray($isbn10Groups);
+        self::assertIsArray($isbn13Groups);
 
-        $this->assertGreaterThan(0, count($isbn10Groups));
-        $this->assertGreaterThan(0, count($isbn13Groups));
+        self::assertGreaterThan(0, count($isbn10Groups));
+        self::assertGreaterThan(0, count($isbn13Groups));
 
-        $this->assertGreaterThan(count($isbn10Groups), count($isbn13Groups));
+        self::assertGreaterThan(count($isbn10Groups), count($isbn13Groups));
 
         foreach ($isbn10Groups as $isbnGroup) {
-            $this->assertInstanceOf(IsbnGroup::class, $isbnGroup);
+            self::assertInstanceOf(IsbnGroup::class, $isbnGroup);
         }
         foreach ($isbn13Groups as $isbnGroup) {
-            $this->assertInstanceOf(IsbnGroup::class, $isbnGroup);
+            self::assertInstanceOf(IsbnGroup::class, $isbnGroup);
         }
     }
 
@@ -50,7 +50,7 @@ class IsbnGroupTest extends TestCase
             }
         }
 
-        $this->fail(sprintf('Failed to assert that ISBN groups contain (%s, %s)', $prefix, $name));
+        self::fail(sprintf('Failed to assert that ISBN groups contain (%s, %s)', $prefix, $name));
     }
 
     public static function providerIsbnGroupContents(): array

@@ -23,7 +23,7 @@ class IsbnConverterTest extends TestCase
     public function testConvertIsbn10to13(string $isbn10, string $isbn13): void
     {
         $tools = new IsbnTools();
-        $this->assertSame($isbn13, $tools->convertIsbn10to13($isbn10));
+        self::assertSame($isbn13, $tools->convertIsbn10to13($isbn10));
     }
 
     public static function providerConvertIsbn10to13(): array
@@ -68,7 +68,7 @@ class IsbnConverterTest extends TestCase
     public function testConvertIsbn13to10(string $isbn13, string $isbn10): void
     {
         $tools = new IsbnTools();
-        $this->assertSame($isbn10, $tools->convertIsbn13to10($isbn13));
+        self::assertSame($isbn10, $tools->convertIsbn13to10($isbn13));
     }
 
     public static function providerConvertIsbn13to10(): array

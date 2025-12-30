@@ -22,7 +22,7 @@ class IsbnFormatterTest extends TestCase
     public function testFormat(string $isbn, string $expectedOutput): void
     {
         $tools = new IsbnTools(true, false);
-        $this->assertSame($expectedOutput, $tools->format($isbn));
+        self::assertSame($expectedOutput, $tools->format($isbn));
     }
 
     public static function providerFormat(): array
