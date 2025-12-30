@@ -259,10 +259,10 @@ class IsbnTest extends TestCase
         self::assertSame($isValidRange, $isbn->isValidRange());
 
         if (!$isValidGroup) {
-            self::assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getGroupIdentifier();
             });
-            self::assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getGroupName();
             });
 
@@ -271,13 +271,13 @@ class IsbnTest extends TestCase
         }
 
         if (!$isValidRange) {
-            self::assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getPublisherIdentifier();
             });
-            self::assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getTitleIdentifier();
             });
-            self::assertException(IsbnException::class, function () use ($isbn) {
+            self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getParts();
             });
         }
