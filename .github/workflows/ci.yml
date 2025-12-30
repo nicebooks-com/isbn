@@ -6,6 +6,7 @@ on:
 
 env:
   PSALM_PHP_VERSION: "8.5"
+  MAGO_PHP_VERSION: "8.2"
   COVERAGE_PHP_VERSION: "8.5"
 
 jobs:
@@ -69,3 +70,28 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ matrix.php-version == env.COVERAGE_PHP_VERSION }}
+
+  mago:
+    name: Mago
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.MAGO_PHP_VERSION }}
+
+      - name: Install composer dependencies
+        uses: "ramsey/composer-install@v3"
+
+      - name: Mago format
+        run: vendor/bin/mago format --check
+
+      - name: Mago lint
+        run: vendor/bin/mago lint
+
+      - name: Mago analyze
+        run: vendor/bin/mago analyze --minimum-fail-level=warning
