@@ -14,7 +14,7 @@ require 'vendor/autoload.php';
  * @see https://www.isbn-international.org/range_file_generation
  */
 
-function countValidIsbns(array $rangeData): int
+function count_valid_isbns(array $rangeData): int
 {
     $validIsbnCount = 0;
 
@@ -97,7 +97,7 @@ if ($oldRangeData === $rangeData) {
 
 $stats = [
     'groupCount' => $groupCount,
-    'validIsbnCount' => countValidIsbns($rangeData),
+    'validIsbnCount' => count_valid_isbns($rangeData),
 ];
 
 file_put_contents($rangesFile, sprintf("<?php return %s;\n", VarExporter::export(
