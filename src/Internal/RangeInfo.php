@@ -41,7 +41,7 @@ final readonly class RangeInfo
     public function __construct(string $groupIdentifier, string $groupName, ?array $parts)
     {
         $this->groupIdentifier = $groupIdentifier;
-        $this->groupName       = $groupName;
-        $this->parts           = $parts;
+        $this->groupName = $groupName;
+        $this->parts = $parts;
     }
 }

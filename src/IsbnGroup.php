@@ -28,13 +28,13 @@ final readonly class IsbnGroup
     public function __construct(string $prefix, string $name)
     {
         $this->prefix = $prefix;
-        $this->name   = $name;
+        $this->name = $name;
     }
 
     /**
      * @return IsbnGroup[]
      */
-    public static function getIsbn10Groups() : array
+    public static function getIsbn10Groups(): array
     {
         return RangeService::getGroups(false);
     }
@@ -42,17 +42,17 @@ final readonly class IsbnGroup
     /**
      * @return IsbnGroup[]
      */
-    public static function getIsbn13Groups() : array
+    public static function getIsbn13Groups(): array
     {
         return RangeService::getGroups(true);
     }
 
-    public function getPrefix() : string
+    public function getPrefix(): string
     {
         return $this->prefix;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class IsbnStatsTest extends TestCase
 {
-    public function testGetGroupCount() : void
+    public function testGetGroupCount(): void
     {
         $groupCount = IsbnStats::getGroupCount();
 
@@ -18,7 +18,7 @@ class IsbnStatsTest extends TestCase
         $this->assertLessThan(400, $groupCount);
     }
 
-    public function testGetValidIsbnCount() : void
+    public function testGetValidIsbnCount(): void
     {
         $validIsbnCount = IsbnStats::getValidIsbnCount();
 

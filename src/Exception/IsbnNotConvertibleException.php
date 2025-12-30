@@ -9,7 +9,7 @@ namespace Nicebooks\Isbn\Exception;
  */
 final class IsbnNotConvertibleException extends IsbnException
 {
-    public static function forIsbn(string $isbn) : IsbnNotConvertibleException
+    public static function forIsbn(string $isbn): IsbnNotConvertibleException
     {
         return new self(sprintf('ISBN %s cannot be converted to an ISBN-10.', $isbn));
     }

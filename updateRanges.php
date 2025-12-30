@@ -14,15 +14,15 @@ require 'vendor/autoload.php';
  * @see https://www.isbn-international.org/range_file_generation
  */
 
-function countValidIsbns(array $rangeData) : int
+function countValidIsbns(array $rangeData): int
 {
     $validIsbnCount = 0;
 
     foreach ($rangeData as [$prefix1, $prefix2, $name, $ranges]) {
         foreach ($ranges as [$rangeLength, $rangeStart, $rangeEnd]) {
             $totalLength = strlen($prefix1) + strlen($prefix2) + $rangeLength;
-            $rangeCount = ((int) $rangeEnd) - ((int) $rangeStart) + 1;
-            $validIsbnCount += 10 ** (12 - $totalLength) * $rangeCount;
+            $rangeCount = (int) $rangeEnd - (int) $rangeStart + 1;
+            $validIsbnCount += (10 ** (12 - $totalLength)) * $rangeCount;
         }
     }
 
@@ -33,7 +33,7 @@ $rangeMessageXML = file_get_contents('https://www.isbn-international.org/export_
 
 if ($rangeMessageXML === false) {
     echo "Could not download range file.\n";
-    exit;
+    exit();
 }
 
 $rangesFile = 'data/ranges.php';
@@ -92,7 +92,7 @@ $oldRangeData = require $rangesFile;
 
 if ($oldRangeData === $rangeData) {
     echo "Range file is current.\n";
-    exit;
+    exit();
 }
 
 $stats = [
@@ -100,15 +100,15 @@ $stats = [
     'validIsbnCount' => countValidIsbns($rangeData),
 ];
 
-file_put_contents($rangesFile, sprintf(
-    "<?php return %s;\n",
-    VarExporter::export($rangeData, VarExporter::INLINE_SCALAR_LIST),
-));
+file_put_contents($rangesFile, sprintf("<?php return %s;\n", VarExporter::export(
+    $rangeData,
+    VarExporter::INLINE_SCALAR_LIST,
+)));
 
-file_put_contents($statsFile, sprintf(
-    "<?php return %s;\n",
-    VarExporter::export($stats, VarExporter::INLINE_SCALAR_LIST),
-));
+file_put_contents($statsFile, sprintf("<?php return %s;\n", VarExporter::export(
+    $stats,
+    VarExporter::INLINE_SCALAR_LIST,
+)));
 
 $agenciesUpdated = [];
 
@@ -128,21 +128,21 @@ foreach ($rangeData as [$prefix, $id, $agency, $ranges]) {
         }
     }
 
-    if ((! $found) || ($found && ! $identical)) {
+    if (!$found || $found && !$identical) {
         $agenciesUpdated[] = $agency;
     }
 }
 
 $agenciesUpdated = array_unique($agenciesUpdated);
 
-$commitMessage  = "Update ISBN ranges\n";
+$commitMessage = "Update ISBN ranges\n";
 $commitMessage .= "\n";
 $commitMessage .= "Serial number: $messageSerialNumber\n";
 $commitMessage .= "Date: $messageDate\n";
 
 if ($agenciesUpdated) {
     $commitMessage .= "\n";
-    $commitMessage .= "Agencies updated: " . implode(', ', $agenciesUpdated) . "\n";
+    $commitMessage .= 'Agencies updated: ' . implode(', ', $agenciesUpdated) . "\n";
 }
 
 echo "Successfully converted $groupCount groups and $rangeCount ranges.\n";

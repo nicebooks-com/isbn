@@ -27,7 +27,7 @@ final class RangeService
     /**
      * @psalm-return list<RangeType>
      */
-    private static function getRanges() : array
+    private static function getRanges(): array
     {
         if (self::$ranges === null) {
             self::$ranges = require __DIR__ . '/../../data/ranges.php';
@@ -39,7 +39,7 @@ final class RangeService
     /**
      * @return IsbnGroup[]
      */
-    public static function getGroups(bool $is13) : array
+    public static function getGroups(bool $is13): array
     {
         $groups = [];
 
@@ -59,11 +59,11 @@ final class RangeService
      *
      * @param string $isbn The ISBN-10 or ISBN-13, regexp-validated.
      */
-    public static function getRangeInfo(string $isbn) : ?RangeInfo
+    public static function getRangeInfo(string $isbn): ?RangeInfo
     {
         $length = strlen($isbn);
-        $isbnPrefix = ($length === 10) ? '978' : substr($isbn, 0, 3);
-        $isbnDigits = ($length === 10) ? $isbn : substr($isbn, 3);
+        $isbnPrefix = $length === 10 ? '978' : substr($isbn, 0, 3);
+        $isbnDigits = $length === 10 ? $isbn : substr($isbn, 3);
 
         foreach (self::getRanges() as [$eanPrefix, $groupIdentifier, $groupName, $ranges]) {
             if ($isbnPrefix !== $eanPrefix) {
@@ -77,7 +77,7 @@ final class RangeService
                 continue;
             }
 
-            $groupIdentifier = ($length === 10 ? $groupIdentifier : $eanPrefix . '-' . $groupIdentifier);
+            $groupIdentifier = $length === 10 ? $groupIdentifier : $eanPrefix . '-' . $groupIdentifier;
 
             $parts = null;
 
@@ -103,7 +103,7 @@ final class RangeService
         return null;
     }
 
-    public static function format(string $isbn) : string
+    public static function format(string $isbn): string
     {
         $rangeInfo = self::getRangeInfo($isbn);
 

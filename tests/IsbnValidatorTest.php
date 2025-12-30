@@ -18,45 +18,45 @@ class IsbnValidatorTest extends TestCase
      * @param bool   $isValid The expected result.
      */
     #[DataProvider('providerIsValidIsbn')]
-    public function testIsValidIsbn(string $isbn, bool $isValid) : void
+    public function testIsValidIsbn(string $isbn, bool $isValid): void
     {
         $tools = new IsbnTools();
         $this->assertSame($isValid, $tools->isValidIsbn($isbn));
     }
 
-    public static function providerIsValidIsbn() : array
+    public static function providerIsValidIsbn(): array
     {
         return [
-            ['0123456789', true],
-            ['012345678X', false],
-            ['123456789X', true],
-            ['1234567890', false],
-            ['2345678909', true],
-            ['234567890X', false],
-            ['4567890124', true],
-            ['4567890125', false],
-            ['5678901230', true],
-            ['5678901231', false],
-            ['6789012346', true],
-            ['6789012347', false],
-            ['7890123450', true],
-            ['7890123451', false],
-            ['8901234564', true],
-            ['8901234565', false],
-            ['9012345677', true],
-            ['9012345678', false],
-            ['9876543202', true],
-            ['9876543203,', false],
-            ['9876543458', true],
-            ['9876543459', false],
-            ['9876542451', true],
-            ['9876542452', false],
-            ['9876542443', true],
-            ['9876542444', false],
-            ['9876542478', true],
-            ['9876542479', false],
-            ['9875446475', true],
-            ['9875446476', false],
+            ['0123456789',    true],
+            ['012345678X',    false],
+            ['123456789X',    true],
+            ['1234567890',    false],
+            ['2345678909',    true],
+            ['234567890X',    false],
+            ['4567890124',    true],
+            ['4567890125',    false],
+            ['5678901230',    true],
+            ['5678901231',    false],
+            ['6789012346',    true],
+            ['6789012347',    false],
+            ['7890123450',    true],
+            ['7890123451',    false],
+            ['8901234564',    true],
+            ['8901234565',    false],
+            ['9012345677',    true],
+            ['9012345678',    false],
+            ['9876543202',    true],
+            ['9876543203,',   false],
+            ['9876543458',    true],
+            ['9876543459',    false],
+            ['9876542451',    true],
+            ['9876542452',    false],
+            ['9876542443',    true],
+            ['9876542444',    false],
+            ['9876542478',    true],
+            ['9876542479',    false],
+            ['9875446475',    true],
+            ['9875446476',    false],
 
             ['9780123456786', true],
             ['9780123456787', false],
@@ -109,46 +109,50 @@ class IsbnValidatorTest extends TestCase
      * @param bool   $isValid               The expected result.
      */
     #[DataProvider('providerIsValidIsbn10')]
-    public function testIsValidIsbn10(string $isbn, bool $cleanupBeforeValidate, bool $validateCheckDigit, bool $isValid) : void
-    {
+    public function testIsValidIsbn10(
+        string $isbn,
+        bool $cleanupBeforeValidate,
+        bool $validateCheckDigit,
+        bool $isValid,
+    ): void {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
         $this->assertSame($isValid, $tools->isValidIsbn($isbn));
         $this->assertSame($isValid, $tools->isValidIsbn10($isbn));
     }
 
-    public static function providerIsValidIsbn10() : array
+    public static function providerIsValidIsbn10(): array
     {
         return [
-            ['123456789X', false, false, true],
-            ['123456789X', false, true, true],
-            ['123456789X', true, false, true],
-            ['123456789X', true, true, true],
+            ['123456789X',      false, false, true],
+            ['123456789X',      false, true,  true],
+            ['123456789X',      true,  false, true],
+            ['123456789X',      true,  true,  true],
 
-            ['123456789x', false, false, true],
-            ['123456789x', false, true, true],
-            ['123456789x', true, false, true],
-            ['123456789x', true, true, true],
+            ['123456789x',      false, false, true],
+            ['123456789x',      false, true,  true],
+            ['123456789x',      true,  false, true],
+            ['123456789x',      true,  true,  true],
 
-            ['1234567890', false, false, true],
-            ['1234567890', false, true, false],
-            ['1234567890', true, false, true],
-            ['1234567890', true, true, false],
+            ['1234567890',      false, false, true],
+            ['1234567890',      false, true,  false],
+            ['1234567890',      true,  false, true],
+            ['1234567890',      true,  true,  false],
 
-            [' 1-23456789 x ', false, false, false],
-            [' 1-23456789 x ', false, true, false],
-            [' 1-23456789 x ', true, false, true],
-            [' 1-23456789 x ', true, true, true],
+            [' 1-23456789 x ',  false, false, false],
+            [' 1-23456789 x ',  false, true,  false],
+            [' 1-23456789 x ',  true,  false, true],
+            [' 1-23456789 x ',  true,  true,  true],
 
             [' 1-23456,789 0 ', false, false, false],
-            [' 1-23456,789 0 ', false, true, false],
-            [' 1-23456,789 0 ', true, false, true],
-            [' 1-23456,789 0 ', true, true, false],
+            [' 1-23456,789 0 ', false, true,  false],
+            [' 1-23456,789 0 ', true,  false, true],
+            [' 1-23456,789 0 ', true,  true,  false],
 
-            ["123456789X\x80", false, false, false],
-            ["123456789X\x80", false, true, false],
-            ["123456789X\x80", true, false, false],
-            ["123456789X\x80", true, true, false],
+            ["123456789X\x80",  false, false, false],
+            ["123456789X\x80",  false, true,  false],
+            ["123456789X\x80",  true,  false, false],
+            ["123456789X\x80",  true,  true,  false],
         ];
     }
 
@@ -159,41 +163,45 @@ class IsbnValidatorTest extends TestCase
      * @param bool   $isValid               The expected result.
      */
     #[DataProvider('providerIsValidIsbn13')]
-    public function testIsValidIsbn13(string $isbn, bool $cleanupBeforeValidate, bool $validateCheckDigit, bool $isValid) : void
-    {
+    public function testIsValidIsbn13(
+        string $isbn,
+        bool $cleanupBeforeValidate,
+        bool $validateCheckDigit,
+        bool $isValid,
+    ): void {
         $tools = new IsbnTools($cleanupBeforeValidate, $validateCheckDigit);
 
         $this->assertSame($isValid, $tools->isValidIsbn($isbn));
         $this->assertSame($isValid, $tools->isValidIsbn13($isbn));
     }
 
-    public static function providerIsValidIsbn13() : array
+    public static function providerIsValidIsbn13(): array
     {
         return [
-            ['9781234567897', false, false, true],
-            ['9781234567897', false, true, true],
-            ['9781234567897', true, false, true],
-            ['9781234567897', true, true, true],
+            ['9781234567897',      false, false, true],
+            ['9781234567897',      false, true,  true],
+            ['9781234567897',      true,  false, true],
+            ['9781234567897',      true,  true,  true],
 
-            ['9781234567890', false, false, true],
-            ['9781234567890', false, true, false],
-            ['9781234567890', true, false, true],
-            ['9781234567890', true, true, false],
+            ['9781234567890',      false, false, true],
+            ['9781234567890',      false, true,  false],
+            ['9781234567890',      true,  false, true],
+            ['9781234567890',      true,  true,  false],
 
             [' 978-1234 567|897 ', false, false, false],
-            [' 978-1234 567|897 ', false, true, false],
-            [' 978-1234 567|897 ', true, false, true],
-            [' 978-1234 567|897 ', true, true, true],
+            [' 978-1234 567|897 ', false, true,  false],
+            [' 978-1234 567|897 ', true,  false, true],
+            [' 978-1234 567|897 ', true,  true,  true],
 
             [' 978-1234 567#890 ', false, false, false],
-            [' 978-1234 567#890 ', false, true, false],
-            [' 978-1234 567#890 ', true, false, true],
-            [' 978-1234 567#890 ', true, true, false],
+            [' 978-1234 567#890 ', false, true,  false],
+            [' 978-1234 567#890 ', true,  false, true],
+            [' 978-1234 567#890 ', true,  true,  false],
 
-            [" 978-1234 567\x80", false, false, false],
-            [" 978-1234 567\x80", false, true, false],
-            [" 978-1234 567\x80", true, false, false],
-            [" 978-1234 567\x80", true, true, false],
+            [" 978-1234 567\x80",  false, false, false],
+            [" 978-1234 567\x80",  false, true,  false],
+            [" 978-1234 567\x80",  true,  false, false],
+            [" 978-1234 567\x80",  true,  true,  false],
         ];
     }
 }

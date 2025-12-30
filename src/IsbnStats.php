@@ -17,7 +17,7 @@ final class IsbnStats
     /**
      * @psalm-return StatsType
      */
-    private static function getStats() : array
+    private static function getStats(): array
     {
         if (self::$stats === null) {
             self::$stats = require __DIR__ . '/../data/stats.php';
@@ -26,12 +26,12 @@ final class IsbnStats
         return self::$stats;
     }
 
-    public static function getGroupCount() : int
+    public static function getGroupCount(): int
     {
         return self::getStats()['groupCount'];
     }
 
-    public static function getValidIsbnCount() : int
+    public static function getValidIsbnCount(): int
     {
         return self::getStats()['validIsbnCount'];
     }

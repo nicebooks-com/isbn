@@ -20,13 +20,13 @@ class IsbnConverterTest extends TestCase
      * @param string $isbn13 The expected output ISBN-13.
      */
     #[DataProvider('providerConvertIsbn10to13')]
-    public function testConvertIsbn10to13(string $isbn10, string $isbn13) : void
+    public function testConvertIsbn10to13(string $isbn10, string $isbn13): void
     {
         $tools = new IsbnTools();
         $this->assertSame($isbn13, $tools->convertIsbn10to13($isbn10));
     }
 
-    public static function providerConvertIsbn10to13() : array
+    public static function providerConvertIsbn10to13(): array
     {
         return [
             ['0123456789', '9780123456786'],
@@ -43,7 +43,7 @@ class IsbnConverterTest extends TestCase
     }
 
     #[DataProvider('providerConvertInvalidIsbn10to13')]
-    public function testConvertInvalidIsbn10to13(string $isbn) : void
+    public function testConvertInvalidIsbn10to13(string $isbn): void
     {
         $tools = new IsbnTools();
 
@@ -51,7 +51,7 @@ class IsbnConverterTest extends TestCase
         $tools->convertIsbn10to13($isbn);
     }
 
-    public static function providerConvertInvalidIsbn10to13() : array
+    public static function providerConvertInvalidIsbn10to13(): array
     {
         return [
             ["0123456789\x80"],
@@ -65,13 +65,13 @@ class IsbnConverterTest extends TestCase
      * @param string $isbn10 The expected output ISBN-10.
      */
     #[DataProvider('providerConvertIsbn13to10')]
-    public function testConvertIsbn13to10(string $isbn13, string $isbn10) : void
+    public function testConvertIsbn13to10(string $isbn13, string $isbn10): void
     {
         $tools = new IsbnTools();
         $this->assertSame($isbn10, $tools->convertIsbn13to10($isbn13));
     }
 
-    public static function providerConvertIsbn13to10() : array
+    public static function providerConvertIsbn13to10(): array
     {
         return [
             ['9780123456786', '0123456789'],
@@ -88,7 +88,7 @@ class IsbnConverterTest extends TestCase
     }
 
     #[DataProvider('providerConvertInvalidIsbn13to10')]
-    public function testConvertInvalidIsbn13to10(string $isbn) : void
+    public function testConvertInvalidIsbn13to10(string $isbn): void
     {
         $tools = new IsbnTools();
 
@@ -109,7 +109,7 @@ class IsbnConverterTest extends TestCase
      * @param string $isbn An ISBN-13 not convertible to ISBN-10.
      */
     #[DataProvider('providerIsbnNotConvertibleThrowsException')]
-    public function testIsbnNotConvertibleThrowsException(string $isbn) : void
+    public function testIsbnNotConvertibleThrowsException(string $isbn): void
     {
         $tools = new IsbnTools();
 
@@ -117,11 +117,11 @@ class IsbnConverterTest extends TestCase
         $tools->convertIsbn13to10($isbn);
     }
 
-    public static function providerIsbnNotConvertibleThrowsException() : array
+    public static function providerIsbnNotConvertibleThrowsException(): array
     {
         return [
             ['9790123456785'],
-            ['9799012345674']
+            ['9799012345674'],
         ];
     }
 }
