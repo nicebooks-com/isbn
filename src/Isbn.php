@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn;
 
 use Nicebooks\Isbn\Exception\IsbnException;
-use Nicebooks\Isbn\Internal\RangeInfo;
 use Nicebooks\Isbn\Internal\RangeService;
 use Override;
 use Stringable;
@@ -22,7 +21,12 @@ abstract readonly class Isbn implements Stringable
 {
     protected string $isbn;
 
-    private ?RangeInfo $rangeInfo;
+    private ?RegistrationGroup $registrationGroup;
+
+    /**
+     * @var list<string>|null
+     */
+    private ?array $parts;
 
     /**
      * @param string $isbn The unformatted ISBN number, validated.
@@ -30,7 +34,10 @@ abstract readonly class Isbn implements Stringable
     private function __construct(string $isbn)
     {
         $this->isbn = $isbn;
-        $this->rangeInfo = RangeService::getRangeInfo($isbn);
+        $rangeInfo = RangeService::getRangeInfo($isbn);
+
+        $this->registrationGroup = $rangeInfo?->registrationGroup;
+        $this->parts = $rangeInfo?->parts;
     }
 
     /**
@@ -110,10 +117,12 @@ abstract readonly class Isbn implements Stringable
      *
      * - getGroupIdentifier()
      * - getGroupName()
+     *
+     * @deprecated use hasValidRegistrationGroup() instead.
      */
     final public function isValidGroup(): bool
     {
-        return $this->rangeInfo !== null;
+        return $this->registrationGroup !== null;
     }
 
     /**
@@ -123,11 +132,27 @@ abstract readonly class Isbn implements Stringable
      */
     final public function isValidRange(): bool
     {
-        return $this->rangeInfo !== null && $this->rangeInfo->parts !== null;
+        return $this->parts !== null;
     }
 
     /**
-     * Returns whether this ISBN belongs to a known group and range.
+     * Returns whether this ISBN belongs to a known group.
+     *
+     * This method only validates the group. For a full group and range validation, use isValid().
+     *
+     * When this method returns true, the following methods do not throw an exception:
+     *
+     * - getRegistrationGroup()
+     * - getGroupIdentifier()
+     * - getGroupName()
+     */
+    final public function hasValidRegistrationGroup(): bool
+    {
+        return $this->registrationGroup !== null;
+    }
+
+    /**
+     * Returns whether this ISBN belongs to a known registration group and range.
      *
      * If this method returns true, we are able to split the ISBN into parts and format it with hyphens.
      * If it returns false, the ISBN number is not formattable; it means that either the ISBN number is invalid, or that
@@ -141,6 +166,7 @@ abstract readonly class Isbn implements Stringable
      * When this method returns true, toFormattedString() returns a hyphenated result, and the following methods do not
      * throw an exception:
      *
+     * - getRegistrationGroup()
      * - getGroupIdentifier()
      * - getGroupName()
      * - getPublisherIdentifier()
@@ -149,7 +175,19 @@ abstract readonly class Isbn implements Stringable
      */
     final public function isValid(): bool
     {
-        return $this->rangeInfo !== null && $this->rangeInfo->parts !== null;
+        return $this->parts !== null;
+    }
+
+    /**
+     * @throws IsbnException If this ISBN is not in a recognized group.
+     */
+    final public function getRegistrationGroup(): RegistrationGroup
+    {
+        if ($this->registrationGroup === null) {
+            throw IsbnException::unknownGroup($this->isbn);
+        }
+
+        return $this->registrationGroup;
     }
 
     /**
@@ -159,14 +197,16 @@ abstract readonly class Isbn implements Stringable
      * Example for ISBN-13: "978-1-338-87893-6" => "978-1"
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
+     *
+     * @deprecated Use getRegistrationGroup()->prefix, ->identifier, and ->toString() instead.
      */
     final public function getGroupIdentifier(): string
     {
-        if ($this->rangeInfo === null) {
+        if ($this->registrationGroup === null) {
             throw IsbnException::unknownGroup($this->isbn);
         }
 
-        return $this->rangeInfo->groupIdentifier;
+        return $this->is10() ? $this->registrationGroup->identifier : $this->registrationGroup->toString();
     }
 
     /**
@@ -175,14 +215,16 @@ abstract readonly class Isbn implements Stringable
      * Examples: "English Language", "French language", "Japan", "Spain".
      *
      * @throws IsbnException If this ISBN is not in a recognized group.
+     *
+     * @deprecated Use getRegistrationGroup()->name instead.
      */
     final public function getGroupName(): string
     {
-        if ($this->rangeInfo === null) {
+        if ($this->registrationGroup === null) {
             throw IsbnException::unknownGroup($this->isbn);
         }
 
-        return $this->rangeInfo->groupName;
+        return $this->registrationGroup->name;
     }
 
     /**
@@ -197,15 +239,15 @@ abstract readonly class Isbn implements Stringable
      */
     final public function getPublisherIdentifier(): string
     {
-        if ($this->rangeInfo === null) {
+        if ($this->registrationGroup === null) {
             throw IsbnException::unknownGroup($this->isbn);
         }
 
-        if ($this->rangeInfo->parts === null) {
+        if ($this->parts === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->rangeInfo->parts[$this->is13() ? 2 : 1];
+        return $this->parts[$this->is13() ? 2 : 1];
     }
 
     /**
@@ -220,15 +262,15 @@ abstract readonly class Isbn implements Stringable
      */
     final public function getTitleIdentifier(): string
     {
-        if ($this->rangeInfo === null) {
+        if ($this->registrationGroup === null) {
             throw IsbnException::unknownGroup($this->isbn);
         }
 
-        if ($this->rangeInfo->parts === null) {
+        if ($this->parts === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->rangeInfo->parts[$this->is13() ? 3 : 2];
+        return $this->parts[$this->is13() ? 3 : 2];
     }
 
     /**
@@ -247,22 +289,26 @@ abstract readonly class Isbn implements Stringable
     /**
      * Returns the parts that constitute this ISBN number, as an array of strings.
      *
+     * ISBN-10 have 4 parts, ISBN-13 have 5 parts.
+     *
      * Example for ISBN-10: "1-338-87893-X" => ["1", "338", "87893", "X"]
      * Example for ISBN-13: "978-1-338-87893-6" => ["978", "1", "338", "87893", "6"]
+     *
+     * @return list<string>
      *
      * @throws IsbnException If this ISBN is not in a recognized group or range.
      */
     final public function getParts(): array
     {
-        if ($this->rangeInfo === null) {
+        if ($this->registrationGroup === null) {
             throw IsbnException::unknownGroup($this->isbn);
         }
 
-        if ($this->rangeInfo->parts === null) {
+        if ($this->parts === null) {
             throw IsbnException::unknownRange($this->isbn);
         }
 
-        return $this->rangeInfo->parts;
+        return $this->parts;
     }
 
     /**
@@ -306,11 +352,11 @@ abstract readonly class Isbn implements Stringable
      */
     final public function toFormattedString(): string
     {
-        if ($this->rangeInfo === null || $this->rangeInfo->parts === null) {
+        if ($this->parts === null) {
             return $this->isbn;
         }
 
-        return implode('-', $this->rangeInfo->parts);
+        return implode('-', $this->parts);
     }
 
     #[Override]

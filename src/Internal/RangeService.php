@@ -97,8 +97,6 @@ final class RangeService
                 continue;
             }
 
-            $groupIdentifier = $length === 10 ? $groupIdentifier : $eanPrefix . '-' . $groupIdentifier;
-
             $parts = null;
 
             foreach ($ranges as [$rangeLength, $rangeStart, $rangeEnd]) {
@@ -117,7 +115,9 @@ final class RangeService
                 }
             }
 
-            return new RangeInfo($groupIdentifier, $groupName, $parts);
+            $registrationGroup = new RegistrationGroup($eanPrefix, $groupIdentifier, $groupName);
+
+            return new RangeInfo($registrationGroup, $parts);
         }
 
         return null;

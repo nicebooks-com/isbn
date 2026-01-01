@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nicebooks\Isbn\Internal;
 
+use Nicebooks\Isbn\RegistrationGroup;
+
 /**
  * Internal class representing range info for an ISBN.
  *
@@ -14,12 +16,7 @@ namespace Nicebooks\Isbn\Internal;
  */
 final readonly class RangeInfo
 {
-    public string $groupIdentifier;
-
-    /**
-     * The group name.
-     */
-    public string $groupName;
+    public RegistrationGroup $registrationGroup;
 
     /**
      * The parts of the ISBN number.
@@ -29,17 +26,16 @@ final readonly class RangeInfo
      * If the ISBN number belongs to a known group, but does not fall within a valid range,
      * this property will be null.
      *
-     * @var string[]|null
+     * @var list<string>|null
      */
     public ?array $parts;
 
     /**
-     * @param string[]|null $parts
+     * @param list<string>|null $parts
      */
-    public function __construct(string $groupIdentifier, string $groupName, ?array $parts)
+    public function __construct(RegistrationGroup $registrationGroup, ?array $parts)
     {
-        $this->groupIdentifier = $groupIdentifier;
-        $this->groupName = $groupName;
+        $this->registrationGroup = $registrationGroup;
         $this->parts = $parts;
     }
 }
