@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn\Internal;
 
 use Nicebooks\Isbn\IsbnGroup;
+use Nicebooks\Isbn\RegistrationGroup;
 
 /**
  * Internal utility class for ISBN formatting.
@@ -48,10 +49,26 @@ final class RangeService
 
         foreach (self::getRanges() as [$rangePrefix, $groupIdentifier, $groupName]) {
             if ($is13) {
+                // @mago-expect analyzer:deprecated-class
                 $groups[] = new IsbnGroup($rangePrefix . '-' . $groupIdentifier, $groupName);
             } elseif ($rangePrefix === '978') {
+                // @mago-expect analyzer:deprecated-class
                 $groups[] = new IsbnGroup($groupIdentifier, $groupName);
             }
+        }
+
+        return $groups;
+    }
+
+    /**
+     * @return list<RegistrationGroup>
+     */
+    public static function getRegistrationGroups(): array
+    {
+        $groups = [];
+
+        foreach (self::getRanges() as [$rangePrefix, $groupIdentifier, $groupName]) {
+            $groups[] = new RegistrationGroup($rangePrefix, $groupIdentifier, $groupName);
         }
 
         return $groups;

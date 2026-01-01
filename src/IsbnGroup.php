@@ -8,6 +8,8 @@ use Nicebooks\Isbn\Internal\RangeService;
 
 /**
  * Represents a national or geographic group of publishers.
+ *
+ * @deprecated Use RegistrationGroup instead. Warning: getPrefix() has a different meaning there!
  */
 final readonly class IsbnGroup
 {
