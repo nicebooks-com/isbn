@@ -6,6 +6,8 @@ namespace Nicebooks\Isbn;
 
 /**
  * Tools to work with ISBN numbers as plain strings.
+ *
+ * @deprecated Use the Isbn class instead.
  */
 final readonly class IsbnTools
 {
