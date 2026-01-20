@@ -71,7 +71,7 @@ jobs:
         run: vendor/bin/mago format --check
 
       - name: Mago lint
-        run: vendor/bin/mago lint
+        run: vendor/bin/mago lint --minimum-fail-level=warning
 
       - name: Mago analyze
         run: vendor/bin/mago analyze --minimum-fail-level=warning

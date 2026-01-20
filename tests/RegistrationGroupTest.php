@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nicebooks\Isbn\Tests;
 
-use Nicebooks\Isbn\IsbnGroup;
 use Nicebooks\Isbn\RegistrationGroup;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Depends;
