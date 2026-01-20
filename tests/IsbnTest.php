@@ -251,14 +251,19 @@ class IsbnTest extends TestCase
     }
 
     #[DataProvider('providerIsValidGroupAndRange')]
-    public function testIsValidGroupAndRange(string $isbnString, bool $isValidGroup, bool $isValidRange): void
+    public function testIsValidGroupAndRange(string $isbnString, bool $hasValidRegistrationGroup, bool $isValid): void
     {
         $isbn = Isbn::of($isbnString);
 
-        self::assertSame($isValidGroup, $isbn->isValidGroup());
-        self::assertSame($isValidRange, $isbn->isValidRange());
+        self::assertSame($hasValidRegistrationGroup, $isbn->isValidGroup());
+        self::assertSame($hasValidRegistrationGroup, $isbn->hasValidRegistrationGroup());
+        self::assertSame($isValid, $isbn->isValidRange());
+        self::assertSame($isValid, $isbn->isValid());
 
-        if (!$isValidGroup) {
+        if (!$hasValidRegistrationGroup) {
+            self::assertException(IsbnException::class, static function () use ($isbn) {
+                $isbn->getRegistrationGroup();
+            });
             self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getGroupIdentifier();
             });
@@ -270,7 +275,7 @@ class IsbnTest extends TestCase
             self::assertSame($isbnString, $isbn->format());
         }
 
-        if (!$isValidRange) {
+        if (!$isValid) {
             self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getPublisherIdentifier();
             });
