@@ -8,6 +8,8 @@ use Nicebooks\Isbn\Exception\InvalidIsbnException;
 use Nicebooks\Isbn\Exception\IsbnException;
 use Nicebooks\Isbn\Exception\IsbnNotConvertibleException;
 use Nicebooks\Isbn\Isbn;
+use Nicebooks\Isbn\Isbn10;
+use Nicebooks\Isbn\Isbn13;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -21,9 +23,10 @@ class IsbnTest extends TestCase
      * @param string $string The expected string value of the ISBN.
      * @param bool   $is13   Whether the ISBN is expected to be an ISBN-13.
      */
-    private function assertIsbnEquals(Isbn $isbn, string $string, bool $is13): void
+    private static function assertIsbnEquals(Isbn $isbn, string $string, bool $is13): void
     {
         self::assertSame($string, (string) $isbn);
+        self::assertSame($string, $isbn->toString());
         self::assertSame($is13, $isbn->is13());
         self::assertSame(!$is13, $isbn->is10());
     }
@@ -44,6 +47,49 @@ class IsbnTest extends TestCase
         return [
             [' 1-234-56789-x ',     '123456789X',    false],
             [' 978-0-00-000000-2 ', '9780000000002', true],
+        ];
+    }
+
+    #[DataProvider('providerOfIsbn10')]
+    public function testOfIsbn10(string $isbn, string $expected): void
+    {
+        self::assertIsbnEquals(Isbn10::of($isbn), $expected, false);
+    }
+
+    public static function providerOfIsbn10(): array
+    {
+        return [
+            [' 1-234-56789-x ',  '123456789X'],
+            [' 978-1234567897 ', '123456789X'],
+        ];
+    }
+
+    #[DataProvider('providerOfIsbn10ThrowsException')]
+    public function testOfIsbn10ThrowsException(string $isbn): void
+    {
+        $this->expectException(IsbnNotConvertibleException::class);
+        Isbn10::of($isbn);
+    }
+
+    public static function providerOfIsbn10ThrowsException(): array
+    {
+        return [
+            [' 979-1234567896 '],
+        ];
+    }
+
+    #[DataProvider('providerOfIsbn13')]
+    public function testOfIsbn13(string $isbn, string $expected): void
+    {
+        self::assertIsbnEquals(Isbn13::of($isbn), $expected, true);
+    }
+
+    public static function providerOfIsbn13(): array
+    {
+        return [
+            [' 1-234-56789-x ',  '9781234567897'],
+            [' 978-1234567897 ', '9781234567897'],
+            [' 979-1234567896 ', '9791234567896'],
         ];
     }
 
