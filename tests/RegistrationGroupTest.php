@@ -64,4 +64,12 @@ class RegistrationGroupTest extends TestCase
             ['979', '12',    'Italy'],
         ];
     }
+
+    public function testToString(): void
+    {
+        $registrationGroup = new RegistrationGroup('979', '10', 'France');
+
+        self::assertSame('979-10', $registrationGroup->toString());
+        self::assertSame('979-10', (string) $registrationGroup);
+    }
 }
