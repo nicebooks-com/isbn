@@ -33,13 +33,13 @@ class IsbnTest extends TestCase
      * @param string $string The expected string value of the resulting Isbn object.
      * @param bool   $is13   Whether the ISBN is expected to be an ISBN-13.
      */
-    #[DataProvider('providerGet')]
-    public function testGet(string $isbn, string $string, bool $is13): void
+    #[DataProvider('providerOf')]
+    public function testOf(string $isbn, string $string, bool $is13): void
     {
         self::assertIsbnEquals(Isbn::of($isbn), $string, $is13);
     }
 
-    public static function providerGet(): array
+    public static function providerOf(): array
     {
         return [
             [' 1-234-56789-x ',     '123456789X',    false],
@@ -50,14 +50,14 @@ class IsbnTest extends TestCase
     /**
      * @param string $invalidIsbn The invalid ISBN.
      */
-    #[DataProvider('providerGetInvalidIsbnThrowsException')]
-    public function testGetInvalidIsbnThrowsException(string $invalidIsbn): void
+    #[DataProvider('providerOfInvalidIsbnThrowsException')]
+    public function testOfInvalidIsbnThrowsException(string $invalidIsbn): void
     {
         $this->expectException(InvalidIsbnException::class);
         Isbn::of($invalidIsbn);
     }
 
-    public static function providerGetInvalidIsbnThrowsException(): array
+    public static function providerOfInvalidIsbnThrowsException(): array
     {
         return [
             ['123456789'],
