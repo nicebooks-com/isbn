@@ -16,7 +16,7 @@
   },
   "require-dev": {
     "ext-dom": "*",
-    "brick/varexporter": "~0.5.0",
+    "brick/varexporter": "~0.5.0 || ~0.7.0",
     "phpunit/phpunit": "^11.5",
     "php-coveralls/php-coveralls": "^2.5.2",
     "carthage-software/mago": "1.0.3"
