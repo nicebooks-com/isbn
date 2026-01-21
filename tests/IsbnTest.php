@@ -232,12 +232,12 @@ class IsbnTest extends TestCase
     }
 
     /**
-     * @param string $isbn           The ISBN to test.
-     * @param string $expectedFormat The expected formatted output.
-     * @param string $expectedGroup  The expected group name.
+     * @param string $isbn                  The ISBN to test.
+     * @param string $expectedFormat        The expected formatted output.
+     * @param string $registrationGroupName The expected registration group name.
      */
     #[DataProvider('providerInfoAndFormat')]
-    public function testInfoAndFormat(string $isbn, string $expectedFormat, string $expectedGroup): void
+    public function testInfoAndFormat(string $isbn, string $expectedFormat, string $registrationGroupName): void
     {
         $isbn = Isbn::of($isbn);
         $expectedParts = explode('-', $expectedFormat);
@@ -247,12 +247,16 @@ class IsbnTest extends TestCase
         self::assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {
-            $groupIdentifier = $expectedParts[0] . '-' . $expectedParts[1];
+            $groupIdentifier = $expectedParts[0] . '-' . $expectedParts[1]; // legacy
+            $registrationGroupPrefix = $expectedParts[0];
+            $registrationGroupIdentifier = $expectedParts[1];
             $publisherIdentifier = $expectedParts[2];
             $titleIdentifier = $expectedParts[3];
             $checkDigit = $expectedParts[4];
         } else {
-            $groupIdentifier = $expectedParts[0];
+            $groupIdentifier = $expectedParts[0]; // legacy
+            $registrationGroupPrefix = '978';
+            $registrationGroupIdentifier = $expectedParts[0];
             $publisherIdentifier = $expectedParts[1];
             $titleIdentifier = $expectedParts[2];
             $checkDigit = $expectedParts[3];
@@ -263,7 +267,12 @@ class IsbnTest extends TestCase
         self::assertSame($titleIdentifier, $isbn->getTitleIdentifier());
         self::assertSame($checkDigit, $isbn->getCheckDigit());
 
-        self::assertSame($expectedGroup, $isbn->getGroupName());
+        self::assertSame($registrationGroupName, $isbn->getGroupName());
+
+        $registrationGroup = $isbn->getRegistrationGroup();
+        self::assertSame($registrationGroupPrefix, $registrationGroup->prefix);
+        self::assertSame($registrationGroupIdentifier, $registrationGroup->identifier);
+        self::assertSame($registrationGroup->name, $registrationGroupName);
     }
 
     public static function providerInfoAndFormat(): array
