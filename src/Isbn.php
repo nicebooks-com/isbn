@@ -312,18 +312,6 @@ abstract readonly class Isbn implements Stringable
     }
 
     /**
-     * Returns the formatted (hyphenated) ISBN number.
-     *
-     * If the ISBN number is not in a recognized range, it is returned unformatted.
-     *
-     * @deprecated Use toFormattedString() instead.
-     */
-    final public function format(): string
-    {
-        return $this->toFormattedString();
-    }
-
-    /**
      * Checks if this ISBN is equal to another ISBN.
      *
      * An ISBN-10 is considered equal to its corresponding ISBN-13.

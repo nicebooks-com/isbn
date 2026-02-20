@@ -242,7 +242,6 @@ class IsbnTest extends TestCase
         $isbn = Isbn::of($isbn);
         $expectedParts = explode('-', $expectedFormat);
 
-        self::assertSame($expectedFormat, $isbn->format());
         self::assertSame($expectedFormat, $isbn->toFormattedString());
         self::assertSame($expectedParts, $isbn->getParts());
 
@@ -327,7 +326,7 @@ class IsbnTest extends TestCase
             });
 
             // ISBN with invalid group/range cannot be formatted
-            self::assertSame($isbnString, $isbn->format());
+            self::assertSame($isbnString, $isbn->toFormattedString());
         }
 
         if (!$isValid) {
