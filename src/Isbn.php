@@ -109,16 +109,6 @@ abstract readonly class Isbn implements Stringable
     abstract public function to13(): Isbn13;
 
     /**
-     * Returns whether this ISBN is in a recognized group and range.
-     *
-     * @deprecated Use isValid() instead.
-     */
-    final public function isValidRange(): bool
-    {
-        return $this->parts !== null;
-    }
-
-    /**
      * Returns whether this ISBN belongs to a known group.
      *
      * This method only validates the group. For a full group and range validation, use isValid().

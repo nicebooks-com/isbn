@@ -310,7 +310,6 @@ class IsbnTest extends TestCase
         $isbn = Isbn::of($isbnString);
 
         self::assertSame($hasValidRegistrationGroup, $isbn->hasValidRegistrationGroup());
-        self::assertSame($isValid, $isbn->isValidRange());
         self::assertSame($isValid, $isbn->isValid());
 
         if (!$hasValidRegistrationGroup) {
