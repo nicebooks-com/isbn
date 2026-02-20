@@ -113,10 +113,7 @@ abstract readonly class Isbn implements Stringable
      *
      * This method only validates the group. For a full group and range validation, use isValid().
      *
-     * When this method returns true, the following methods do not throw an exception:
-     *
-     * - getRegistrationGroup()
-     * - getGroupName()
+     * When this method returns true, `getRegistrationGroup()` does not throw an exception.
      */
     final public function hasValidRegistrationGroup(): bool
     {
@@ -139,7 +136,6 @@ abstract readonly class Isbn implements Stringable
      * throw an exception:
      *
      * - getRegistrationGroup()
-     * - getGroupName()
      * - getPublisherIdentifier()
      * - getTitleIdentifier()
      * - getParts()
@@ -159,24 +155,6 @@ abstract readonly class Isbn implements Stringable
         }
 
         return $this->registrationGroup;
-    }
-
-    /**
-     * Returns the English name of the country, geographic region, or language area that matches the group identifier.
-     *
-     * Examples: "English Language", "French language", "Japan", "Spain".
-     *
-     * @throws IsbnException If this ISBN is not in a recognized group.
-     *
-     * @deprecated Use getRegistrationGroup()->name instead.
-     */
-    final public function getGroupName(): string
-    {
-        if ($this->registrationGroup === null) {
-            throw IsbnException::unknownGroup($this->isbn);
-        }
-
-        return $this->registrationGroup->name;
     }
 
     /**

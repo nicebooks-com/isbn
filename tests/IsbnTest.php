@@ -263,12 +263,10 @@ class IsbnTest extends TestCase
         self::assertSame($titleIdentifier, $isbn->getTitleIdentifier());
         self::assertSame($checkDigit, $isbn->getCheckDigit());
 
-        self::assertSame($registrationGroupName, $isbn->getGroupName());
-
         $registrationGroup = $isbn->getRegistrationGroup();
         self::assertSame($registrationGroupPrefix, $registrationGroup->prefix);
         self::assertSame($registrationGroupIdentifier, $registrationGroup->identifier);
-        self::assertSame($registrationGroup->name, $registrationGroupName);
+        self::assertSame($registrationGroupName, $registrationGroup->name);
     }
 
     public static function providerInfoAndFormat(): array
@@ -312,9 +310,6 @@ class IsbnTest extends TestCase
         if (!$hasValidRegistrationGroup) {
             self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getRegistrationGroup();
-            });
-            self::assertException(IsbnException::class, static function () use ($isbn) {
-                $isbn->getGroupName();
             });
 
             // ISBN with invalid group/range cannot be formatted
