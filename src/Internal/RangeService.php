@@ -122,15 +122,4 @@ final class RangeService
 
         return null;
     }
-
-    public static function format(string $isbn): string
-    {
-        $rangeInfo = self::getRangeInfo($isbn);
-
-        if ($rangeInfo !== null && $rangeInfo->parts !== null) {
-            return implode('-', $rangeInfo->parts);
-        }
-
-        return $isbn;
-    }
 }
