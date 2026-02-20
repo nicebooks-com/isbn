@@ -304,12 +304,11 @@ class IsbnTest extends TestCase
         ];
     }
 
-    #[DataProvider('providerIsValidGroupAndRange')]
-    public function testIsValidGroupAndRange(string $isbnString, bool $hasValidRegistrationGroup, bool $isValid): void
+    #[DataProvider('providerIsValid')]
+    public function testIsValid(string $isbnString, bool $hasValidRegistrationGroup, bool $isValid): void
     {
         $isbn = Isbn::of($isbnString);
 
-        self::assertSame($hasValidRegistrationGroup, $isbn->isValidGroup());
         self::assertSame($hasValidRegistrationGroup, $isbn->hasValidRegistrationGroup());
         self::assertSame($isValid, $isbn->isValidRange());
         self::assertSame($isValid, $isbn->isValid());
@@ -342,7 +341,7 @@ class IsbnTest extends TestCase
         }
     }
 
-    public static function providerIsValidGroupAndRange(): array
+    public static function providerIsValid(): array
     {
         return [
             ['0001234560',    true,  true],
