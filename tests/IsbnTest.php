@@ -246,14 +246,12 @@ class IsbnTest extends TestCase
         self::assertSame($expectedParts, $isbn->getParts());
 
         if ($isbn->is13()) {
-            $groupIdentifier = $expectedParts[0] . '-' . $expectedParts[1]; // legacy
             $registrationGroupPrefix = $expectedParts[0];
             $registrationGroupIdentifier = $expectedParts[1];
             $publisherIdentifier = $expectedParts[2];
             $titleIdentifier = $expectedParts[3];
             $checkDigit = $expectedParts[4];
         } else {
-            $groupIdentifier = $expectedParts[0]; // legacy
             $registrationGroupPrefix = '978';
             $registrationGroupIdentifier = $expectedParts[0];
             $publisherIdentifier = $expectedParts[1];
@@ -261,7 +259,6 @@ class IsbnTest extends TestCase
             $checkDigit = $expectedParts[3];
         }
 
-        self::assertSame($groupIdentifier, $isbn->getGroupIdentifier());
         self::assertSame($publisherIdentifier, $isbn->getPublisherIdentifier());
         self::assertSame($titleIdentifier, $isbn->getTitleIdentifier());
         self::assertSame($checkDigit, $isbn->getCheckDigit());
@@ -315,9 +312,6 @@ class IsbnTest extends TestCase
         if (!$hasValidRegistrationGroup) {
             self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getRegistrationGroup();
-            });
-            self::assertException(IsbnException::class, static function () use ($isbn) {
-                $isbn->getGroupIdentifier();
             });
             self::assertException(IsbnException::class, static function () use ($isbn) {
                 $isbn->getGroupName();

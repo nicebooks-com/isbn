@@ -116,7 +116,6 @@ abstract readonly class Isbn implements Stringable
      * When this method returns true, the following methods do not throw an exception:
      *
      * - getRegistrationGroup()
-     * - getGroupIdentifier()
      * - getGroupName()
      */
     final public function hasValidRegistrationGroup(): bool
@@ -140,7 +139,6 @@ abstract readonly class Isbn implements Stringable
      * throw an exception:
      *
      * - getRegistrationGroup()
-     * - getGroupIdentifier()
      * - getGroupName()
      * - getPublisherIdentifier()
      * - getTitleIdentifier()
@@ -161,25 +159,6 @@ abstract readonly class Isbn implements Stringable
         }
 
         return $this->registrationGroup;
-    }
-
-    /**
-     * Returns the group identifier which identifies a country, geographic region, or language area.
-     *
-     * Example for ISBN-10: "1-338-87893-X" => "1"
-     * Example for ISBN-13: "978-1-338-87893-6" => "978-1"
-     *
-     * @throws IsbnException If this ISBN is not in a recognized group.
-     *
-     * @deprecated Use getRegistrationGroup()->prefix, ->identifier, and ->toString() instead.
-     */
-    final public function getGroupIdentifier(): string
-    {
-        if ($this->registrationGroup === null) {
-            throw IsbnException::unknownGroup($this->isbn);
-        }
-
-        return $this->is10() ? $this->registrationGroup->identifier : $this->registrationGroup->toString();
     }
 
     /**
