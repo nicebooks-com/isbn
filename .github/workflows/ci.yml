@@ -33,7 +33,7 @@ jobs:
           coverage: xdebug
 
       - name: Install composer dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: "ramsey/composer-install@v4"
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
@@ -65,7 +65,7 @@ jobs:
           php-version: ${{ env.MAGO_PHP_VERSION }}
 
       - name: Install composer dependencies
-        uses: "ramsey/composer-install@v3"
+        uses: "ramsey/composer-install@v4"
 
       - name: Mago format
         run: vendor/bin/mago format --check
