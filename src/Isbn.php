@@ -90,8 +90,14 @@ abstract readonly class Isbn implements Stringable
         throw Exception\InvalidIsbnException::forIsbn($isbn);
     }
 
+    /**
+     * @pure
+     */
     abstract public function is10(): bool;
 
+    /**
+     * @pure
+     */
     abstract public function is13(): bool;
 
     abstract public function isConvertibleTo10(): bool;
