@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nicebooks\Isbn;
 
 use Nicebooks\Isbn\Exception\IsbnException;
+use Nicebooks\Isbn\Exception\IsbnNotRecognizedException;
 use Nicebooks\Isbn\Internal\RangeService;
 use Override;
 use Stringable;
@@ -157,7 +158,7 @@ abstract readonly class Isbn implements Stringable
     final public function getRegistrationGroup(): RegistrationGroup
     {
         if ($this->registrationGroup === null) {
-            throw IsbnException::unknownGroup($this->isbn);
+            throw IsbnNotRecognizedException::unknownGroup($this->isbn);
         }
 
         return $this->registrationGroup;
@@ -176,11 +177,11 @@ abstract readonly class Isbn implements Stringable
     final public function getPublisherIdentifier(): string
     {
         if ($this->registrationGroup === null) {
-            throw IsbnException::unknownGroup($this->isbn);
+            throw IsbnNotRecognizedException::unknownGroup($this->isbn);
         }
 
         if ($this->parts === null) {
-            throw IsbnException::unknownRange($this->isbn);
+            throw IsbnNotRecognizedException::unknownRange($this->isbn);
         }
 
         return $this->parts[$this->is13() ? 2 : 1];
@@ -199,11 +200,11 @@ abstract readonly class Isbn implements Stringable
     final public function getTitleIdentifier(): string
     {
         if ($this->registrationGroup === null) {
-            throw IsbnException::unknownGroup($this->isbn);
+            throw IsbnNotRecognizedException::unknownGroup($this->isbn);
         }
 
         if ($this->parts === null) {
-            throw IsbnException::unknownRange($this->isbn);
+            throw IsbnNotRecognizedException::unknownRange($this->isbn);
         }
 
         return $this->parts[$this->is13() ? 3 : 2];
@@ -237,11 +238,11 @@ abstract readonly class Isbn implements Stringable
     final public function getParts(): array
     {
         if ($this->registrationGroup === null) {
-            throw IsbnException::unknownGroup($this->isbn);
+            throw IsbnNotRecognizedException::unknownGroup($this->isbn);
         }
 
         if ($this->parts === null) {
-            throw IsbnException::unknownRange($this->isbn);
+            throw IsbnNotRecognizedException::unknownRange($this->isbn);
         }
 
         return $this->parts;

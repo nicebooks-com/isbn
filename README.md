@@ -183,7 +183,7 @@ Isbn::of('9781338878936')->getParts(); // ['978', '1', '338', '87893', '6']
 > [!IMPORTANT]
 > `getParts()` requires `isValid()`
 
-If the part you're trying to access is not available because the ISBN does not belong to a valid registration group or range, an `IsbnException` is thrown.
+If the part you're trying to access is not available because the ISBN does not belong to a valid registration group or range, an `IsbnNotRecognizedException` is thrown.
 
 #### Getting the registration group name
 
@@ -197,6 +197,7 @@ Isbn::of('9781338878936')->getRegistrationGroup()->name; // 'English language'
 
 Exceptions live in the `Nicebooks\Isbn\Exception` namespace.
 
-- `IsbnException` is the base class for all exceptions thrown by this library.
+- `IsbnException` is the abstract base class for all exceptions thrown by this library.
   - `InvalidIsbnException` is thrown when an invalid ISBN is detected
-  - `IsbnNotConvertibleException` is thrown when trying to convert an ISBN-13 that does not start with `978` to an ISBN-10.
+  - `IsbnNotConvertibleException` is thrown when trying to convert an ISBN-13 that does not start with `978` to an ISBN-10
+  - `IsbnNotRecognizedException` is thrown when an ISBN is semantically valid but does not belong to a recognized group or range
