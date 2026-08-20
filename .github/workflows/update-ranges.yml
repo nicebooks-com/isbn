@@ -1,0 +1,100 @@
+name: Update ISBN ranges
+
+on:
+  schedule:
+    - cron: "47 0 * * *"
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Run everything but skip push and release"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-ranges
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Update ranges
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # Tags are required to compute the next version.
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+
+      - name: Install composer dependencies
+        uses: "ramsey/composer-install@v4"
+
+      - name: Update range data
+        run: php update-ranges.php --output-dir "$RUNNER_TEMP"
+
+      - name: Detect changes
+        id: detect
+        run: |
+          if git diff --quiet -- data/ranges.php data/stats.php; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Range file is current, nothing to do." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run PHPUnit
+        if: steps.detect.outputs.changed == 'true'
+        run: vendor/bin/phpunit
+
+      - name: Compute next version
+        id: version
+        if: steps.detect.outputs.changed == 'true'
+        run: |
+          next="$(git tag --list | php next-version.php)"
+          echo "Next version: $next"
+          echo "next=$next" >> "$GITHUB_OUTPUT"
+
+      - name: Commit data files
+        if: steps.detect.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ranges.php data/stats.php
+          git commit -F "${{ runner.temp }}/commit-message.txt"
+
+      - name: Push commit and tag to main
+        if: steps.detect.outputs.changed == 'true' && inputs.dry-run != true && github.ref == 'refs/heads/main'
+        run: |
+          git pull --rebase origin main
+          git tag "${{ steps.version.outputs.next }}"
+          git push --atomic origin main "refs/tags/${{ steps.version.outputs.next }}"
+
+      - name: Create release
+        if: steps.detect.outputs.changed == 'true' && inputs.dry-run != true && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.version.outputs.next }}" \
+            --title "${{ steps.version.outputs.next }}" \
+            --notes-file "${{ runner.temp }}/release-notes.md"
+
+      - name: Write summary
+        if: steps.detect.outputs.changed == 'true'
+        run: |
+          {
+            echo "## ISBN ranges updated"
+            echo
+            echo "Release: \`${{ steps.version.outputs.next }}\`"
+            echo
+            cat "${{ runner.temp }}/release-notes.md"
+          } >> "$GITHUB_STEP_SUMMARY"

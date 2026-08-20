@@ -12,7 +12,32 @@ require 'vendor/autoload.php';
  * This script downloads and converts the ISBN range file from isbn-international.org.
  *
  * @see https://www.isbn-international.org/range_file_generation
+ *
+ * When updates are made and an output dir is provided, it writes two files:
+ *
+ * - commit-message.txt
+ * - release-notes.md
+ *
+ * Usage:
+ *
+ *     php update-ranges.php
+ *     php update-ranges.php --output-dir <dir>
  */
+
+// The values below end up in commit messages and release notes, where GitHub interprets
+// issue references, @mentions and Markdown; only accept the expected formats and fail loudly
+// if an unexpected value is found.
+
+// UUID, e.g. "51202e58-dc44-4f5a-981b-a5b91c5f0cdf".
+const SERIAL_NUMBER_PATTERN = '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i';
+
+// RFC 2822 style date, e.g. "Thu, 20 Aug 2026 00:07:40 BST".
+const DATE_PATTERN =
+    '/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \d{1,2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) '
+    . '\d{4} \d{2}:\d{2}:\d{2} ([A-Z]{1,5}|[+-]\d{4})$/';
+
+// Agency name, e.g. "Curaçao" or "United States".
+const AGENCY_PATTERN = '/^[\p{L}\p{N} ,.\'()-]{1,255}$/u';
 
 function count_valid_isbns(array $rangeData): int
 {
@@ -29,18 +54,30 @@ function count_valid_isbns(array $rangeData): int
     return $validIsbnCount;
 }
 
+function write_file(string $path, string $contents): void
+{
+    if (file_put_contents($path, $contents) !== strlen($contents)) {
+        fwrite(STDERR, "Could not write file: $path\n");
+        exit(1);
+    }
+}
+
 $rangeMessageXML = file_get_contents('https://www.isbn-international.org/export_rangemessage.xml');
 
 if ($rangeMessageXML === false) {
-    echo "Could not download range file.\n";
-    exit();
+    fwrite(STDERR, "Could not download range file.\n");
+    exit(1);
 }
 
 $rangesFile = 'data/ranges.php';
 $statsFile = 'data/stats.php';
 
 $document = new DOMDocument();
-$document->loadXML($rangeMessageXML);
+
+if (!$document->loadXML($rangeMessageXML)) {
+    fwrite(STDERR, "Could not parse range file XML.\n");
+    exit(1);
+}
 
 $xpath = new DOMXPath($document);
 
@@ -54,11 +91,25 @@ $rangeData = [];
 $messageSerialNumber = $xpath->query('/ISBNRangeMessage/MessageSerialNumber')->item(0)->textContent;
 
 $messageDate = $xpath->query('/ISBNRangeMessage/MessageDate')->item(0)->textContent;
-$messageTime = strtotime($messageDate);
+
+if (preg_match(SERIAL_NUMBER_PATTERN, $messageSerialNumber) !== 1) {
+    fwrite(STDERR, 'Invalid message serial number: ' . json_encode($messageSerialNumber) . "\n");
+    exit(1);
+}
+
+if (preg_match(DATE_PATTERN, $messageDate) !== 1) {
+    fwrite(STDERR, 'Invalid message date: ' . json_encode($messageDate) . "\n");
+    exit(1);
+}
 
 foreach ($groupNodeList as $groupNode) {
     $prefix = $xpath->query('./Prefix', $groupNode)->item(0)->textContent;
-    $agency = $xpath->query('./Agency', $groupNode)->item(0)->textContent;
+    $agency = trim($xpath->query('./Agency', $groupNode)->item(0)->textContent);
+
+    if (preg_match(AGENCY_PATTERN, $agency) !== 1) {
+        fwrite(STDERR, 'Invalid agency name: ' . json_encode($agency) . "\n");
+        exit(1);
+    }
 
     $ruleNodeList = $xpath->query('./Rules/Rule', $groupNode);
 
@@ -84,7 +135,7 @@ foreach ($groupNodeList as $groupNode) {
 
     $prefix = explode('-', $prefix);
 
-    $rangeData[] = [$prefix[0], $prefix[1], trim($agency), $ranges];
+    $rangeData[] = [$prefix[0], $prefix[1], $agency, $ranges];
     $groupCount++;
 }
 
@@ -100,15 +151,12 @@ $stats = [
     'validIsbnCount' => count_valid_isbns($rangeData),
 ];
 
-file_put_contents($rangesFile, sprintf("<?php return %s;\n", VarExporter::export(
+write_file($rangesFile, sprintf("<?php return %s;\n", VarExporter::export(
     $rangeData,
     VarExporter::INLINE_SCALAR_LIST,
 )));
 
-file_put_contents($statsFile, sprintf("<?php return %s;\n", VarExporter::export(
-    $stats,
-    VarExporter::INLINE_SCALAR_LIST,
-)));
+write_file($statsFile, sprintf("<?php return %s;\n", VarExporter::export($stats, VarExporter::INLINE_SCALAR_LIST)));
 
 $agenciesUpdated = [];
 
@@ -145,6 +193,22 @@ if ($agenciesUpdated) {
     $commitMessage .= 'Agencies updated: ' . implode(', ', $agenciesUpdated) . "\n";
 }
 
+$releaseNotes = "ISBN range update.\n";
+$releaseNotes .= "\n";
+$releaseNotes .= "| Serial number | Date |\n";
+$releaseNotes .= "| ------------- | ---- |\n";
+$releaseNotes .= "| $messageSerialNumber | $messageDate |\n";
+
+if ($agenciesUpdated) {
+    $releaseNotes .= "\n";
+    $releaseNotes .= "Agencies updated:\n";
+    $releaseNotes .= "\n";
+
+    foreach ($agenciesUpdated as $agencyUpdated) {
+        $releaseNotes .= "- $agencyUpdated\n";
+    }
+}
+
 echo "Successfully converted $groupCount groups and $rangeCount ranges.\n";
 echo "\n";
 echo "Commit message:\n";
@@ -156,28 +220,12 @@ echo "\n";
 echo "Release notes:\n";
 echo "==============\n";
 echo "\n";
-echo "ISBN range update.\n";
-echo "\n";
-echo "| Serial number | Date |\n";
-echo "| ------------- | ---- |\n";
-echo "| $messageSerialNumber | $messageDate |\n";
-echo "\n";
+echo $releaseNotes;
 
-if ($agenciesUpdated) {
-    echo "\n";
-    echo "Agencies updated:\n";
-    echo "\n";
+$options = getopt('', ['output-dir:']);
+$outputDir = $options['output-dir'] ?? null;
 
-    foreach ($agenciesUpdated as $agencyUpdated) {
-        echo "- $agencyUpdated\n";
-    }
-}
-
-echo "\n";
-
-system('vendor/bin/phpunit --colors=always', $status);
-
-if ($status === 0) {
-    system('git commit -a -m ' . escapeshellarg($commitMessage));
-    system('git push');
+if (is_string($outputDir) && $outputDir !== '') {
+    write_file($outputDir . '/commit-message.txt', $commitMessage);
+    write_file($outputDir . '/release-notes.md', $releaseNotes);
 }

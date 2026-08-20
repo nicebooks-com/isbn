@@ -2,7 +2,7 @@ php-version = "8.2.0"
 
 [source]
 workspace = "."
-paths = ["src/", "tests/", "updateRanges.php"]
+paths = ["src/", "tests/", "next-version.php", "update-ranges.php"]
 includes = ["vendor"]
 excludes = []
 
@@ -42,4 +42,4 @@ strict-list-index-checks = true
 no-boolean-literal-comparison = true
 check-missing-type-hints = true
 register-super-globals = true
-excludes=["tests/", "updateRanges.php"]
+excludes=["tests/", "next-version.php", "update-ranges.php"]
