@@ -1,4 +1,4 @@
 <?php return [
     'groupCount' => 287,
-    'validIsbnCount' => 1024307660
+    'validIsbnCount' => 1024318060
 ];
